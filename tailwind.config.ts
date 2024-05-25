@@ -33,7 +33,10 @@ const config: Config = {
 					'90%': { transform: 'scale(1.1) rotate(3deg)' },
 					'100%': { transform: 'scale(1) rotate(0)' },
 				  },
-			}
+			},
+			colors: {
+				primary: "#F8F9FA",
+			},
 		},
 	},
 	plugins: [],
