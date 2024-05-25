@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
+"use client";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import FSection from "./Section/FSection";
 import {
 	FSectionInterface,
@@ -21,8 +22,11 @@ export default function ReadingAnswer({
 	answer,
 	setAnswer,
 }: ReadingAnswerProps) {
+	const containerRef = useRef();
+	const [containerHeight, setHeight] = useState<number>(0);
+
 	return (
-		<div className="w-full h-full col-span-6 flex flex-col lg:overflow-y-scroll gap-8 p-2 pb-40 max-lg:col-span-full">
+		<div className="tf w-full h-full col-span-6 flex flex-col lg:overflow-y-scroll gap-8 p-2 pb-40 max-lg:col-span-full">
 			{part.sectionList.map((p, index) => {
 				switch (p.sectionType) {
 					case "MC":

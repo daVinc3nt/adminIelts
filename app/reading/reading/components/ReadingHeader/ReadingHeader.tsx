@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import Switch from "@/components/Switch/Switch";
-import Timer from "@/components/Timer/Timer";
+import Timer from "@/components/Timer/ReadingTimer";
 
 interface HeaderInterface {
 	value: boolean;
@@ -21,7 +21,7 @@ export default function Header({ value, setValue }: HeaderInterface) {
 			</div>
 
 			<div className="w-fit h-fit mr-auto ml-auto col-span-3">
-				<Timer duration={60} />
+				<Timer duration={3600} size={10} />
 			</div>
 
 			<div className="col-span-3 flex justify-end max-md:hidden"></div>

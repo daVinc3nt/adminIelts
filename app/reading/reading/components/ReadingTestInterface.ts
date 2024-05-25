@@ -15,12 +15,20 @@ export interface PartInterface {
 	sectionList: SectionInterface[];
 }
 
+
 export interface SectionInterface {
 	sectionType: string;
 	startQuestion: number;
 	endQuestion: number;
 }
 
+export interface CombineSectionInterface extends SectionInterface {
+	sectionType: string;
+	startQuestion: number;
+	endQuestion: number;
+	TFQuestion: string;
+	FQuestion: string;
+}
 // True false section
 export interface TFSectionInterface extends SectionInterface {
 	sectionType: string;

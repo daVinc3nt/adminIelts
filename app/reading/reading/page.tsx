@@ -28,7 +28,7 @@ export default function Reading() {
 
 	return (
 		<div className="w-full h-fit flex flex-col gap-4 p-4 max-lg:h-fit">
-			<div className="h-[736px] max-lg:h-fit bg-white border shadow-md shadow-gray-300 rounded-2xl flex flex-col gap-4 p-4">
+			<div className="h-[660px] max-lg:h-fit bg-white border shadow-md shadow-gray-300 rounded-2xl flex flex-col gap-4 p-4">
 				<div className="w-full h-fit">
 					<Header value={highLight} setValue={setHighLight} />
 					<div className="w-full h-fit">

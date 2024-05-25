@@ -48,7 +48,7 @@ export default function TFSection({
 				return (
 					<div
 						key={question.question + index}
-						className={`w-full ${openIndex == index ? "h-[154px]" : "h-[58px]"} duration-300 bg-primary border overflow-hidden flex flex-col gap-2 p-2 rounded-2xl`}>
+						className={`w-full ${openIndex == index ? "max-h-[1000px] duration-1000 ease-sync" : "h-[58px] duration-500 overflow-hidden"} bg-primary border  flex flex-col gap-2 p-2 rounded-2xl`}>
 						<div
 							className="flex flex-row gap-2 items-start text-sm min-h-10 h-[58px] cursor-pointer"
 							onClick={() => openQuestion(index)}>
