@@ -6,8 +6,8 @@ import NavBar from "@/components/Navbar/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "My Test Next app",
-  description: "Create by Tran Ngoc Lam Vy",
+	title: "Engonow",
+	description: "Create by Tran Ngoc Lam Vy",
 };
 
 export default function RootLayout({
@@ -16,13 +16,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <NavBar />
-        <main className="min-h-screen w-full pt-16">
-          {children}
-        </main>
-      </body>
-    </html >
+		<html lang="en">
+			<body className={inter.className}>
+				<main className="min-h-screen w-full bg-primary">
+					{children}
+				</main>
+			</body>
+		</html>
   );
 }

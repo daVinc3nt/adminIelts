@@ -25,7 +25,9 @@ export default function DropDown() {
 							Bạn chưa có thông báo mới
 						</div>
 
-						<Link href="" className="text-blue-800 mt-2">
+						<Link
+							href=""
+							className="text-blue-800 mt-2 hover:underline">
 							{"Xem tất cả >>"}
 						</Link>
 					</div>

@@ -9,7 +9,7 @@ export default function NavBar() {
 
 	return (
 		<div
-			className={`${dropDown ? "max-lg:h-[416px]" : "h-14"} duration-300 w-full h-14 flex justify-center items-center flex-row bg-white shadow-sm shadow-gray-300 fixed py-2 px-4 gap-2 max-lg:flex-col max-lg:justify-start max-lg:items-start max-lg:overflow-hidden`}>
+			className={`w-full h-14 flex justify-center items-center flex-row bg-white shadow-sm shadow-gray-300 fixed py-2 px-4 gap-2 max-lg:flex-col max-lg:justify-start max-lg:items-start max-lg:overflow-hidden`}>
 			<div className="flex flex-row items-center justify-center max-lg:w-full mr-auto">
 				<Link
 					href="/"

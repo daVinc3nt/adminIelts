@@ -14,7 +14,13 @@ const config: Config = {
 				"128": "32rem",
 				"144": "36rem",
 				"160": "40rem",
+				"174": "43rem",
 				"176": "44rem",
+				"180": "45rem",
+				"192": "48rem",
+			},
+			colors: {
+				primary: "#F8F9FA",
 			},
 		},
 	},
