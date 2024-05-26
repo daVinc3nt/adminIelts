@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import ReadingAnswer from "./components/ReadingAnswer/ReadingAnswer";
 import Header from "./components/ReadingHeader/ReadingHeader";
 
@@ -16,6 +16,8 @@ import ReadingParagraph from "./components/ReadingParagraph/ReadingParagraph";
 import ReadingQuestionList from "./components/ReadingQuestionList/ReadingQuestionList";
 
 export default function Reading() {
+	const currentTest = readingTest1;
+
 	const [currentPart, setPart] = useState<number>(1);
 	const part = readingTest1.partList[currentPart - 1];
 
@@ -24,6 +26,10 @@ export default function Reading() {
 
 	const [answer, setAnswer] = useState<string[]>(
 		Array(readingTest1.numberOfQuestion).fill("")
+	);
+
+	const [open, setOpen] = useState<boolean[]>(
+		Array(readingTest1.numberOfQuestion).fill(false)
 	);
 
 	return (
@@ -37,19 +43,25 @@ export default function Reading() {
 					</div>
 				</div>
 				<div className="w-full h-full grid grid-cols-12 overflow-scroll lg:overflow-hidden">
-					<ReadingParagraph
-						highLight={highLight}
-						title={readingTest1.partList[currentPart - 1].title}
-						paragraph={
-							readingTest1.partList[currentPart - 1].paragraph
-						}
-					/>
-
-					<ReadingAnswer
-						part={readingTest1.partList[currentPart - 1]}
-						answer={answer}
-						setAnswer={setAnswer}
-					/>
+					{currentTest.partList.map((part, index) => {
+						if (currentPart != index + 1) return null;
+						return (
+							<React.Fragment key={index}>
+								<ReadingParagraph
+									highLight={highLight}
+									title={part.title}
+									paragraph={part.paragraph}
+								/>
+								<ReadingAnswer
+									part={part}
+									answer={answer}
+									setAnswer={setAnswer}
+									open={open}
+									setOpen={setOpen}
+								/>
+							</React.Fragment>
+						);
+					})}
 				</div>
 			</div>
 			<ReadingQuestionList

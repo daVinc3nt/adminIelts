@@ -1,5 +1,6 @@
 "use client";
 
+import { Dispatch, SetStateAction } from "react";
 import {
 	Multiple_Choice_Question,
 	QuestionType,
@@ -13,9 +14,19 @@ import TFQuestion from "./TFQuestion";
 
 interface Props {
 	questionGroup: QuestionGroup;
+	answer: string[];
+	setAnswer: Dispatch<SetStateAction<string[]>>;
+	open: boolean[];
+	setOpen: Dispatch<SetStateAction<boolean[]>>;
 }
 
-export default function QGroup({ questionGroup }: Props) {
+export default function QGroup({
+	questionGroup,
+	answer,
+	setAnswer,
+	open,
+	setOpen,
+}: Props) {
 	return (
 		<div className="w-full h-fit flex flex-col gap-4">
 			<div className="text-xl font-bold">
@@ -36,6 +47,10 @@ export default function QGroup({ questionGroup }: Props) {
 							<TFQuestion
 								key={question.questionNumber}
 								question={question as True_False_Question}
+								answer={answer}
+								setAnswer={setAnswer}
+								open={open}
+								setOpen={setOpen}
 							/>
 						);
 					case QuestionType.Multiple_Choice:
@@ -43,6 +58,10 @@ export default function QGroup({ questionGroup }: Props) {
 							<MCQuestion
 								key={question.questionNumber}
 								question={question as Multiple_Choice_Question}
+								answer={answer}
+								setAnswer={setAnswer}
+								open={open}
+								setOpen={setOpen}
 							/>
 						);
 					case QuestionType.Fill:
@@ -50,6 +69,8 @@ export default function QGroup({ questionGroup }: Props) {
 							<FQuestion
 								key={question.questionNumber}
 								question={question as Fill_Question}
+								answer={answer}
+								setAnswer={setAnswer}
 							/>
 						);
 					case QuestionType.Match_Heading:

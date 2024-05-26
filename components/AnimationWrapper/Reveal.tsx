@@ -1,5 +1,6 @@
 "use client";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useAnimation } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 interface Props {
 	children: JSX.Element;
@@ -14,13 +15,23 @@ export default function Reveal({
 	overflow,
 	direction,
 }: Props) {
+	const contentRef = useRef();
+	const inView = useInView(contentRef, { once: true });
+	const animationControl = useAnimation();
+
+	useEffect(() => {
+		if (inView) {
+			animationControl.start("visible");
+		}
+	}, [inView]);
+
 	return (
-		<div style={{ position: "relative", width, overflow }}>
+		<div ref={contentRef} style={{ position: "relative", width, overflow }}>
 			<motion.div
 				variants={variants}
 				initial={direction}
-				animate="visible"
-				transition={{ duration: 0.5, delay: 0.25 }}>
+				animate={animationControl}
+				transition={{ duration: 0.2, delay: 0.1 }}>
 				{children}
 			</motion.div>
 		</div>
@@ -28,9 +39,9 @@ export default function Reveal({
 }
 
 const variants = {
-	right2left: { opacity: 0, x: 75 },
-	left2right: { opacity: 0, x: -75 },
-	top2bot: { opacity: 0, y: -75 },
-	bot2top: { opacity: 0, y: 75 },
+	right2left: { opacity: 0, x: 200 },
+	left2right: { opacity: 0, x: -200 },
+	top2bot: { opacity: 0, y: -200 },
+	bot2top: { opacity: 0, y: 200 },
 	visible: { opacity: 1, x: 0, y: 0 },
 };

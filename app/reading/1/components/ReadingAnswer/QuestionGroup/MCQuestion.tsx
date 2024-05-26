@@ -1,5 +1,11 @@
 "use client";
-import { useLayoutEffect, useRef, useState } from "react";
+import {
+	Dispatch,
+	SetStateAction,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import {
 	Multiple_Choice_Question,
 	True_False_Question,
@@ -7,12 +13,20 @@ import {
 
 interface Props {
 	question: Multiple_Choice_Question;
+	answer: string[];
+	setAnswer: Dispatch<SetStateAction<string[]>>;
+	open: boolean[];
+	setOpen: Dispatch<SetStateAction<boolean[]>>;
 }
 
-export default function MCQuestion({ question }: Props) {
-	const [openIndex, setOpenIndex] = useState<boolean>(false);
-
-	const questionNumber = question.questionNumber;
+export default function MCQuestion({
+	question,
+	answer,
+	setAnswer,
+	open,
+	setOpen,
+}: Props) {
+	const questionIndex = question.questionNumber;
 	const numberOfAns = question.numberOfAnswer;
 
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -20,6 +34,54 @@ export default function MCQuestion({ question }: Props) {
 
 	const [containerHeight, setContainerHeight] = useState<number>();
 	const [headerHeight, setHeaderHeight] = useState<number>();
+
+	const handleChangeAnswer = (value: string) => {
+		const newAns = [...answer];
+
+		if (numberOfAns == 1) {
+			if (value == newAns[questionIndex - 1]) {
+				newAns[questionIndex - 1] = "";
+			} else {
+				newAns[questionIndex - 1] = value;
+			}
+			setAnswer(newAns);
+			return;
+		}
+
+		var repeat = false;
+		for (var i = questionIndex; i <= questionIndex + numberOfAns - 1; i++) {
+			if (value == newAns[i - 1]) {
+				newAns[i - 1] = "";
+				repeat = true;
+				break;
+			}
+		}
+		if (repeat) {
+			setAnswer(newAns);
+			return;
+		}
+		for (var i = questionIndex; i <= questionIndex + numberOfAns - 1; i++) {
+			if (newAns[i - 1] == "") {
+				newAns[i - 1] = value;
+				break;
+			}
+		}
+		setAnswer(newAns);
+	};
+
+	const handleOpenQuestion = () => {
+		const newOpen = [...open];
+		newOpen[questionIndex - 1] = !newOpen[questionIndex - 1];
+		setOpen(newOpen);
+	};
+
+	const isAnswer = (value: string) => {
+		for (var i = questionIndex; i <= questionIndex + numberOfAns - 1; i++) {
+			if (answer[i - 1] == value) return true;
+		}
+
+		return false;
+	};
 
 	useLayoutEffect(() => {
 		const getHeight = () => {
@@ -58,23 +120,21 @@ export default function MCQuestion({ question }: Props) {
 	return (
 		<div
 			style={{
-				height: openIndex ? containerHeight : headerHeight + "px",
-				borderColor: openIndex ? "#f87171" : "#fecaca",
-				backgroundColor: openIndex ? "white" : "#F8F9FA",
+				height: open[questionIndex - 1]
+					? containerHeight
+					: headerHeight + "px",
+				borderColor: open[questionIndex - 1] ? "#f87171" : "#fecaca",
+				backgroundColor: open[questionIndex - 1] ? "white" : "#F8F9FA",
 			}}
 			ref={containerRef}
 			className={`w-full duration-300 overflow-hidden border-2 flex flex-col items-center gap-0 rounded-lg`}>
 			<div
 				ref={headerRef}
-				onClick={() => {
-					setOpenIndex(!openIndex);
-					console.log(headerHeight);
-					console.log(containerHeight);
-				}}
+				onClick={() => handleOpenQuestion()}
 				className="flex flex-row p-2 gap-2 items-start text-sm w-full h-fit cursor-pointer">
 				<div className="h-full flex items-center">
 					<div className="min-w-8 min-h-8 flex justify-center items-center rounded-full bg-red-400 text-white font-bold p-1 px-2">
-						{`${numberOfAns == 1 ? questionNumber : questionNumber + " - " + (questionNumber + numberOfAns - 1)}`}
+						{`${numberOfAns == 1 ? questionIndex : questionIndex + " - " + (questionIndex + numberOfAns - 1)}`}
 					</div>
 				</div>
 				<div className="max-lg:text-base h-fit">
@@ -84,12 +144,17 @@ export default function MCQuestion({ question }: Props) {
 
 			<hr className="solid border-gray-300 border rounded-full w-11/12"></hr>
 
-			<div className={`w-full h-fit flex flex-col text-sm p-2`}>
+			<div className={`w-full h-fit flex flex-col text-sm p-2 gap-2`}>
 				{question.choice.map((choice, index) => {
 					return (
 						<div
 							key={index}
-							className="w-full flex flex-row items-center gap-2 border border-transparent rounded-lg hover:bg-red-400 hover:text-white duration-100 hover:border-gray-200 cursor-pointer p-2">
+							onClick={() =>
+								handleChangeAnswer(
+									String.fromCharCode(65 + index)
+								)
+							}
+							className={`w-full flex flex-row items-center gap-2 border border-transparent rounded-lg duration-100 cursor-pointer p-2 ${isAnswer(String.fromCharCode(65 + index)) ? "bg-red-400 text-white" : "hover:border-red-400 "} `}>
 							<div>
 								<b>{String.fromCharCode(65 + index)}.</b>{" "}
 								{choice}

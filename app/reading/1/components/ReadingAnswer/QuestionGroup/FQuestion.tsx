@@ -1,18 +1,22 @@
 "use client";
 
+import { Dispatch, SetStateAction } from "react";
 import { Fill_Question } from "../../ReadingInterface";
 
 interface Props {
 	question: Fill_Question;
+	answer: string[];
+	setAnswer: Dispatch<SetStateAction<string[]>>;
 }
 
-export default function FQuestion({ question }: Props) {
-	const handleChangeInput = (
-		e: React.ChangeEvent<HTMLInputElement>,
-		index: number
-	) => {
+export default function FQuestion({ question, answer, setAnswer }: Props) {
+	const answerIndex = question.questionNumber;
+
+	const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
-		// Handle input change
+		const newAns = [...answer];
+		newAns[answerIndex - 1] = e.target.value as string;
+		setAnswer(newAns);
 	};
 
 	return (
@@ -32,9 +36,8 @@ export default function FQuestion({ question }: Props) {
 				className={`w-full ${question.question ? "col-span-12" : "col-span-11"}`}>
 				<input
 					type="text"
-					onChange={(e) =>
-						handleChangeInput(e, question.questionNumber)
-					}
+					value={answer[answerIndex - 1]}
+					onChange={handleChangeInput}
 					className="w-full h-8 border-2 border-red-200 p-2 rounded-lg outline-none focus:border-transparent focus:outline focus:ring focus:ring-red-400 bg-primary focus:bg-white"
 				/>
 			</div>

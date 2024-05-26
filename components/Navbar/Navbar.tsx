@@ -9,7 +9,7 @@ export default function NavBar() {
 
 	return (
 		<div
-			className={`w-full h-14 flex justify-center items-center flex-row bg-white shadow-sm shadow-gray-300 fixed py-2 px-4 gap-2 max-lg:flex-col max-lg:justify-start max-lg:items-start max-lg:overflow-hidden`}>
+			className={`w-full h-14 flex justify-center items-center flex-row bg-white shadow-sm shadow-gray-300 fixed py-2 px-4 gap-2 max-lg:flex-col max-lg:justify-start max-lg:items-start max-lg:overflow-hidden z-50`}>
 			<div className="flex flex-row items-center justify-center max-lg:w-full mr-auto">
 				<Link
 					href="/"
@@ -67,7 +67,7 @@ const pageList: pageinterface[] = [
 	},
 	{
 		label: "Đề thi online",
-		path: "/test",
+		path: "",
 	},
 	{
 		label: "Flashcards",

@@ -43,6 +43,7 @@ const config: Config = {
 			transitionProperty: {
 				"max-height": "max-height",
 			},
+			backgroundImage: {},
 		},
 	},
 	plugins: [],
