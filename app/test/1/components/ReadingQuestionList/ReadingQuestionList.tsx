@@ -26,7 +26,9 @@ export default function ReadingQuestionList({
 					const startQuestion = partList[index].startQuestion;
 					const endQuestion = partList[index].endQuestion;
 					return (
-						<div className="w-full h-full flex flex-row justify-start items-center font-bold gap-2 max-lg:flex-col max-lg:items-start">
+						<div
+							key={index}
+							className="w-full h-full flex flex-row justify-start items-center font-bold gap-2 max-lg:flex-col max-lg:items-start">
 							<div className="text-xl">{`Part ${index + 1}:`}</div>
 							<div className="flex flex-row gap-1 w-fit h-fit">
 								{Array.from(

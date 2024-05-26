@@ -100,7 +100,7 @@ export default function Pie({ duration, size }) {
 							cy="18"
 							r="16"
 							fill="none"
-							className={`stroke-current  ${timeRemaining / duration < 0.1 ? "text-red-600" : "text-blue-600"} duration-200 ease-linear transition-all`}
+							className={`stroke-current text-red-400 duration-200 ease-linear transition-all`}
 							strokeWidth="2"
 							strokeDasharray="100"
 							strokeDashoffset={

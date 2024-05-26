@@ -1,5 +1,12 @@
 "use client";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, {
+	Dispatch,
+	SetStateAction,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import { TFSectionInterface } from "../../ReadingTestInterface";
 import CheckBox from "./CheckBox";
 
@@ -45,12 +52,31 @@ export default function TFSection({
 				const questionIndex = question.questionNumber;
 				const currentAnswer = answer[questionIndex - 1];
 
+				const divRef = useRef<HTMLDivElement>(null);
+				const [autoHeight, setAutoHeight] = useState<number>(0);
+
+				useLayoutEffect(() => {
+					if (divRef.current) {
+						const clone = divRef.current.cloneNode(
+							true
+						) as HTMLElement;
+						clone.style.visibility = "hidden";
+						clone.style.position = "absolute";
+						clone.style.height = "auto";
+						clone.style.width = divRef.current.offsetWidth + "px"; // Set width to the same as the original to ensure proper measurement
+						document.body.appendChild(clone);
+						setAutoHeight(clone.offsetHeight);
+						document.body.removeChild(clone);
+					}
+				}, []);
+
 				return (
 					<div
+						ref={divRef}
 						key={question.question + index}
-						className={`w-full ${openIndex == index ? "max-h-[1000px] duration-1000 ease-sync" : "h-[58px] duration-500 overflow-hidden"} bg-primary border  flex flex-col gap-2 p-2 rounded-2xl`}>
+						className={`w-full ${openIndex == index ? "h-[" + autoHeight + "px]" : "h-[58px]"} duration-300 overflow-hidden bg-primary border flex flex-col gap-2 p-2 rounded-2xl`}>
 						<div
-							className="flex flex-row gap-2 items-start text-sm min-h-10 h-[58px] cursor-pointer"
+							className="flex flex-row gap-2 items-start text-sm w-full min-h-10 h-[58px] cursor-pointer"
 							onClick={() => openQuestion(index)}>
 							<div className="h-full flex items-center">
 								<div className="min-w-8 min-h-8 flex justify-center items-center rounded-full bg-red-400 text-white font-bold">
@@ -84,7 +110,7 @@ export default function TFSection({
 								onClick={() =>
 									chooseAnswer(questionIndex, "not_given")
 								}
-								className="w-full flex flex-row items-center gap-2 border border-transparent rounded-2xl	 hover:bg-white hover:border-gray-200 cursor-pointer p-1">
+								className="w-full flex flex-row items-center gap-2 border border-transparent rounded-2xl hover:bg-white hover:border-gray-200 cursor-pointer p-1">
 								<CheckBox
 									checked={currentAnswer == "not_given"}
 								/>
