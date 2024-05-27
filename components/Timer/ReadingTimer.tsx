@@ -79,7 +79,7 @@ export default function Pie({ duration, size }) {
 						return true;
 					};
 				}}
-				className={`relative size-16 lg:size-16  ${timeRemaining / duration < 0.1 ? "animate-tada" : ""}`}>
+				className={`relative size-24 lg:size-24  ${timeRemaining / duration < 0.1 ? "animate-tada" : ""}`}>
 				<svg
 					className="size-full"
 					width="36"
@@ -109,7 +109,7 @@ export default function Pie({ duration, size }) {
 					</g>
 				</svg>
 				<div className="absolute top-1/2 start-1/2 transform -translate-y-1/2 -translate-x-1/2">
-					<span className="text-center text-xs lg:text-sm font-bold text-gray-800">
+					<span className="text-center text-xs lg:text-xl font-bold text-gray-800">
 						{formatTime()}
 					</span>
 				</div>

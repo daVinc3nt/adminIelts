@@ -18,7 +18,7 @@ export default function ReadingQuestionList({
 	partList,
 }: ReadingQuestionListProps) {
 	return (
-		<div className="w-full min-h-fit bg-white border rounded-lg shadow-md shadow-gray-300 grid grid-cols-12 p-2">
+		<div className="w-full min-h-fit bg-white border rounded-lg shadow-md shadow-gray-300 grid grid-cols-12 p-2 gap-4">
 			<div className="col-span-10 h-full grid grid-cols-2 px-4 max-lg:grid-cols-1 max-lg:col-span-full gap-2">
 				{Array.from({ length: partList.length }, (_, index) => {
 					const startQuestion = partList[index].startQuestion;

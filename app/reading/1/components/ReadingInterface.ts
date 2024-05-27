@@ -1,5 +1,6 @@
-export interface ReadingTest {
-	readingTestID: string;
+export interface Test {
+	testID: string;
+	testName: string;
 	numberOfQuestion: number;
 	duration: number;
 	partList: Part[];

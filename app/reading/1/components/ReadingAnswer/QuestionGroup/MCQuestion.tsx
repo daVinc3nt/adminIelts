@@ -31,9 +31,9 @@ export default function MCQuestion({
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const headerRef = useRef<HTMLDivElement>(null);
-
-	const [containerHeight, setContainerHeight] = useState<number>();
-	const [headerHeight, setHeaderHeight] = useState<number>();
+	
+	const [containerHeight, setContainerHeight] = useState<number>(10);
+	const [headerHeight, setHeaderHeight] = useState<number>(10);
 
 	const handleChangeAnswer = (value: string) => {
 		const newAns = [...answer];
@@ -137,9 +137,10 @@ export default function MCQuestion({
 						{`${numberOfAns == 1 ? questionIndex : questionIndex + " - " + (questionIndex + numberOfAns - 1)}`}
 					</div>
 				</div>
-				<div className="max-lg:text-base h-fit">
-					{question.question}
-				</div>
+				<div
+					className="max-lg:text-base h-fit"
+					dangerouslySetInnerHTML={{ __html: question.question }}
+				/>
 			</div>
 
 			<hr className="solid border-gray-300 border rounded-full w-11/12"></hr>

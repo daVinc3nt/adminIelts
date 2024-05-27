@@ -43,7 +43,12 @@ const config: Config = {
 			transitionProperty: {
 				"max-height": "max-height",
 			},
-			backgroundImage: {},
+			backgroundImage: {
+				reading: "url('../public/background/reading.png')",
+				listening: "url('../public/background/listening.jpg')",
+				writing: "url('../public/background/writing.jpg')",
+				speaking: "url('../public/background/speaking.jpeg')",
+			},
 		},
 	},
 	plugins: [],
