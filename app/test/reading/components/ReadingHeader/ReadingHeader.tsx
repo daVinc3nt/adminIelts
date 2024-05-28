@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import Switch from "@/components/Switch/Switch";
-import Timer from "@/components/Timer/Timer";
+import Timer from "@/components/Timer/ReadingTimer";
 
 interface HeaderInterface {
 	value: boolean;
