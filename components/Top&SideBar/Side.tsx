@@ -25,8 +25,8 @@ interface Props {
   toggleCollapseMobile: boolean;
 }
 export default function Side({ menuItems, toggleCollapseMobile }) {
-  const [toggleCollapse, setToggleCollapse] = useState(false);
-  const [isCollapsible, setIsCollapsible] = useState(false);
+  const [toggleCollapse, setToggleCollapse] = useState(true);
+  const [isCollapsible, setIsCollapsible] = useState(true);
   const router = useRouter();
 
   // const activeMenu = useMemo(
@@ -94,18 +94,20 @@ export default function Side({ menuItems, toggleCollapseMobile }) {
   // };
 
   return (
-    <>
-      <div
-        className={wrapperClasses}
-        onMouseEnter={onMouseOver}
-        onMouseLeave={onMouseLeave}
-        style={{ transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
-      >
-        <div className="flex flex-col w-full">
-          <div className="flex whitespace-nowrap items-center justify-center relative w-full">
-            <div className="flex items-center justify-between gap-4">
-              <div className={`flex items-center gap-4 ${toggleCollapse ? "mt-10" : "mt-4"}`}>
-                {/* {toggleCollapse && (
+		<>
+			<div
+				className={wrapperClasses}
+				onMouseEnter={onMouseOver}
+				onMouseLeave={onMouseLeave}
+				style={{
+					transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s",
+				}}>
+				<div className="flex flex-col w-full">
+					<div className="flex whitespace-nowrap items-center justify-center relative w-full">
+						<div className="flex items-center justify-between gap-4">
+							<div
+								className={`flex items-center gap-4 ${toggleCollapse ? "mt-10" : "mt-4"}`}>
+								{/* {toggleCollapse && (
                   <Image
                     src="/Logo.png"
                     alt="/"
@@ -113,133 +115,168 @@ export default function Side({ menuItems, toggleCollapseMobile }) {
                     height="100"
                   />
                 )} */}
-                {!toggleCollapse && (
-                  <motion.img
-                    variants={leftSideVariant}
-                    initial="initial"
-                    animate="enter"
-                    exit="exit"
-                    transition={{ duration: 0.7 }}
-                    src={"images/Logo_name.png"}
-                    className="bg-white rounded-xl"
-                    width="250"
-                    height="250"
-                  />
-                )}
-              </div>
-              {isCollapsible && (
-                <button
-                  className={collapseIconClasses}
-                  onClick={handleSidebarToggle}
-                >
-                  <KeyboardDoubleArrowLeft />
-                </button>
-              )}
-            </div>
-          </div>
-          <div className={`flex flex-col items-start mt-10 text-[#545e7b] dark:text-gray-400`}>
-            {menuItems.map((menu, index) => {
-              const classes = getNavItemClasses(menu);
-              return (
-                <div key={menu.id} className={classes}>
-                  {menu.submenus ? (
-                    <SubItems title={menu.title} url={menu.url} submenus={menu.submenus} icon={menu.icon} key={index} toggleCollapse={toggleCollapse} setToggleCollapse={setToggleCollapse} />
-                  ) : (
-                    <Item title={menu.title} url={menu.url} icon={menu.icon} key={index} />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+								{!toggleCollapse && (
+									<motion.img
+										variants={leftSideVariant}
+										initial="initial"
+										animate="enter"
+										exit="exit"
+										transition={{ duration: 0.7 }}
+										src={"/images/Logo_name.png"}
+										className="bg-white rounded-xl"
+										width="250"
+										height="250"
+									/>
+								)}
+							</div>
+							{isCollapsible && (
+								<button
+									className={collapseIconClasses}
+									onClick={handleSidebarToggle}>
+									<KeyboardDoubleArrowLeft />
+								</button>
+							)}
+						</div>
+					</div>
+					<div
+						className={`flex flex-col items-start mt-10 text-[#545e7b] dark:text-gray-400`}>
+						{menuItems.map((menu, index) => {
+							const classes = getNavItemClasses(menu);
+							return (
+								<div key={menu.id} className={classes}>
+									{menu.submenus ? (
+										<SubItems
+											title={menu.title}
+											url={menu.url}
+											submenus={menu.submenus}
+											icon={menu.icon}
+											key={index}
+											toggleCollapse={toggleCollapse}
+											setToggleCollapse={
+												setToggleCollapse
+											}
+										/>
+									) : (
+										<Item
+											title={menu.title}
+											url={menu.url}
+											icon={menu.icon}
+											key={index}
+										/>
+									)}
+								</div>
+							);
+						})}
+					</div>
+				</div>
 
-        <button
-          onClick={() => Logout(router)}
-          className="flex py-4 items-center w-full text-[#545e7b] hover:bg-red-200 px-2 dark:hover:bg-black hover:text-[#e1201c] dark:text-gray-400">
-          <div className={`pl-1.5`}>
-            <LogoutOutlined />
-          </div>
-          {!toggleCollapse && (
-            <span
-              className={classNames(
-                "text-lg font-medium pl-2"
-              )}
-            >
-              Log out
-            </span>
-          )}
-        </button>
-      </div>
+				<button
+					onClick={() => Logout(router)}
+					className="flex py-4 items-center w-full text-[#545e7b] hover:bg-red-200 px-2 dark:hover:bg-black hover:text-[#e1201c] dark:text-gray-400">
+					<div className={`pl-1.5`}>
+						<LogoutOutlined />
+					</div>
+					{!toggleCollapse && (
+						<span
+							className={classNames("text-lg font-medium pl-2")}>
+							Log out
+						</span>
+					)}
+				</button>
+			</div>
 
-      <div
-        className={wrapperClassesMobile}
-        onMouseEnter={onMouseOver}
-        onMouseLeave={onMouseLeave}
-        style={{ transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
-      >
-        <div className="flex flex-col">
-          <div className="flex items-center justify-between relative">
-            <div className="flex items-center pl-1 gap-2">
-              <Image
-                src="/Logo.png"
-                alt="/"
-                width="40"
-                height="40"
-                style={{ objectFit: "cover" }}
-              />
-              {!toggleCollapseMobile && <motion.span
-                variants={leftSideVariantMobile} initial="initial" animate="enter"
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className={classNames("mt-2 text-xl font-bold ", {
-                  hidden: toggleCollapseMobile,
-                })}
-              >
-                TDLogistics
-              </motion.span>}
-            </div>
-            {isCollapsible && (
-              <button
-                className={collapseIconClasses}
-                onClick={handleSidebarToggle}
-              >
-                <KeyboardDoubleArrowLeft />
-              </button>
-            )}
-          </div>
+			<div
+				className={wrapperClassesMobile}
+				onMouseEnter={onMouseOver}
+				onMouseLeave={onMouseLeave}
+				style={{
+					transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s",
+				}}>
+				<div className="flex flex-col">
+					<div className="flex items-center justify-between relative">
+						<div className="flex items-center pl-1 gap-2">
+							<Image
+								src="/images/Logo_name.png"
+								alt="/"
+								width="40"
+								height="40"
+								style={{ objectFit: "cover" }}
+							/>
+							{!toggleCollapseMobile && (
+								<motion.span
+									variants={leftSideVariantMobile}
+									initial="initial"
+									animate="enter"
+									transition={{ duration: 0.5, delay: 0.2 }}
+									className={classNames(
+										"mt-2 text-xl font-bold ",
+										{
+											hidden: toggleCollapseMobile,
+										}
+									)}>
+									TDLogistics
+								</motion.span>
+							)}
+						</div>
+						{isCollapsible && (
+							<button
+								className={collapseIconClasses}
+								onClick={handleSidebarToggle}>
+								<KeyboardDoubleArrowLeft />
+							</button>
+						)}
+					</div>
 
-          <div className={`flex flex-col items-start mt-10 text-[#545e7b]`}>
-            {menuItems.map((menu, index) => {
-              const classes = getNavItemClasses(menu);
-              return (
-                <div key={menu.id} className={classes}>
-                  {menu.submenus ? (
-                    <SubItems title={menu.title} url={menu.url} submenus={menu.submenus} icon={menu.icon} key={index} toggleCollapse={toggleCollapse} setToggleCollapse={setToggleCollapse} />
-                  ) : (
-                    <Item title={menu.title} url={menu.url} icon={menu.icon} key={index} />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+					<div
+						className={`flex flex-col items-start mt-10 text-[#545e7b]`}>
+						{menuItems.map((menu, index) => {
+							const classes = getNavItemClasses(menu);
+							return (
+								<div key={menu.id} className={classes}>
+									{menu.submenus ? (
+										<SubItems
+											title={menu.title}
+											url={menu.url}
+											submenus={menu.submenus}
+											icon={menu.icon}
+											key={index}
+											toggleCollapse={toggleCollapse}
+											setToggleCollapse={
+												setToggleCollapse
+											}
+										/>
+									) : (
+										<Item
+											title={menu.title}
+											url={menu.url}
+											icon={menu.icon}
+											key={index}
+										/>
+									)}
+								</div>
+							);
+						})}
+					</div>
+				</div>
 
-        <button
-          onClick={() => Logout(router)}
-          className="flex py-4 h-12 items-center px-2.5 w-full text-[#545e7b] hover:bg-black hover:text-[#e1201c] dark:text-gray-400">
-          {!toggleCollapseMobile && <div style={{ width: "2.5rem" }}>
-            <LogoutOutlined />
-          </div>}
-          {!toggleCollapseMobile && (
-            <span
-              className={classNames(
-                "text-xs lg:text-lg font-medium pl-2"
-              )}
-            >
-              Logout
-            </span>
-          )}
-        </button>
-      </div>
-    </>
+				<button
+					onClick={() => Logout(router)}
+					className="flex py-4 h-12 items-center px-2.5 w-full text-[#545e7b] hover:bg-black hover:text-[#e1201c] dark:text-gray-400">
+					{!toggleCollapseMobile && (
+						<div style={{ width: "2.5rem" }}>
+							<LogoutOutlined />
+						</div>
+					)}
+					{!toggleCollapseMobile && (
+						<span
+							className={classNames(
+								"text-xs lg:text-lg font-medium pl-2"
+							)}>
+							Logout
+						</span>
+					)}
+				</button>
+			</div>
+		</>
   );
 };
