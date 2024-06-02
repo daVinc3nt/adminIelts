@@ -54,7 +54,7 @@ export default function Side({ menuItems, toggleCollapseMobile }) {
     }
   );
   const wrapperClassesMobile = classNames(
-    "h-screen flex z-50 fixed bg-white dark:bg-[#1a1b23] lg:hidden px-4 pt-8 pb-4 justify-between flex-col border-r border-gray-700 overflow-scroll no-scrollbar",
+    "h-screen flex z-50 fixed bg-white dark:bg-[#1a1b23] lg:hidden px-4 pt-8 pb-4 justify-between flex-col border-r border-gray-700",
     {
       ["w-52"]: !toggleCollapseMobile,
       ["w-0 px-0"]: toggleCollapseMobile,
@@ -193,39 +193,39 @@ export default function Side({ menuItems, toggleCollapseMobile }) {
 					transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s",
 				}}>
 				<div className="flex flex-col">
-					<div className="flex items-center justify-between relative">
-						<div className="flex items-center pl-1 gap-2">
-							<Image
-								src="/images/Logo_name.png"
-								alt="/"
-								width="40"
-								height="40"
-								style={{ objectFit: "cover" }}
-							/>
-							{!toggleCollapseMobile && (
-								<motion.span
-									variants={leftSideVariantMobile}
-									initial="initial"
-									animate="enter"
-									transition={{ duration: 0.5, delay: 0.2 }}
-									className={classNames(
-										"mt-2 text-xl font-bold ",
-										{
-											hidden: toggleCollapseMobile,
-										}
-									)}>
-									TDLogistics
-								</motion.span>
+				<div className="flex items-center justify-between gap-4">
+							<div
+								className={`flex items-center gap-4 ${toggleCollapse ? "mt-10" : "mt-4"}`}>
+								{/* {toggleCollapse && (
+                  <Image
+                    src="/Logo.png"
+                    alt="/"
+                    width="100"
+                    height="100"
+                  />
+                )} */}
+								{!toggleCollapse && (
+									<motion.img
+										variants={leftSideVariant}
+										initial="initial"
+										animate="enter"
+										exit="exit"
+										transition={{ duration: 0.7 }}
+										src={"/images/Logo_name.png"}
+										className="bg-white rounded-xl"
+										width="250"
+										height="250"
+									/>
+								)}
+							</div>
+							{isCollapsible && (
+								<button
+									className={collapseIconClasses}
+									onClick={handleSidebarToggle}>
+									<KeyboardDoubleArrowLeft />
+								</button>
 							)}
 						</div>
-						{isCollapsible && (
-							<button
-								className={collapseIconClasses}
-								onClick={handleSidebarToggle}>
-								<KeyboardDoubleArrowLeft />
-							</button>
-						)}
-					</div>
 
 					<div
 						className={`flex flex-col items-start mt-10 text-[#545e7b]`}>
