@@ -6,7 +6,7 @@ import {
 	QuestionGroupInterface,
 	TestInterface,
 	True_False_Question,
-} from "../../interface/TestInterface";
+} from "../TestInterface";
 import TFQuestion from "./TFQuestion";
 import MCQuestion from "./MCQuestion";
 import FQuestion from "./FQuestion";
@@ -27,9 +27,11 @@ export default function ReadingPart({
 	const currentPart = currentTest.partList[partIndex];
 
 	const onChangeParagraph = useCallback((value: string) => {
-		let newTest = { ...currentTest };
-		newTest.partList[partIndex].paragraph = value;
-		setCurrentTest(newTest);
+		setCurrentTest((prev) => {
+			const newTest = { ...prev };
+			newTest.partList[partIndex].paragraph = value;
+			return newTest;
+		});
 	}, []);
 
 	const addGroup = () => {
@@ -50,12 +52,11 @@ export default function ReadingPart({
 			<TextEditor
 				text={currentPart.paragraph}
 				onChangeText={onChangeParagraph}
-				className="w-full h-full overflow-y-hidden border-b-2 border-red-300"
 			/>
 			<div className="w-full h-full flex flex-col items-center gap-8 overflow-y-scroll pb-40 relative">
 				{currentPart.groupList.map((_, index) => {
 					return (
-						<React.Fragment>
+						<React.Fragment key={index}>
 							<QGroup
 								key={index}
 								partIndex={partIndex}

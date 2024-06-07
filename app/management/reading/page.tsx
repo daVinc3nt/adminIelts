@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import { TestInterface } from "../interface/TestInterface";
-import ReadingPart from "./component/ReadingPart";
+import ReadingPart from "../interface/component/ReadingPart";
 import { motion } from "framer-motion";
-import PlusIcon from "@/components/Icon/PlusIcon";
-import HorizontalDotsIcon from "@/components/Icon/HorizontalDotsIcon";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaPlus } from "react-icons/fa";
 
 export default function ReadingManagement() {
 	const [currentTest, setCurrentTest] = useState<TestInterface>({
@@ -25,6 +25,31 @@ export default function ReadingManagement() {
 
 	const [currentPart, setCurrentPart] = useState<number>(0);
 
+	const saveTest = () => {
+		setTestPartNumber_questionNumber();
+		console.log(currentTest);
+	};
+
+	const setTestPartNumber_questionNumber = () => {
+		let newTest = { ...currentTest };
+		let questionNumber = 0;
+		newTest.partList.forEach((part, index) => {
+			part.partNumber = index + 1;
+			part.startQuestion = questionNumber + 1;
+			part.groupList.forEach((group) => {
+				group.startQuestion = questionNumber + 1;
+				group.questionList.forEach((question) => {
+					question.questionNumber = questionNumber + 1;
+					questionNumber++;
+				});
+				group.endQuestion = questionNumber;
+			});
+			part.endQuestion = questionNumber;
+		});
+
+		setCurrentTest(newTest);
+	};
+
 	const onChangeTestName = (value: string) => {
 		setCurrentTest({
 			...currentTest,
@@ -33,11 +58,11 @@ export default function ReadingManagement() {
 	};
 
 	const addPart = () => {
-		if (currentTest.partList.length >= 5)
-			return alert("Maximum number of parts is 5");
+		if (currentTest.partList.length >= 4)
+			return alert("Maximum number of parts is 4");
 
 		const newPart = {
-			partNumber: currentTest.partList.length + 1,
+			partNumber: currentTest.partList.length,
 			startQuestion: 0,
 			endQuestion: 0,
 			paragraph: "",
@@ -48,6 +73,7 @@ export default function ReadingManagement() {
 			...currentTest,
 			partList: [...currentTest.partList, newPart],
 		});
+		setCurrentPart(currentTest.partList.length);
 	};
 
 	const detelePart = () => {
@@ -63,7 +89,7 @@ export default function ReadingManagement() {
 			partList: newPartList,
 		});
 
-		setCurrentPart(0);
+		setCurrentPart(currentPart - 1);
 	};
 
 	const DeletePartDropDownButton = () => {
@@ -71,11 +97,16 @@ export default function ReadingManagement() {
 
 		return (
 			<div
-				className="w-8 h-8 cursor-pointer relative"
+				tabIndex={-1}
+				className="relative w-8 h-8 cursor-pointer"
 				onClick={() => setIsOpen(!isOpen)}
-				onMouseLeave={() => setIsOpen(false)}>
-				<div className="w-full h-full flex justify-center items-center bg-red-400 rounded-full">
-					<HorizontalDotsIcon width={10} height={10} color="white" />
+				onBlur={() =>
+					setTimeout(() => {
+						setIsOpen(false);
+					}, 150)
+				}>
+				<div className="flex items-center justify-center w-full h-full bg-red-400 rounded-full">
+					<BsThreeDotsVertical size={25} color="white" />
 				</div>
 
 				{isOpen && (
@@ -84,7 +115,7 @@ export default function ReadingManagement() {
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}>
 						<button
-							className="px-2 py-1 bg-red-400 text-white w-32"
+							className="w-32 px-2 py-1 text-white bg-red-400"
 							onClick={() => detelePart()}>
 							Delete part
 						</button>
@@ -95,11 +126,11 @@ export default function ReadingManagement() {
 	};
 
 	return (
-		<div className="w-full h-full flex p-4 bg-primary">
-			<div className="w-full h-full bg-white border shadow-lg rounded-lg p-4 gap-4 flex flex-1 flex-col justify-start">
-				<div className="w-full min-h-20 grid grid-cols-12 gap-4">
-					<div className="w-full h-full col-span-4 flex flex-col justify-between">
-						<div className="w-full h-fit flex flex-row">
+		<div className="flex w-full h-full p-4 bg-primary ">
+			<div className="flex flex-col justify-start w-full h-full gap-4 p-4 bg-white border rounded-lg shadow-lg">
+				<div className="grid w-full grid-cols-12 gap-4 min-h-20">
+					<div className="flex flex-col justify-between w-full h-full col-span-4">
+						<div className="flex flex-row w-full gap-4 h-fit">
 							<input
 								type="text"
 								value={currentTest.testName}
@@ -107,29 +138,34 @@ export default function ReadingManagement() {
 									onChangeTestName(e.target.value)
 								}
 								placeholder="Test name"
-								className="w-full h-8 border-2 border-red-200 p-2 rounded-lg outline-none focus:border-transparent focus:outline focus:ring focus:ring-red-400 bg-primary focus:bg-white"
+								className="w-full h-8 p-2 border-2 border-red-200 rounded-lg outline-none focus:border-transparent focus:outline focus:ring focus:ring-red-400 bg-primary focus:bg-white"
 							/>
+							<button
+								className="flex flex-row px-4 py-1 font-semibold text-white bg-red-400 rounded-lg cursor-pointer w-fit h-fit"
+								onClick={() => saveTest()}>
+								<span>Save</span>
+							</button>
 						</div>
-						<div className="w-full h-fit flex flex-row items-center gap-2">
+						<div className="flex flex-row items-center w-full gap-2 h-fit">
 							<DeletePartDropDownButton />
-							<span className="font-bold text-3xl">
+							<span className="text-3xl font-bold">
 								Part {currentPart + 1}
 							</span>
 						</div>
 					</div>
 
-					<div className="col-span-4 col-start-5 w-full min-h-fit flex justify-center items-center gap-2">
-						<div className="w-fit min-h-fit flex justify-center items-center rounded-full border-2 border-solid border-red-200">
+					<div className="flex items-center justify-center w-full col-span-4 col-start-5 gap-2 min-h-fit">
+						<div className="flex items-center justify-center border-2 border-red-200 border-solid rounded-full w-fit min-h-fit">
 							{currentTest.partList.map((_, index) => {
 								return (
 									<button
 										key={index}
 										onClick={() => setCurrentPart(index)}
-										className="relative rounded-full px-3 py-1 text-sm font-medium">
+										className="relative px-3 py-1 text-sm font-medium rounded-full">
 										{currentPart === index && (
 											<motion.div
 												layoutId="pill"
-												className="absolute inset-0 rounded-full bg-red-400"
+												className="absolute inset-0 bg-red-400 rounded-full"
 											/>
 										)}
 										<span
@@ -141,14 +177,15 @@ export default function ReadingManagement() {
 							})}
 						</div>
 						<div
-							className="w-fit h-fit p-2 bg-red-400 rounded-full cursor-pointer"
+							className="p-2 bg-red-400 rounded-full cursor-pointer w-fit h-fit"
 							onClick={() => addPart()}>
-							<PlusIcon width={4} height={4} color="white" />
+							<FaPlus size={15} color="white" />
 						</div>
 					</div>
 
-					<div className="w-full h-full col-start-10 col-span-3 flex flex-col"></div>
+					<div className="flex flex-col w-full h-full col-span-3 col-start-10"></div>
 				</div>
+
 				{currentTest.partList.map((_, index) => {
 					if (index !== currentPart) return null;
 
