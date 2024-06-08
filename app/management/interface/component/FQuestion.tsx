@@ -1,9 +1,9 @@
 "use client";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Fill_Question, TestInterface } from "../../interface/TestInterface";
+import { Fill_Question, TestInterface } from "../TestInterface";
 import TextEditor from "@/components/TextEditor/TextEditor";
-import HorizontalDotsIcon from "@/components/Icon/HorizontalDotsIcon";
 import { motion } from "framer-motion";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 interface Props {
 	partIndex: number;
@@ -23,7 +23,9 @@ export default function FQuestion({
 	const question = currentTest.partList[partIndex].groupList[groupIndex]
 		.questionList[questionIndex] as Fill_Question;
 
-	const [isEdit, setEdit] = useState<boolean>(false);
+	const [isEdit, setEdit] = useState<boolean>(
+		question.question === "Fill in the blank question"
+	);
 
 	const onChangeQuestion = (value: string) => {
 		let newTest = { ...currentTest };
@@ -65,11 +67,16 @@ export default function FQuestion({
 
 		return (
 			<div
-				className="w-8 h-8 cursor-pointer relative"
+				tabIndex={-1}
+				className="relative w-8 h-8 cursor-pointer"
 				onClick={() => setIsOpen(!isOpen)}
-				onMouseLeave={() => setIsOpen(false)}>
-				<div className="w-full h-full flex justify-center items-center bg-red-400 rounded-full">
-					<HorizontalDotsIcon width={10} height={10} color="white" />
+				onBlur={() =>
+					setTimeout(() => {
+						setIsOpen(false);
+					}, 150)
+				}>
+				<div className="flex items-center justify-center w-full h-full bg-red-400 rounded-full">
+					<BsThreeDotsVertical size={25} color="white" />
 				</div>
 
 				{isOpen && (
@@ -78,12 +85,12 @@ export default function FQuestion({
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}>
 						<button
-							className="px-2 py-1 bg-red-400 text-white w-full"
+							className="w-full px-2 py-1 text-white bg-red-400"
 							onClick={() => setEdit(true)}>
 							Edit question
 						</button>
 						<button
-							className="px-2 py-1 bg-red-400 text-white w-full"
+							className="w-full px-2 py-1 text-white bg-red-400"
 							onClick={() => removeQuestion()}>
 							Delete question
 						</button>
@@ -94,23 +101,23 @@ export default function FQuestion({
 	};
 
 	return (
-		<div className="w-full h-fit flex flex-col gap-2">
-			<div className="w-full h-fit flex flex-row items-center gap-2">
+		<div className="flex flex-col w-full gap-2 h-fit">
+			<div className="flex flex-row items-center w-full gap-2 h-fit">
 				<DeleteQuestionButton />
-				<div className="font-bold mr-auto">
+				<div className="mr-auto font-bold">
 					Fill Question {countAllQuestionBefore() + questionIndex + 1}
 					:
 				</div>
 				{isEdit && (
 					<div
-						className="w-fit h-fit font-bold px-2 py-1 rounded-lg bg-red-400 text-white cursor-pointer"
+						className="px-2 py-1 font-bold text-white bg-red-400 rounded-lg cursor-pointer w-fit h-fit"
 						onClick={() => setEdit(false)}>
 						Save
 					</div>
 				)}
 			</div>
 			<div
-				className={`w-full h-fit flex flex-col ${isEdit ? "border-0" : "border-2 border-red-300"} rounded-lg items-center justify-start gap-1`}>
+				className={`w-full h-fit flex flex-col ${isEdit ? "border-0" : "border-2 border-red-400"} rounded-lg items-center justify-start gap-1`}>
 				{isEdit ? (
 					<div className="w-full border-b-1">
 						<TextEditor
@@ -123,7 +130,7 @@ export default function FQuestion({
 				) : (
 					<>
 						<div
-							className="w-full h-full min-h-8 px-4 py-2"
+							className="w-full h-full px-4 py-2 min-h-8"
 							dangerouslySetInnerHTML={{
 								__html: question.question,
 							}}

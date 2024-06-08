@@ -6,14 +6,14 @@ import {
 	QuestionType,
 	TestInterface,
 	True_False_Question,
-} from "../../interface/TestInterface";
+} from "../TestInterface";
 import MCQuestion from "./MCQuestion";
 import TFQuestion from "./TFQuestion";
 import FQuestion from "./FQuestion";
 import TextEditor from "@/components/TextEditor/TextEditor";
-import HorizontalDotsIcon from "@/components/Icon/HorizontalDotsIcon";
 import { AnimatePresence, motion } from "framer-motion";
-import PlusIcon from "@/components/Icon/PlusIcon";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaPlus } from "react-icons/fa";
 
 interface Props {
 	partIndex: number;
@@ -119,11 +119,16 @@ export default function QGroup({
 
 		return (
 			<div
-				className="w-8 h-8 cursor-pointer relative"
+				tabIndex={-1}
+				className="relative w-8 h-8 cursor-pointer"
 				onClick={() => setIsOpen(!isOpen)}
-				onMouseLeave={() => setIsOpen(false)}>
-				<div className="w-full h-full flex justify-center items-center bg-red-400 rounded-full">
-					<HorizontalDotsIcon width={10} height={10} color="white" />
+				onBlur={() =>
+					setTimeout(() => {
+						setIsOpen(false);
+					}, 150)
+				}>
+				<div className="flex items-center justify-center w-full h-full bg-red-400 rounded-full">
+					<BsThreeDotsVertical size={25} color="white" />
 				</div>
 
 				{isOpen && (
@@ -132,12 +137,12 @@ export default function QGroup({
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}>
 						<button
-							className="px-2 py-1 bg-red-400 text-white w-full"
+							className="w-full px-2 py-1 text-white bg-red-400"
 							onClick={() => setIsEditDescription(true)}>
 							Edit description
 						</button>
 						<button
-							className="px-2 py-1 bg-red-400 text-white w-full"
+							className="w-full px-2 py-1 text-white bg-red-400"
 							onClick={() => deleteGroup()}>
 							Delete Group
 						</button>
@@ -148,37 +153,38 @@ export default function QGroup({
 	};
 
 	return (
-		<div className="w-full h-fit flex flex-col gap-2">
+		<div className="flex flex-col w-full gap-2 h-fit">
 			{currentGroup.questionList.length != 0 ? (
-				<div className="w-full h-fit text-2xl font-bold flex flex-row items-center gap-2">
+				<div className="flex flex-row items-center w-full gap-2 text-2xl font-bold h-fit">
 					<DeleteGroupDropDownButton />
 					{`Group ${countAllGroupBefore() + groupIndex + 1} - Question ${countAllQuestionBefore() + 1} - ${countAllQuestionBefore() + currentGroup.questionList.length}`}
 				</div>
 			) : (
-				<div className="w-full h-fit text-2xl font-bold flex flex-row items-center gap-2">
+				<div className="flex flex-row items-center w-full gap-2 text-2xl font-bold h-fit">
 					<DeleteGroupDropDownButton />
 					{`Group ${countAllGroupBefore() + groupIndex + 1}`}
 				</div>
 			)}
-			<div className="w-full h-fit flex flex-col mb-5 gap-2">
-				<div className="flex flex-row justify-start items-center">
-					<span className="text-lg font-bold mr-auto">
+			<div className="flex flex-col w-full gap-2 mb-5 h-fit">
+				<div className="flex flex-row items-center justify-start">
+					<span className="mr-auto text-lg font-bold">
 						Description:
 					</span>
 					{isEditDescription && (
 						<div
-							className="w-fit h-fit font-bold px-2 py-1 rounded-lg bg-red-400 text-white cursor-pointer"
+							className="px-2 py-1 font-bold text-white bg-red-400 rounded-lg cursor-pointer w-fit h-fit"
 							onClick={() => setIsEditDescription(false)}>
 							Save
 						</div>
 					)}
 				</div>
 				{isEditDescription ? (
-					<TextEditor
-						text={currentGroup.description}
-						onChangeText={onChangeDescription}
-						className="w-full h-full overflow-y-hidden border-b-2 border-red-300"
-					/>
+					<div className="w-full min-h-40">
+						<TextEditor
+							text={currentGroup.description}
+							onChangeText={onChangeDescription}
+						/>
+					</div>
 				) : (
 					<div
 						className="w-full h-fit"
@@ -225,12 +231,12 @@ export default function QGroup({
 				}
 				return null;
 			})}
-			<div className="w-full h-fit flex justify-start items-center gap-2 pt-10">
+			<div className="flex items-center justify-start w-full gap-2 pt-10 rounded-full h-fit">
 				<button
 					title="Add Question"
-					className="p-2 bg-red-400 text-white rounded-full font-bold z-10"
+					className="z-10 p-2 font-bold text-white bg-red-400 rounded-full"
 					onClick={() => setIsOpenAddQuestion(!isOpenAddQuestion)}>
-					<PlusIcon width={6} height={6} />
+					<FaPlus size={15} color="white" />
 				</button>
 				<AnimatePresence mode="wait">
 					{isOpenAddQuestion && (
@@ -238,23 +244,23 @@ export default function QGroup({
 							initial={{ opacity: 0, x: -100 }}
 							animate={{ opacity: 1, x: 0 }}
 							exit={{ opacity: 0, x: "-50%" }}
-							className="w-full h-fit flex justify-start items-center gap-2 z-0">
+							className="z-0 flex items-center justify-start w-full gap-2 h-fit">
 							<button
-								className="px-2 p-1 bg-red-400 text-white rounded-lg font-bold"
+								className="p-1 px-2 font-bold text-white bg-red-400 rounded-lg"
 								onClick={() =>
 									addquestion(QuestionType.True_Fasle)
 								}>
 								True false
 							</button>
 							<button
-								className="px-2 p-1 bg-red-400 text-white rounded-lg font-bold"
+								className="p-1 px-2 font-bold text-white bg-red-400 rounded-lg"
 								onClick={() =>
 									addquestion(QuestionType.Multiple_Choice)
 								}>
 								Multiple Choice
 							</button>
 							<button
-								className="px-2 p-1 bg-red-400 text-white rounded-lg font-bold"
+								className="p-1 px-2 font-bold text-white bg-red-400 rounded-lg"
 								onClick={() => addquestion(QuestionType.Fill)}>
 								Fill
 							</button>

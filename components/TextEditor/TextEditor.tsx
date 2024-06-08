@@ -1,5 +1,5 @@
 "use client";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -39,9 +39,31 @@ const TextEditor = ({ className, placeholder, text, onChangeText }: Props) => {
 	};
 
 	return (
-		<div className={className}>
+		<div className="w-full h-full overflow-y-hidden border-2 border-red-400 rounded-lg pb-4">
+			<style
+				dangerouslySetInnerHTML={{
+					__html: `
+					.ql-container .ql-editor {
+						height: calc(100% - 42px); /* 42px is the default height of the toolbar */
+						overflow-y: scroll;
+					}
+					.ql-container,
+					.ql-toolbar,
+					.ql-editor {
+						border: none !important;
+					}
+					.ql-toolbar {
+						position: sticky;
+						top: 0;
+						z-index: 1;
+						background-color: white;
+						border-bottom: 2px solid #f87171 !important;
+					}
+			`,
+				}}
+			/>
 			<ReactQuill
-				className="w-full h-full pb-4 overflow-y-hidden"
+				className="w-full h-full overflow-y-hidden"
 				value={text}
 				onChange={handleChange}
 				modules={modules}

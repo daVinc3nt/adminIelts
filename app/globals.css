@@ -51,29 +51,6 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
-.ql-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: white;
+.ql-editor {
+  @apply text-base !important;
 }
-
-.ql-container .ql-editor {
-  height: calc(100% - 42px); /* 42px is the default height of the toolbar */
-  overflow-y: scroll;
-}
-
-.ql-editor p {
-  @apply text-base; /* adjust this value to increase the text size */
-}
-
-.ql-tooltip {
-  z-index: 1000;
-}
-
-.ql-container.ql-snow { 
-  border: 2px solid rgb(252 165 165) !important;
-  border-top: none !important;
-}
-
-.ql-toolbar.ql-snow { border: 2px solid rgb(252 165 165) !important;}

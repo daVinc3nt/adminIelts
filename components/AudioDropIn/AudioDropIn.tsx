@@ -45,7 +45,7 @@ export default function AudioDropInput({ className }: Props) {
 
 	return (
 		<div
-			className="w-full h-full flex items-center justify-center"
+			className="flex items-center justify-center w-full h-full border-2 border-red-400 border-dashed rounded-xl"
 			onDrop={onDrop}
 			onDragOver={onDragOver}>
 			{audio ? (

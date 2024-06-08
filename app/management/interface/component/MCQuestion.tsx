@@ -5,12 +5,11 @@ import {
 	QuestionGroupInterface,
 	QuestionType,
 	TestInterface,
-} from "../../interface/TestInterface";
+} from "../TestInterface";
 import TextEditor from "@/components/TextEditor/TextEditor";
-import MinusIcon from "@/components/Icon/MinusIcon";
-import PlusIcon from "@/components/Icon/PlusIcon";
-import HorizontalDotsIcon from "@/components/Icon/HorizontalDotsIcon";
 import { motion } from "framer-motion";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaMinus, FaPlus } from "react-icons/fa";
 
 interface Props {
 	partIndex: number;
@@ -30,7 +29,9 @@ export default function MCQuestion({
 	const question = currentTest.partList[partIndex].groupList[groupIndex]
 		.questionList[questionIndex] as Multiple_Choice_Question;
 
-	const [isEdit, setEdit] = useState<boolean>(false);
+	const [isEdit, setEdit] = useState<boolean>(
+		question.question === "Multiple Choice Question"
+	);
 
 	const onChangeQuestion = (value: string) => {
 		let newTest = { ...currentTest };
@@ -116,11 +117,16 @@ export default function MCQuestion({
 
 		return (
 			<div
-				className="w-8 h-8 cursor-pointer relative"
+				tabIndex={-1}
+				className="relative w-8 h-8 cursor-pointer"
 				onClick={() => setIsOpen(!isOpen)}
-				onMouseLeave={() => setIsOpen(false)}>
-				<div className="w-full h-full flex justify-center items-center bg-red-400 rounded-full">
-					<HorizontalDotsIcon width={10} height={10} color="white" />
+				onBlur={() =>
+					setTimeout(() => {
+						setIsOpen(false);
+					}, 150)
+				}>
+				<div className="flex items-center justify-center w-full h-full bg-red-400 rounded-full">
+					<BsThreeDotsVertical size={25} color="white" />
 				</div>
 
 				{isOpen && (
@@ -129,12 +135,12 @@ export default function MCQuestion({
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}>
 						<button
-							className="px-2 py-1 bg-red-400 text-white w-full"
+							className="w-full px-2 py-1 text-white bg-red-400"
 							onClick={() => setEdit(true)}>
 							Edit question
 						</button>
 						<button
-							className="px-2 py-1 bg-red-400 text-white w-full"
+							className="w-full px-2 py-1 text-white bg-red-400"
 							onClick={() => removeQuestion()}>
 							Delete question
 						</button>
@@ -145,23 +151,23 @@ export default function MCQuestion({
 	};
 
 	return (
-		<div className="w-full h-fit flex flex-col gap-2">
-			<div className="w-full h-fit flex flex-row items-center gap-2">
+		<div className="flex flex-col w-full gap-2 h-fit">
+			<div className="flex flex-row items-center w-full gap-2 h-fit">
 				<DeleteQuestionButton />
-				<div className="font-bold mr-auto">
+				<div className="mr-auto font-bold">
 					Multiple Choice Question{" "}
 					{countAllQuestionBefore() + questionIndex + 1}:
 				</div>
 				{isEdit && (
 					<div
-						className="w-fit h-fit font-bold px-2 py-1 rounded-lg bg-red-400 text-white cursor-pointer"
+						className="px-2 py-1 font-bold text-white bg-red-400 rounded-lg cursor-pointer w-fit h-fit"
 						onClick={() => setEdit(false)}>
 						Save
 					</div>
 				)}
 			</div>
 			<div
-				className={`w-full h-fit flex flex-col ${isEdit ? "border-0" : "border-2 border-red-300 rounded-lg"} items-center justify-start gap-4 overflow-hidden`}>
+				className={`w-full h-fit flex flex-col ${isEdit ? "border-0" : "border-2 border-red-400 rounded-lg"} items-center justify-start gap-4 overflow-hidden`}>
 				{isEdit ? (
 					<TextEditor
 						className="w-full h-full overflow-y-hidden border-b-2 border-red-300"
@@ -177,22 +183,22 @@ export default function MCQuestion({
 								__html: question.question,
 							}}
 						/>
-						<hr className="solid border-gray-300 border w-11/12"></hr>
+						<hr className="w-11/12 border border-gray-300 solid"></hr>
 					</>
 				)}
 				<div
-					className={`w-full h-fit flex flex-col items-center px-2 py-2 ${isEdit ? "-mt-4 border-2 border-red-300 border-t-0 gap-4" : "gap-2"}`}>
+					className={`w-full h-fit flex flex-col items-center px-2  ${isEdit ? "border-2 border-red-400 rounded-lg gap-4 py-4" : "gap-2 py-2"}`}>
 					{question.choice.map((choice, index) => {
 						return (
 							<div
 								key={index}
-								className="w-full h-fit flex flex-row justify-center items-center gap-2 px-2">
+								className="flex flex-row items-center justify-center w-full gap-2 px-2 h-fit">
 								<div className="font-bold">
 									{String.fromCharCode(65 + index)}.
 								</div>
 								<textarea
 									key={index}
-									className={`w-full px-2 py-1 rounded-lg hover:bg-primary ${isEdit ? "bg-primary" : "bg-white"} min-h-6 resize-none outline-none focus:border-transparent focus:outline focus:ring focus:ring-red-400`}
+									className={`w-full px-2 py-1 rounded-lg hover:bg-primary ${isEdit ? "bg-primary" : "bg-white"} border border-red-400 min-h-6 resize-none outline-none focus:border-transparent focus:outline focus:ring focus:ring-red-400`}
 									disabled={!isEdit}
 									rows={1}
 									value={choice}
@@ -210,11 +216,11 @@ export default function MCQuestion({
 									<div
 										title="Remove choice"
 										onClick={() => removeChoice(index)}
-										className="w-fit h-fit p-1 rounded-full hover:bg-primary">
-										<MinusIcon
-											height={6}
-											width={6}
-											color="red"
+										className="p-1 rounded-full w-fit h-fit hover:bg-primary">
+										<FaMinus
+											size={15}
+											color="#f87171
+"
 										/>
 									</div>
 								)}
@@ -225,8 +231,13 @@ export default function MCQuestion({
 						<button
 							title="Add choice"
 							onClick={() => addChoice()}
-							className="w-fit h-fit flex flex-row p-1 mb-1 rounded-full hover:bg-primary">
-							<PlusIcon height={6} width={6} color="black" />
+							className="flex flex-row p-1 mb-1 rounded-full w-fit h-fit hover:bg-primary">
+							<FaPlus
+								height={15}
+								width={15}
+								color="#f87171
+"
+							/>
 						</button>
 					)}
 				</div>
