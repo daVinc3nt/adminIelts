@@ -44,7 +44,7 @@ export default function Card({ numberOfTest, testType, path }: CardProps) {
 		<motion.div
 			whileHover={{ y: -5 }}
 			className="flex flex-row w-full h-full col-span-3 overflow-hidden bg-red-400 border rounded-lg shadow-lg">
-			<div className="flex items-center justify-center h-full p-2 w-fit">
+			<div className="flex items-center justify-center h-full p-2 w-full">
 				<div className="p-2 bg-white rounded-2xl">
 					<TestIcon />
 				</div>
@@ -59,7 +59,7 @@ export default function Card({ numberOfTest, testType, path }: CardProps) {
 			</div>
 			<Link
 				href={path}
-				className="flex flex-col items-center justify-center h-full px-3 py-6 cursor-pointer min-w-fit group">
+				className="flex flex-col items-center justify-center h-full px-3 py-6 cursor-pointer w-full group">
 				<FaPlus size={40} color="white" />
 				<span className="font-semibold text-transparent group-hover:text-white">
 					Add Test
