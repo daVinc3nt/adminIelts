@@ -1,20 +1,9 @@
 "use client";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import { useState } from "react";
-import {
-	FaBookOpen,
-	FaHeadphones,
-	FaMicrophone,
-	FaPen,
-	FaPlus,
-} from "react-icons/fa";
-import { motion } from "framer-motion";
 import Select from "@/components/Select/Select";
-import Link from "next/link";
-import { PieChart } from "@mui/x-charts";
 import Card from "./component/Card";
 import { TestInfor } from "./component/interface";
-import TestItem from "./component/TestList";
 import TestDescription from "./component/TestDescription";
 import TestList from "./component/TestList";
 
@@ -24,32 +13,42 @@ export default function Home() {
 	const [currentTest, setCurrentTest] = useState<number>(-1);
 
 	return (
-		<div className="flex flex-1 w-full h-full p-4 bg-gray-100">
-			<div className="flex flex-col w-full h-full gap-4">
-				<div className="grid w-full h-10 grid-cols-12 gap-8">
-					<div className="w-full h-full col-span-6">
-						<span className="text-4xl font-bold">
-							IELTS TEST MANAGEMENT
-						</span>
+		<div className="flex h-screen p-4 bg-gray-100">
+			<div className="flex flex-col flex-1 w-full h-full gap-4">
+				<div className="flex w-full gap-8 h-fit">
+					<span className="text-4xl font-bold max-lg:text-3xl max-md:text-2xl">
+						IELTS TEST MANAGEMENT
+					</span>
+				</div>
+
+				<div className="flex flex-wrap w-full gap-8 h-fit">
+					<div className="flex flex-wrap flex-1 gap-8 ">
+						<Card
+							numberOfTest={69}
+							testType="Reading Test"
+							path="management\reading"
+						/>
+						<Card
+							numberOfTest={69}
+							testType="Listening Test"
+							path="management\listening"
+						/>
+					</div>
+					<div className="flex flex-wrap flex-1 gap-8 ">
+						<Card
+							numberOfTest={69}
+							testType="Speaking Test"
+							path=""
+						/>
+						<Card
+							numberOfTest={69}
+							testType="Writing Test"
+							path=""
+						/>
 					</div>
 				</div>
 
-				<div className="grid w-full h-32 grid-cols-12 gap-8">
-					<Card
-						numberOfTest={69}
-						testType="Reading Test"
-						path="management\reading"
-					/>
-					<Card
-						numberOfTest={69}
-						testType="Listening Test"
-						path="management\listening"
-					/>
-					<Card numberOfTest={69} testType="Speaking Test" path="" />
-					<Card numberOfTest={69} testType="Writing Test" path="" />
-				</div>
-
-				<div className="grid w-full h-10 grid-cols-12 gap-8">
+				<div className="grid w-full h-fit grid-cols-12 gap-8">
 					<div className="w-full h-full col-span-2">
 						<Select
 							input={selectedValue}
@@ -65,18 +64,12 @@ export default function Home() {
 					</div>
 				</div>
 
-				<div className="grid w-full h-full grid-cols-12 gap-8">
-					<TestList
-						currentTest={currentTest}
-						setCurrentTest={setCurrentTest}
-						testInfor={testInfor}
-					/>
-
-					<div className="w-full h-full col-span-5 p-4 bg-white border rounded-lg shadow-md">
-						<TestDescription
-							testInfor={testInfor[currentTest]}
-							gradeData={data}
-							wrongFreqData={wrongFreqData}
+				<div className="flex flex-row flex-1 w-full gap-8 overflow-auto">
+					<div className="flex flex-col w-full h-full overflow-auto max-lg:w-full">
+						<TestList
+							currentTest={currentTest}
+							setCurrentTest={setCurrentTest}
+							testInfor={testInfor}
 						/>
 					</div>
 				</div>
@@ -184,6 +177,30 @@ const testInfor: TestInfor[] = [
 		dateCreated: "2021-07-01",
 		lastModified: "2021-07-01",
 		description: `This is test 1`,
+	},
+	{
+		testName: "Listening Test 4",
+		testType: "Listening Test",
+		author: "Author 2",
+		dateCreated: "2021-07-01",
+		lastModified: "2021-07-01",
+		description: `This is test 2`,
+	},
+	{
+		testName: "Listening Test 4",
+		testType: "Listening Test",
+		author: "Author 2",
+		dateCreated: "2021-07-01",
+		lastModified: "2021-07-01",
+		description: `This is test 2`,
+	},
+	{
+		testName: "Listening Test 4",
+		testType: "Listening Test",
+		author: "Author 2",
+		dateCreated: "2021-07-01",
+		lastModified: "2021-07-01",
+		description: `This is test 2`,
 	},
 	{
 		testName: "Listening Test 4",

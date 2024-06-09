@@ -7,6 +7,11 @@ import {
 	pieArcLabelClasses,
 	BarChart,
 	DefaultizedPieValueType,
+	ResponsiveChartContainer,
+	BarPlot,
+	ChartsTooltip,
+	ChartsXAxis,
+	ChartsYAxis,
 } from "@mui/x-charts";
 import { motion } from "framer-motion";
 
@@ -33,7 +38,7 @@ export default function TestDescription({
 	const Description = () => {
 		return (
 			<div className="flex flex-col w-full h-full">
-				<div className="flex flex-row w-full gap-4 h-[360px]">
+				<div className="flex flex-row w-full gap-4 h-full">
 					<div className="flex flex-col items-start justify-start w-full h-full overflow-y-scroll">
 						<span className="w-full p-2 text-base h-fit">
 							<b>Author: </b>
@@ -126,8 +131,6 @@ export default function TestDescription({
 					},
 				}}
 				margin={{ left: -100 }}
-				width={600}
-				height={300}
 			/>
 		);
 	};
@@ -143,18 +146,26 @@ export default function TestDescription({
 		};
 
 		return (
-			<BarChart
+			<ResponsiveChartContainer
 				colors={["#f87171"]}
-				width={700}
-				height={350}
-				series={[{ data: wrongFreqData, label: "Wrong Frequency" }]}
+				series={[
+					{
+						type: "bar",
+						data: wrongFreqData as any,
+						label: "Wrong frequency" as any,
+					},
+				]}
 				xAxis={[
 					{
 						data: generateXlabels(),
 						scaleType: "band",
 					},
-				]}
-			/>
+				]}>
+				<BarPlot />
+				<ChartsTooltip />
+				<ChartsXAxis label="Question number" position="bottom" />
+				<ChartsYAxis label="Wrong frequency" position="left" />
+			</ResponsiveChartContainer>
 		);
 	};
 
@@ -172,12 +183,13 @@ export default function TestDescription({
 	};
 
 	return (
-		<div className="flex flex-col w-full h-full">
-			<div className="grid w-full h-[42px] grid-cols-5 gap-4 mb-2">
+		<div className="flex flex-col flex-1 items-center bg-white border rounded-lg shadow-md overflow-hidden p-4 h-full">
+			<div className="flex flex-row w-full h-fit gap-4 mb-2">
 				{section.map((item, index) => {
 					return (
 						<div
-							className="flex flex-col items-center justify-between w-full h-full col-span-1 text-base font-semibold cursor-pointer"
+							key={index}
+							className="flex flex-col items-center justify-between w-fit h-full col-span-1 text-base font-semibold cursor-pointer gap-2"
 							onClick={() => setCurrentSection(index)}>
 							<span className="text-base font-semibold">
 								{item}
@@ -195,9 +207,11 @@ export default function TestDescription({
 			<div className="w-full px-2 text-2xl font-bold h-fit">
 				{testInfor.testName}
 			</div>
-			<div className="flex items-center justify-center w-full h-full">
+
+			<div className="flex flex-col flex-1 w-full overflow-y-auto">
 				<RenderSection />
 			</div>
+
 			<div className="flex justify-end w-full h-fit">
 				<button className="px-4 py-1 font-semibold text-white bg-red-400 rounded-lg w-fit h-fit">
 					Edit test

@@ -43,14 +43,14 @@ export default function Card({ numberOfTest, testType, path }: CardProps) {
 	return (
 		<motion.div
 			whileHover={{ y: -5 }}
-			className="flex flex-row w-full h-full col-span-3 overflow-hidden bg-red-400 border rounded-lg shadow-lg">
+			className="flex flex-row justify-between flex-1 p-4 overflow-hidden bg-red-400 border rounded-lg shadow-lg min-w-fit">
 			<div className="flex items-center justify-center h-full p-2 w-fit">
 				<div className="p-2 bg-white rounded-2xl">
 					<TestIcon />
 				</div>
 			</div>
-			<div className="flex flex-col items-start justify-center w-full h-full px-4">
-				<span className="text-base font-bold text-white">
+			<div className="flex flex-col items-start justify-center h-full px-4 w-fit">
+				<span className="text-2xl font-bold text-white">
 					{testType.split(" ")[0]}
 				</span>
 				<span className="text-5xl font-bold text-white">
@@ -59,9 +59,9 @@ export default function Card({ numberOfTest, testType, path }: CardProps) {
 			</div>
 			<Link
 				href={path}
-				className="flex flex-col items-center justify-center h-full px-3 py-6 cursor-pointer min-w-fit group">
+				className="flex flex-col items-center justify-center h-full cursor-pointer min-w-fit group">
 				<FaPlus size={40} color="white" />
-				<span className="font-semibold text-transparent group-hover:text-white">
+				<span className="font-semibold text-transparent group-hover:text-white max-lg:text-white">
 					Add Test
 				</span>
 			</Link>

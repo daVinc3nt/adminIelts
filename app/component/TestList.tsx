@@ -48,7 +48,7 @@ export default function TestList({
 	}
 
 	return (
-		<div className="flex flex-col items-center w-full h-full col-span-7 overflow-hidden bg-white border rounded-lg shadow-md">
+		<div className="flex flex-col flex-1 items-center bg-white border rounded-lg shadow-md overflow-hidden">
 			<div className="grid w-full grid-cols-10 gap-4 pl-3 mb-2 min-h-10">
 				<div className="flex items-end justify-end w-full h-full col-span-1 text-base font-semibold">
 					Type
@@ -69,7 +69,7 @@ export default function TestList({
 
 			<hr className="w-11/12 mb-2 border border-red-400" />
 
-			<div className="flex flex-col items-center w-full pl-3 overflow-y-scroll max-h-112">
+			<div className="flex flex-col flex-grow w-full overflow-auto">
 				{testInfor.map((test, index) => (
 					<div
 						key={index}

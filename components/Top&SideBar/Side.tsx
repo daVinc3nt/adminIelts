@@ -103,7 +103,7 @@ export default function Side({ menuItems, toggleCollapseMobile }) {
 					transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s",
 				}}>
 				<div className="flex flex-col w-full">
-					<div className="flex whitespace-nowrap items-center justify-center relative w-full">
+					<div className="relative flex items-center justify-center w-full whitespace-nowrap">
 						<div className="flex items-center justify-between gap-4">
 							<div
 								className={`flex items-center gap-4 ${toggleCollapse ? "mt-10" : "mt-4"}`}>
@@ -193,8 +193,8 @@ export default function Side({ menuItems, toggleCollapseMobile }) {
 					transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s",
 				}}>
 				<div className="flex flex-col">
-					<div className="flex items-center justify-between relative">
-						<div className="flex items-center pl-1 gap-2">
+					<div className="relative flex items-center justify-between">
+						<div className="flex items-center gap-2 pl-1">
 							<Image
 								src="/images/Logo_name.png"
 								alt="/"
