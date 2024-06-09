@@ -17,9 +17,11 @@ export default function RootLayout({
 	};
 	return (
 		<html lang="en">
-			<body className="flex overflow-hidden">
+			<body className="flex h-screen overflow-hidden">
 				<SideBar toggleCollapseMobile={toggleCollapseMobile} />
-				<main className="h-screen flex flex-1">{children}</main>
+				<main className="flex flex-1 overflow-y-scroll no-scrollbar">
+					{children}
+				</main>
 			</body>
 		</html>
 	);
