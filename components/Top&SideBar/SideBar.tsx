@@ -2,24 +2,18 @@
 import { useState } from "react";
 import Side from "./Side";
 import {
-  ReceiptLong,
-  Inventory,
-  Assistant,
+  School,
   People,
   PendingActions,
   LocalShipping,
-  BusinessCenter,
   MapsHomeWork,
-  Handshake,
-  AccountBox,
-  TaskAlt,
+  AddCircle,
 } from "@mui/icons-material";
-import { FormattedMessage } from "react-intl";
 const SideItemData = [
 	{
 		id: 0,
 		title: "Tạo bài thi",
-		icon: <Assistant className="scale-75 lg:block" />,
+		icon: <AddCircle className="scale-75 lg:block" />,
 		submenus: [
 			{
 				id: 1,
@@ -35,17 +29,23 @@ const SideItemData = [
 			},
 			{
 				id: 3,
-				title: "Writting",
-				url: "/",
+				title: "Writing",
+				url: "/management/writing",
 				icon: <LocalShipping className="scale-75 lg:block" />,
 			},
 			{
 				id: 4,
 				title: "Speaking",
-				url: "/",
+				url: "/management/speaking",
 				icon: <MapsHomeWork className="scale-75 lg:block" />,
 			},
-		],
+		]
+	},
+	{
+		id: 1,
+		title: "Quản lý học viên",
+		icon: <School className="scale-75 lg:block" />,
+		url: "/student"
 	},
 ];
 export default function SideBar({ toggleCollapseMobile }) {

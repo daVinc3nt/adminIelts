@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import classNames from "classnames";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,93 +7,93 @@ import React, { useState, useMemo } from "react";
 import { motion, Variants } from "framer-motion";
 import Item from "./ForSideBar/Item";
 import SubItems from "./ForSideBar/SubItems";
-import { LogoutOutlined, KeyboardDoubleArrowLeft } from '@mui/icons-material';
+import { LogoutOutlined, KeyboardDoubleArrowLeft } from "@mui/icons-material";
 import { Logout } from "./ForSideBar/Logout";
 interface MyComponentProps {
-  toggleCollapseMobile: boolean;
+	toggleCollapseMobile: boolean;
 }
 interface MenuItem {
-  id: number;
-  title: string;
-  url: string;
-  icon: JSX.Element;
-  submenus?: MenuItem[];
+	id: number;
+	title: string;
+	url: string;
+	icon: JSX.Element;
+	submenus?: MenuItem[];
 }
 
 interface Props {
-  menuItems: MenuItem[];
-  toggleCollapseMobile: boolean;
+	menuItems: MenuItem[];
+	toggleCollapseMobile: boolean;
 }
 export default function Side({ menuItems, toggleCollapseMobile }) {
-  const [toggleCollapse, setToggleCollapse] = useState(true);
-  const [isCollapsible, setIsCollapsible] = useState(true);
-  const router = useRouter();
+	const [toggleCollapse, setToggleCollapse] = useState(true);
+	const [isCollapsible, setIsCollapsible] = useState(true);
+	const router = useRouter();
 
-  // const activeMenu = useMemo(
-  //   () => menuItems.find((menu) => menu.url === router.pathname),
-  //   [router.pathname]
-  // );
+	// const activeMenu = useMemo(
+	//   () => menuItems.find((menu) => menu.url === router.pathname),
+	//   [router.pathname]
+	// );
 
-  const leftSideVariant: Variants = {
-    initial: { x: 20, opacity: 0 },
-    enter: { x: 0, opacity: 1 },
-    exit: { x: -20, opacity: 0 }
-  }
+	const leftSideVariant: Variants = {
+		initial: { x: 20, opacity: 0 },
+		enter: { x: 0, opacity: 1 },
+		exit: { x: -20, opacity: 0 },
+	};
 
-  const leftSideVariantMobile: Variants = {
-    initial: { x: 5, opacity: 0 },
-    enter: { x: 0, opacity: 1 },
-    exit: { x: -5, opacity: 0 }
-  }
+	const leftSideVariantMobile: Variants = {
+		initial: { x: 5, opacity: 0 },
+		enter: { x: 0, opacity: 1 },
+		exit: { x: -5, opacity: 0 },
+	};
 
-  const wrapperClasses = classNames(
-    "h-screen hidden lg:px-4 lg:flex pt-8 pb-4 bg-white dark:bg-[#1a1b23] justify-between flex-col",
-    {
-      ["w-80"]: !toggleCollapse,
-      ["w-20"]: toggleCollapse,
-    }
-  );
-  const wrapperClassesMobile = classNames(
-    "h-screen flex z-50 fixed bg-white dark:bg-[#1a1b23] lg:hidden px-4 pt-8 pb-4 justify-between flex-col border-r border-gray-700 overflow-scroll no-scrollbar",
-    {
-      ["w-52"]: !toggleCollapseMobile,
-      ["w-0 px-0"]: toggleCollapseMobile,
-    }
-  );
+	const wrapperClasses = classNames(
+		"h-screen hidden lg:px-4 lg:flex pt-8 pb-4 bg-white dark:bg-[#1a1b23] justify-between flex-col",
+		{
+			["w-80"]: !toggleCollapse,
+			["w-20"]: toggleCollapse,
+		}
+	);
+	const wrapperClassesMobile = classNames(
+		"h-screen flex z-50 fixed bg-white dark:bg-[#1a1b23] lg:hidden px-4 pt-8 pb-4 justify-between flex-col border-r border-gray-700",
+		{
+			["w-52"]: !toggleCollapseMobile,
+			["w-0 px-0"]: toggleCollapseMobile,
+		}
+	);
 
-  const collapseIconClasses = classNames(
-    "p-1 rounded-full text-black dark:text-white absolute hidden lg:block flex",
-    {
-      "rotate-180 right-1/2 translate-x-1/2 -top-4": toggleCollapse,
-      "-right-1 -top-5": !toggleCollapse,
-    }
-  );
+	const collapseIconClasses = classNames(
+		"p-1 rounded-full text-black dark:text-white absolute hidden lg:block flex",
+		{
+			"rotate-180 right-1/2 translate-x-1/2 -top-4": toggleCollapse,
+			"-right-1 -top-5": !toggleCollapse,
+		}
+	);
 
-  const getNavItemClasses = (menu: any) => {
-    return classNames(
-      "flex items-center jutify-center cursor-pointer rounded w-full overflow-hidden whitespace-nowrap",
-      // {
-      //   ["bg-red-200 dark:bg-black text-[#e1201c]"]: activeMenu?.id === menu.id,
-      // }
-    );
-  };
+	const getNavItemClasses = (menu: any) => {
+		return classNames(
+			"flex items-center jutify-center cursor-pointer rounded w-full overflow-hidden whitespace-nowrap"
+			// {
+			//   ["bg-red-200 dark:bg-black text-[#e1201c]"]: activeMenu?.id === menu.id,
+			// }
+		);
+	};
 
-  const onMouseOver = () => {
-    setIsCollapsible(true);
-  };
+	const onMouseOver = () => {
+		setIsCollapsible(true);
+	};
 
-  const onMouseLeave = () => {
-    setIsCollapsible(false);
-  };
+	const onMouseLeave = () => {
+		setIsCollapsible(false);
+	};
 
-  const handleSidebarToggle = () => {
-    setToggleCollapse(!toggleCollapse);
-  };
-  // const handleSidebarToggleMobile = () => {
-  //   setToggleCollapseMobile(!toggleCollapseMobile);
-  // };
+	const handleSidebarToggle = () => {
+		setToggleCollapse(!toggleCollapse);
+	};
+	// const handleSidebarToggleMobile = () => {
+	//   setToggleCollapseMobile(!toggleCollapseMobile);
+	// };
 
-  return (
+	return (
 		<>
 			<div
 				className={wrapperClasses}
@@ -193,29 +193,29 @@ export default function Side({ menuItems, toggleCollapseMobile }) {
 					transition: "width 200ms cubic-bezier(0.2, 0, 0, 1) 0s",
 				}}>
 				<div className="flex flex-col">
-					<div className="relative flex items-center justify-between">
-						<div className="flex items-center gap-2 pl-1">
-							<Image
-								src="/images/Logo_name.png"
-								alt="/"
-								width="40"
-								height="40"
-								style={{ objectFit: "cover" }}
-							/>
-							{!toggleCollapseMobile && (
-								<motion.span
-									variants={leftSideVariantMobile}
+					<div className="flex items-center justify-between gap-4">
+						<div
+							className={`flex items-center gap-4 ${toggleCollapse ? "mt-10" : "mt-4"}`}>
+							{/* {toggleCollapse && (
+                  <Image
+                    src="/Logo.png"
+                    alt="/"
+                    width="100"
+                    height="100"
+                  />
+                )} */}
+							{!toggleCollapse && (
+								<motion.img
+									variants={leftSideVariant}
 									initial="initial"
 									animate="enter"
-									transition={{ duration: 0.5, delay: 0.2 }}
-									className={classNames(
-										"mt-2 text-xl font-bold ",
-										{
-											hidden: toggleCollapseMobile,
-										}
-									)}>
-									TDLogistics
-								</motion.span>
+									exit="exit"
+									transition={{ duration: 0.7 }}
+									src={"/images/Logo_name.png"}
+									className="bg-white rounded-xl"
+									width="250"
+									height="250"
+								/>
 							)}
 						</div>
 						{isCollapsible && (
@@ -278,5 +278,5 @@ export default function Side({ menuItems, toggleCollapseMobile }) {
 				</button>
 			</div>
 		</>
-  );
-};
+	);
+}
