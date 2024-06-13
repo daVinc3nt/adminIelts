@@ -8,6 +8,9 @@ import {
   LocalShipping,
   MapsHomeWork,
   AddCircle,
+  Headphones,
+  Notes,
+  VoiceChat,
 } from "@mui/icons-material";
 const SideItemData = [
 	{
@@ -19,7 +22,7 @@ const SideItemData = [
 				id: 1,
 				title: "Listening",
 				url: "/management/listening",
-				icon: <People className="scale-75 lg:block" />,
+				icon: <Headphones className="scale-75 lg:block" />,
 			},
 			{
 				id: 2,
@@ -31,13 +34,13 @@ const SideItemData = [
 				id: 3,
 				title: "Writing",
 				url: "/management/writing",
-				icon: <LocalShipping className="scale-75 lg:block" />,
+				icon: <Notes className="scale-75 lg:block" />,
 			},
 			{
 				id: 4,
 				title: "Speaking",
 				url: "/management/speaking",
-				icon: <MapsHomeWork className="scale-75 lg:block" />,
+				icon: <VoiceChat className="scale-75 lg:block" />,
 			},
 		]
 	},

@@ -295,7 +295,7 @@ const AddStaff: React.FC<AddStaffProps> = ({ onClose, reload }) => {
           <div className="h-fit overflow-y-scroll border border-[#545e7b] mt-4 no-scrollbar flex flex-col items-center bg-white   p-2 rounded-md text-black">
             <div className="w-fit h-fit">
               <h1 className="font-semibold pb-2 text-center">
-                {/* <FormattedMessage id="student" /> */} Học viên
+                {/* <FormattedMessage id="student" /> */} Bài speaking
               </h1>
               <div className="flex flex-col gap-3">
                 <input
