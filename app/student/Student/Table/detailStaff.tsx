@@ -180,11 +180,8 @@ const DetailStaff: React.FC<DetailStaffProps> = ({ onClose, dataInitial, reload 
           <div className="font-bold text-lg sm:text-2xl pb-2 text-black  w-full text-center">
             {/* <FormattedMessage id="student.innfomation" /> */} Thông tin học viên
           </div>
-          <Button
-            className="absolute right-0 w-8 h-8 rounded-full mb-2 hover:bg-gray-300"
-            onClick={handleClose}
-          >
-            <IoMdClose className="w-5/6 h-5/6 " />
+          <Button className="absolute right-0 w-8 h-8 rounded-full mb-2 hover:bg-gray-300" onClick={handleClose}>
+            <IoMdClose style={{ color: 'red' }} className="w-5/6 h-5/6" />
           </Button>
         </div>
         <div className="h-screen_4/6 overflow-y-scroll border border-[#545e7b] mt-4 no-scrollbar flex flex-col bg-gray-100  p-2 rounded-md 
