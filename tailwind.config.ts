@@ -17,7 +17,7 @@ const config: Config = {
 				"176": "44rem",
 			},
 			colors: {
-				primary: "#F8F9FA",
+				primary: "#FFFFFF",
 				"foreground-red": "#CB0000",
 				"background-red": "#D8000014",
 				"foreground-blue": "#160092",
@@ -34,6 +34,9 @@ const config: Config = {
 		},
 	},
 	darkMode: "class",
-	plugins: [require("tailwind-scrollbar-hide")],
+	plugins: [
+		require("tailwind-scrollbar-hide"),
+		require("autoprefixer"),
+	],
 };
 export default config;

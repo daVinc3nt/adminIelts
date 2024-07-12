@@ -38,7 +38,7 @@ export default function RootLayout({
 						style={{
 							paddingLeft: isOpenSidebar ? "240px" : "0px",
 						}}
-						className="flex flex-col min-h-screen pt-16 duration-200 bg-gray-50 dark:bg-black-night">
+						className="flex flex-col no-scrollbar hide-scrollbar min-h-screen pt-16 duration-200 bg-gray-50 dark:bg-black-night">
 						{children}
 					</div>
 				</Provider>
