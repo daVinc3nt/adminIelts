@@ -36,12 +36,17 @@ export default function SearchAdditionButton() {
 					<FaSearchPlus strokeWidth="3" size={20} />
 				</div>
 			</summary>
-			<div className="absolute flex flex-col w-48 gap-2 p-2 bg-white border rounded-md shadow-md h-fit dark:shadow-black-night dark:border-black-night dark:bg-pot-black top-12 left-2">
+			<div className="absolute flex flex-col w-48 gap-2 p-2 bg-white border rounded-md shadow-md h-fit dark:shadow-black-night dark:border-black-night dark:bg-pot-black top-12 left-2 items-center">
 				<InputNumberOfPage
 					searchAddition={searchAddition}
 					setSearchAddition={setSearchAddition}
 				/>
 				<InputUserPerPage
+					searchAddition={searchAddition}
+					setSearchAddition={setSearchAddition}
+				/>
+				<hr className="border w-11/12"></hr>
+				<AddSortButton
 					searchAddition={searchAddition}
 					setSearchAddition={setSearchAddition}
 				/>
@@ -78,7 +83,7 @@ function InputNumberOfPage({
 		<div
 			tabIndex={-1}
 			onBlur={() => onLoseFocus()}
-			className="border-gray-200 dark:border-gray-400 w-full border-2 rounded-md outline-none h-fit ring-0 focus:ring-1  font-bold dark:bg-pot-black p-1 flex flex-row justify-start has-[:focus]:border-foreground-blue">
+			className="border-gray-200 dark:border-gray-400 w-full border-2 rounded-md outline-none h-fit ring-0  font-bold dark:bg-pot-black p-1 flex flex-row justify-start has-[:focus]:border-foreground-blue dark:has-[:focus]:border-foreground-red">
 			<input
 				type="number"
 				onChange={(e) => onChangeValue(e)}
@@ -114,7 +119,7 @@ function InputUserPerPage({
 		<div
 			tabIndex={-1}
 			onBlur={() => onLoseFocus()}
-			className="border-gray-200 dark:border-gray-400 w-full border-2 rounded-md outline-none h-fit ring-0 focus:ring-1  font-bold dark:bg-pot-black p-1 flex flex-row items-center start has-[:focus]:border-foreground-blue">
+			className="border-gray-200 dark:border-gray-400 w-full border-2 rounded-md outline-none h-fit ring-0 font-bold dark:bg-pot-black p-1 flex flex-row items-center start has-[:focus]:border-foreground-blue dark:has-[:focus]:border-foreground-red">
 			<input
 				type="number"
 				onChange={(e) => onChangeValue(e)}
@@ -128,3 +133,19 @@ function InputUserPerPage({
 		</div>
 	);
 }
+
+function AddSortButton({ searchAddition, setSearchAddition }: ComponentProps) {
+	const sortRef = useRef<HTMLDetailsElement>(null);
+
+	return (
+		<details ref={sortRef} className="relative w-full h-fit group">
+			<summary className="w-full list-none h-fit">
+				<div className="flex items-center justify-between w-full p-1 font-bold border-2 rounded-md hover:border-foreground-blue dark:hover:border-foreground-red hover:bg-foreground-blue dark:hover:bg-foreground-red hover:text-white dark:hover:text-gray-200 group-open:bg-foreground-blue dark:group-open:bg-foreground-red group-open:text-white text-center">
+					Add Sort Option
+					<FaAngleRight size={25} className="" />
+				</div>
+			</summary>
+		</details>
+	);
+}
+

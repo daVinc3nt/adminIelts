@@ -14,12 +14,12 @@ import { SearchPayload } from "@/app/interface/interfaces";
 export default function Page() {
 	return (
 		<UserProvider>
-			<StudentManagement />
+			<UserManagement />
 		</UserProvider>
 	);
 }
 
-function StudentManagement() {
+function UserManagement() {
 	const [searchValue, setSearchValue] = useState<string>("");
 
 	const { searchAddition, searchCiterias } = useUserData();

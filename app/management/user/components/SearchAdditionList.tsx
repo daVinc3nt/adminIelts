@@ -21,6 +21,18 @@ export default function SearchAdditionList() {
 			<span className="p-1 font-bold text-gray-400 border border-transparent">
 				Search addition:
 			</span>
+			<div className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-gray-600 rounded-md shadow-sm cursor-default bg-mecury-gray dark:bg-gray-22 w-fit h-fit dark:text-gray-400">
+				{`${searchAddition.page} pages`}
+			</div>
+			<div className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-gray-600 rounded-md shadow-sm cursor-default bg-mecury-gray dark:bg-gray-22 w-fit h-fit dark:text-gray-400">
+				{`${searchAddition.size} users per page`}
+			</div>
+			<div className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-gray-600 rounded-md shadow-sm cursor-default bg-mecury-gray dark:bg-gray-22 w-fit h-fit dark:text-gray-400">
+				{`${searchAddition.group ? searchAddition.group : "Group none"}`}
+			</div>
+			<div className="h-full flex items-center justify-center">
+				<div className="h-5/6 border border-mecury-gray dark:border-gray-22" />
+			</div>
 			{searchAddition.sort?.map((sort, index) => {
 				if (!searchAddition.sort) return;
 				return (
@@ -35,15 +47,6 @@ export default function SearchAdditionList() {
 					</div>
 				);
 			})}
-			<div className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-gray-600 rounded-md shadow-sm cursor-default bg-mecury-gray dark:bg-gray-22 w-fit h-fit dark:text-gray-400">
-				{`${searchAddition.page} pages`}
-			</div>
-			<div className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-gray-600 rounded-md shadow-sm cursor-default bg-mecury-gray dark:bg-gray-22 w-fit h-fit dark:text-gray-400">
-				{`${searchAddition.size} users per page`}
-			</div>
-			<div className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-gray-600 rounded-md shadow-sm cursor-default bg-mecury-gray dark:bg-gray-22 w-fit h-fit dark:text-gray-400">
-				{`${searchAddition.group ? searchAddition.group : "Group none"}`}
-			</div>
 		</div>
 	);
 }
