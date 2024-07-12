@@ -1,99 +1,43 @@
-"use client";
-import { useState } from "react";
-import MenuIcon from "../Icon/MenuIcon";
-import DropDown from "./DropDown";
-import Link from "next/link";
+import { IoMenu } from "react-icons/io5";
+import { CiLight, CiDark } from "react-icons/ci";
+import Notification from "./Notification";
+import Mail from "./Mail";
+import ThemeSwich from "./ThemeSwitch";
+import UserInfor from "./UserInfor";
 
-export default function NavBar() {
-	const [dropDown, setDropDown] = useState<boolean>(false);
+interface Props {
+	isOpenSidebar: boolean;
+	setIsOpenSidebar: (isOpenSidebar: boolean) => void;
+}
 
+export default function Navbar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 	return (
-		<div
-			className={`w-full h-14 flex justify-center items-center flex-row bg-white shadow-sm shadow-gray-300 fixed py-2 px-4 gap-2 max-lg:flex-col max-lg:justify-start max-lg:items-start max-lg:overflow-hidden z-50`}>
-			<div className="flex flex-row items-center justify-center max-lg:w-full mr-auto">
-				<Link
-					href="/"
-					className="text-4xl font-extrabold cursor-pointer mr-auto">
-					Engonow
-				</Link>
-				<div
-					className="lg:hidden"
-					onClick={() => setDropDown((prev) => !prev)}>
-					<MenuIcon height={8} width={8} color="black" />
-				</div>
-			</div>
+		<nav
+			style={{ paddingLeft: isOpenSidebar ? "248px" : "8px" }}
+			className="fixed z-40 flex items-center justify-start w-full h-16 gap-4 p-2 duration-200 bg-white shadow-sm dark:bg-pot-black">
+			<button
+				onClick={() => setIsOpenSidebar(!isOpenSidebar)}
+				className="p-1 rounded-full text-pot-black dark:text-gray-200 hover:bg-background-gray dark:hover:bg-zinc-700">
+				<IoMenu size={25} />
+			</button>
+			<div className="border boder-black h-4/6" />
+			<span className="pb-1 text-3xl font-semibold cursor-pointer text-pot-black dark:text-white">
+				Engonow
+			</span>
 
-			<ul className="max-lg:w-full flex max-lg:flex-col p-2 gap-x-4 gap-y-4 text-sm font-semibold text-gray-500">
-				{pageList.map((page) => {
-					return (
-						<Link key={page.label} href={page.path}>
-							{page.label}
-						</Link>
-					);
-				})}
-				{mobilePageList.map((page) => {
-					return (
-						<Link
-							key={page.label}
-							href={page.path}
-							className="lg:hidden">
-							{page.label}
-						</Link>
-					);
-				})}
-				<li className="lg:hidden">
-					<button type="button">Đăng xuất</button>
-				</li>
-			</ul>
+			<div className="mr-auto" />
 
-			<DropDown />
-		</div>
+			<Notification />
+
+			<Mail />
+
+			<div className="border boder-black h-4/6" />
+
+			<ThemeSwich />
+
+			<div className="border boder-black h-4/6" />
+
+			<UserInfor />
+		</nav>
 	);
 }
-
-interface pageinterface {
-	label: string;
-	path: string;
-}
-
-const pageList: pageinterface[] = [
-	{
-		label: "Khóa học của tôi",
-		path: "",
-	},
-	{
-		label: "Khóa học online",
-		path: "",
-	},
-	{
-		label: "Đề thi online",
-		path: "",
-	},
-	{
-		label: "Flashcards",
-		path: "",
-	},
-	{
-		label: "Blog",
-		path: "",
-	},
-	{
-		label: "Kích hoạt khóa học",
-		path: "",
-	},
-];
-
-const mobilePageList: pageinterface[] = [
-	{
-		label: "Thông báo",
-		path: "",
-	},
-	{
-		label: "Lịch học của tôi",
-		path: "",
-	},
-	{
-		label: "Trang cá nhân",
-		path: "",
-	},
-];
