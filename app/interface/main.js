@@ -57,12 +57,12 @@ var AuthOperation = /** @class */ (function () {
                             })];
                     case 1:
                         response = _c.sent();
-                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                        return [2 /*return*/, { error: response.data.error, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_1 = _c.sent();
                         console.log("Error signing up: ", (_a = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_1 === null || error_1 === void 0 ? void 0 : error_1.request);
-                        return [2 /*return*/, { success: (_b = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _b === void 0 ? void 0 : _b.data, request: error_1 === null || error_1 === void 0 ? void 0 : error_1.request, status: error_1.response ? error_1.response.status : null }];
+                        return [2 /*return*/, { error: (_b = error_1 === null || error_1 === void 0 ? void 0 : error_1.response) === null || _b === void 0 ? void 0 : _b.data, request: error_1 === null || error_1 === void 0 ? void 0 : error_1.request, status: error_1.response ? error_1.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -82,12 +82,12 @@ var AuthOperation = /** @class */ (function () {
                             })];
                     case 1:
                         response = _c.sent();
-                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                        return [2 /*return*/, { error: response.data.error, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_2 = _c.sent();
                         console.log("Error logging in: ", (_a = error_2 === null || error_2 === void 0 ? void 0 : error_2.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_2 === null || error_2 === void 0 ? void 0 : error_2.request);
-                        return [2 /*return*/, { success: (_b = error_2 === null || error_2 === void 0 ? void 0 : error_2.response) === null || _b === void 0 ? void 0 : _b.data, request: error_2 === null || error_2 === void 0 ? void 0 : error_2.request, status: error_2.response ? error_2.response.status : null }];
+                        return [2 /*return*/, { error: (_b = error_2 === null || error_2 === void 0 ? void 0 : error_2.response) === null || _b === void 0 ? void 0 : _b.data, request: error_2 === null || error_2 === void 0 ? void 0 : error_2.request, status: error_2.response ? error_2.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -107,12 +107,12 @@ var AuthOperation = /** @class */ (function () {
                             })];
                     case 1:
                         response = _c.sent();
-                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                        return [2 /*return*/, { error: response.data.error, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_3 = _c.sent();
                         console.log("Error verifying otp: ", (_a = error_3 === null || error_3 === void 0 ? void 0 : error_3.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_3 === null || error_3 === void 0 ? void 0 : error_3.request);
-                        return [2 /*return*/, { success: (_b = error_3 === null || error_3 === void 0 ? void 0 : error_3.response) === null || _b === void 0 ? void 0 : _b.data, request: error_3 === null || error_3 === void 0 ? void 0 : error_3.request, status: error_3.response ? error_3.response.status : null }];
+                        return [2 /*return*/, { error: (_b = error_3 === null || error_3 === void 0 ? void 0 : error_3.response) === null || _b === void 0 ? void 0 : _b.data, request: error_3 === null || error_3 === void 0 ? void 0 : error_3.request, status: error_3.response ? error_3.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -142,12 +142,12 @@ var AccountOperation = /** @class */ (function () {
                             })];
                     case 1:
                         response = _c.sent();
-                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                        return [2 /*return*/, { error: response.data.error, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_4 = _c.sent();
                         console.log("Error searching accounts: ", (_a = error_4 === null || error_4 === void 0 ? void 0 : error_4.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_4 === null || error_4 === void 0 ? void 0 : error_4.request);
-                        return [2 /*return*/, { success: (_b = error_4 === null || error_4 === void 0 ? void 0 : error_4.response) === null || _b === void 0 ? void 0 : _b.data, request: error_4 === null || error_4 === void 0 ? void 0 : error_4.request, status: error_4.response ? error_4.response.status : null }];
+                        return [2 /*return*/, { error: (_b = error_4 === null || error_4 === void 0 ? void 0 : error_4.response) === null || _b === void 0 ? void 0 : _b.data, request: error_4 === null || error_4 === void 0 ? void 0 : error_4.request, status: error_4.response ? error_4.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -170,12 +170,12 @@ var AccountOperation = /** @class */ (function () {
                             })];
                     case 1:
                         response = _c.sent();
-                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                        return [2 /*return*/, { error: response.data.error, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_5 = _c.sent();
                         console.log("Error updating account: ", (_a = error_5 === null || error_5 === void 0 ? void 0 : error_5.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_5 === null || error_5 === void 0 ? void 0 : error_5.request);
-                        return [2 /*return*/, { success: (_b = error_5 === null || error_5 === void 0 ? void 0 : error_5.response) === null || _b === void 0 ? void 0 : _b.data, request: error_5 === null || error_5 === void 0 ? void 0 : error_5.request, status: error_5.response ? error_5.response.status : null }];
+                        return [2 /*return*/, { error: (_b = error_5 === null || error_5 === void 0 ? void 0 : error_5.response) === null || _b === void 0 ? void 0 : _b.data, request: error_5 === null || error_5 === void 0 ? void 0 : error_5.request, status: error_5.response ? error_5.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -200,12 +200,12 @@ var AccountOperation = /** @class */ (function () {
                             })];
                     case 1:
                         response = _c.sent();
-                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                        return [2 /*return*/, { error: response.data.error, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_6 = _c.sent();
                         console.log("Error updating avatar: ", (_a = error_6 === null || error_6 === void 0 ? void 0 : error_6.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_6 === null || error_6 === void 0 ? void 0 : error_6.request);
-                        return [2 /*return*/, { success: (_b = error_6 === null || error_6 === void 0 ? void 0 : error_6.response) === null || _b === void 0 ? void 0 : _b.data, request: error_6 === null || error_6 === void 0 ? void 0 : error_6.request, status: error_6.response ? error_6.response.status : null }];
+                        return [2 /*return*/, { error: (_b = error_6 === null || error_6 === void 0 ? void 0 : error_6.response) === null || _b === void 0 ? void 0 : _b.data, request: error_6 === null || error_6 === void 0 ? void 0 : error_6.request, status: error_6.response ? error_6.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -229,12 +229,12 @@ var AccountOperation = /** @class */ (function () {
                             })];
                     case 1:
                         response = _c.sent();
-                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                        return [2 /*return*/, { error: response.data.error, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_7 = _c.sent();
                         console.log("Error getting avatar: ", (_a = error_7 === null || error_7 === void 0 ? void 0 : error_7.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_7 === null || error_7 === void 0 ? void 0 : error_7.request);
-                        return [2 /*return*/, { success: (_b = error_7 === null || error_7 === void 0 ? void 0 : error_7.response) === null || _b === void 0 ? void 0 : _b.data, request: error_7 === null || error_7 === void 0 ? void 0 : error_7.request, status: error_7.response ? error_7.response.status : null }];
+                        return [2 /*return*/, { error: (_b = error_7 === null || error_7 === void 0 ? void 0 : error_7.response) === null || _b === void 0 ? void 0 : _b.data, request: error_7 === null || error_7 === void 0 ? void 0 : error_7.request, status: error_7.response ? error_7.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
