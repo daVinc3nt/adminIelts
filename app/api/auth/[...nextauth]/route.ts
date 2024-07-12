@@ -38,7 +38,7 @@ const handler = NextAuth({
         if (account) {
           token.accessToken = account.access_token;
           console.log(account.access_token)
-          localStorage.setItem("sid", account.access_token)
+          
         }
         return token;
       },
