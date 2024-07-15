@@ -1,5 +1,4 @@
 "use client";
-import SearchBar from "@/components/SearchBar/SearchBar";
 import { useRef, useState } from "react";
 import Select from "@/components/Select/Select";
 
@@ -39,6 +38,7 @@ export default function Home() {
 							option={selectOption}
 						/>
 					</div>
+					<div className="w-full h-full col-span-6 col-start-4"></div>
 				</div>
 
 				<div className="flex flex-row h-112 w-full gap-8 overflow-auto">

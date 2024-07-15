@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import SideBar from "@/components/Sidebar/Sidebar";
-import Provider from "./Provider";
+import ThemeProvider from "./ThemeProvider";
 import { Roboto } from "next/font/google";
 
 import "./globals.css";
@@ -25,7 +25,7 @@ export default function RootLayout({
 			className={roboto.className}
 			suppressHydrationWarning={true}>
 			<body className="flex flex-col w-full h-screen overflow-x-hidden overflow-y-scroll">
-				<Provider>
+				<ThemeProvider>
 					<SideBar
 						isOpenSidebar={isOpenSidebar}
 						setIsOpenSidebar={setIsOpenSidebar}
@@ -41,7 +41,7 @@ export default function RootLayout({
 						className="flex flex-col no-scrollbar hide-scrollbar min-h-screen pt-16 duration-200 bg-gray-50 dark:bg-black-night">
 						{children}
 					</div>
-				</Provider>
+				</ThemeProvider>
 			</body>
 		</html>
 	);

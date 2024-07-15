@@ -1,5 +1,5 @@
 import { FaXmark } from "react-icons/fa6";
-import { useUserData } from "../context/UserProvider";
+import { useUserData } from "../context/UserDataProvider";
 
 const fieldLabels = [
 	{ label: "First name", value: "firstName" },

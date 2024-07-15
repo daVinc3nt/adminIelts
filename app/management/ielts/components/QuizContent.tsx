@@ -1,38 +1,12 @@
 import CK5Editor from "@/components/CK5Editor/CK5Editor";
-import { useQuizData } from "../contexts/QuizProvider";
+import { useQuizData } from "../contexts/QuizDataProvider";
 
 export default function QuizContent() {
-	const QuizContext = useQuizData();
-	const quizs = QuizContext.quizs;
-	const setQuizs = QuizContext.setQuizs;
-	const currentQuiz = QuizContext.currentQuiz;
-	const isLoading = QuizContext.isLoading;
-
-	const onChangeContent = (content: string) => {
-		setQuizs((prevQuizs) => {
-			const updatedQuizs = [...prevQuizs];
-			updatedQuizs[currentQuiz] = {
-				...updatedQuizs[currentQuiz],
-				content: content,
-			};
-			return updatedQuizs;
-		});
-	};
-
-	if (isLoading) return <div>Loading...</div>;
-
 	return (
 		<div className="flex flex-row w-full gap-2 h-fit">
 			<div className="w-1/2 h-fit">
-				{quizs.map((_, index) => {
-					if (currentQuiz != index) return;
-					return (
-						<CK5Editor
-							key={index}
-							content={quizs[currentQuiz].content}
-							onChangeContent={onChangeContent}
-						/>
-					);
+				{[].map((_, index) => {
+					return <div key={index}></div>;
 				})}
 			</div>
 

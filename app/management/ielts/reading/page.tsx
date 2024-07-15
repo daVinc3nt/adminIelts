@@ -1,13 +1,13 @@
 "use client";
-import { QuizProvider } from "../contexts/QuizProvider";
+import { QuizDataProvider } from "../contexts/QuizDataProvider";
 import QuizTab from "../components/QuizTab";
 import QuizContent from "../components/QuizContent";
 
 export default function Page() {
 	return (
-		<QuizProvider>
+		<QuizDataProvider>
 			<QuizManagement />
-		</QuizProvider>
+		</QuizDataProvider>
 	);
 }
 
