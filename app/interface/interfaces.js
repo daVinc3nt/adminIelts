@@ -1,44 +1,39 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Speaking = exports.Writing = exports.Listening = exports.Reading = exports.Skill = exports.QuizType = void 0;
+exports.FetchingType =
+	exports.Category =
+	exports.Skill =
+	exports.QuizType =
+	exports.InvitationStatus =
+		void 0;
+var InvitationStatus;
+(function (InvitationStatus) {
+	InvitationStatus["PENDING"] = "Ch\u01B0a ph\u1EA3n h\u1ED3i";
+	InvitationStatus["ACCEPT"] = "Ch\u1EA5p nh\u1EADn";
+	InvitationStatus["DECLINE"] = "T\u1EEB ch\u1ED1i";
+})(InvitationStatus || (exports.InvitationStatus = InvitationStatus = {}));
 // Quiz Interface
-exports.QuizType = {
-    MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
-    FILLING: 'FILLING'
-};
-exports.Skill = {
-    READING: 'READING',
-    LISTENING: 'LISTENING',
-    WRITING: 'WRITING',
-    SPEAKING: 'SPEAKING'
-};
-// Record Interface
-/**
- * Id là quizId
- * Từ quizId tìm ra bài quiz rồi so khớp answer để tính điểm
- * duration là thời gian làm bài
- */
-var Reading = /** @class */ (function () {
-    function Reading() {
-    }
-    return Reading;
-}());
-exports.Reading = Reading;
-var Listening = /** @class */ (function () {
-    function Listening() {
-    }
-    return Listening;
-}());
-exports.Listening = Listening;
-var Writing = /** @class */ (function () {
-    function Writing() {
-    }
-    return Writing;
-}());
-exports.Writing = Writing;
-var Speaking = /** @class */ (function () {
-    function Speaking() {
-    }
-    return Speaking;
-}());
-exports.Speaking = Speaking;
+var QuizType;
+(function (QuizType) {
+    QuizType["MULTIPLE_CHOICE"] = "MULTIPLE CHOICE";
+	QuizType["FILLING"] = "FILLING";
+})(QuizType || (exports.QuizType = QuizType = {}));
+var Skill;
+(function (Skill) {
+    Skill["READING"] = "READING";
+	Skill["LISTENING"] = "LISTENING";
+	Skill["WRITING"] = "WRITING";
+	Skill["SPEAKING"] = "SPEAKING";
+})(Skill || (exports.Skill = Skill = {}));
+;
+var Category;
+(function (Category) {
+    Category["THPTQG"] = "THPTQG";
+	Category["IELTS"] = "IELTS";
+	Category["HSK"] = "HSK";
+})(Category || (exports.Category = Category = {}));
+var FetchingType;
+(function (FetchingType) {
+	FetchingType["FULL"] = "full";
+	FetchingType["AUTO"] = "auto";
+})(FetchingType || (exports.FetchingType = FetchingType = {}));

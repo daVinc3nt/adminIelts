@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { SearchCriteria } from "@/app/interface/interfaces";
 import { TbFilterPlus } from "react-icons/tb";
 import { FaAngleRight } from "react-icons/fa";
-import { useUserData } from "../context/UserProvider";
+import { useUserData } from "../context/UserDataProvider";
 import { BsTrash } from "react-icons/bs";
 
 export default function FilterButton() {
@@ -58,7 +58,7 @@ export default function FilterButton() {
 					<TbFilterPlus strokeWidth="3" size={20} />
 				</div>
 			</summary>
-			<div className="absolute flex flex-col w-[214px] gap-2 p-2 bg-white border rounded-md shadow-md h-fit dark:shadow-black-night dark:border-black-night dark:bg-pot-black top-12 left-2">
+			<div className="absolute flex flex-col w-[214px] gap-2 p-2 bg-white border rounded-md shadow-md h-fit dark:shadow-black-night dark:border-black-night dark:bg-gray-22 top-12 left-2 z-10">
 				<SelectFieldButton
 					searchCiteria={searchCiteria as any}
 					setSearchCriteria={setSearchCriteria as any}
@@ -78,16 +78,16 @@ export default function FilterButton() {
 					setStep={setStep}
 				/>
 
-				<div className="flex flex-row justify-between w-full h-fit">
+				<div className="flex flex-row justify-between w-full mt-4 h-fit">
 					<button
 						onClick={() => clear()}
-						className="p-1 rounded-md bg-mecury-gray dark:bg-gray-22">
+						className="p-2 rounded-md bg-mecury-gray dark:bg-gray-22">
 						<BsTrash size={25} className="" />
 					</button>
 
 					<button
 						onClick={() => addFilter()}
-						className="p-1 font-bold text-white rounded-md w-fit h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200">
+						className="p-2 font-bold text-white duration-200 rounded-md w-fit h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200">
 						Add filter
 					</button>
 				</div>
@@ -274,7 +274,7 @@ function InputValue({
 			value={searchCiteria?.value || ""}
 			type="text"
 			disabled={step != 2}
-			className={`${step == 2 ? "border-foreground-blue dark:border-foreground-red" : "border-gray-200 dark:border-gray-400 focus:border-foreground-blue dark:focus:border-foreground-red"} w-full p-1 border-2 rounded-md outline-none h-fit ring-0 focus:ring-1 focus:ring-foreground-blue dark:focus:ring-foreground-red font-bold dark:bg-pot-black`}
+			className={`${step == 2 ? "border-foreground-blue dark:border-foreground-red" : "border-gray-200 dark:border-gray-400 focus:border-foreground-blue dark:focus:border-foreground-red"} w-full p-1 border-2 rounded-md outline-none h-fit ring-0 focus:ring-1 focus:ring-foreground-blue dark:focus:ring-foreground-red font-bold dark:bg-gray-22`}
 			placeholder="Value"
 		/>
 	);

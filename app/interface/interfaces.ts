@@ -32,101 +32,157 @@ export interface SearchAddition {
 }
 
 export interface SearchPayload {
-    criteria: SearchCriteria[],
-    addition: SearchAddition
+	criteria: SearchCriteria[];
+	addition: SearchAddition;
 }
 
 export interface UpdateAccountPayload {
-    username?: string;
-    password?: string;
-    firstName?: string;
-    lastName?: string;
-    roles?: string; // Just ADMIN, SYS_ADMIN allowed
+	username?: string;
+	password?: string;
+	firstName?: string;
+	lastName?: string;
+	roles?: string; // Just ADMIN, SYS_ADMIN allowed
 }
 
 export interface UpdateAvatarPayload {
-    avatar: File;
+	avatar: File;
+}
+
+export enum InvitationStatus {
+	PENDING = "Chưa phản hồi",
+	ACCEPT = "Chấp nhận",
+	DECLINE = "Từ chối",
 }
 
 // Quiz Interface
 
-export const QuizType = {
-    MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
-    FILLING: 'FILLING'
+export enum QuizType {
+	MULTIPLE_CHOICE = "MULTIPLE CHOICE",
+	FILLING = "FILLING",
 }
 
-export const Skill = {
-  READING: 'READING',
-  LISTENING: 'LISTENING',
-  WRITING: 'WRITING',
-  SPEAKING: 'SPEAKING'
-};
+export enum Skill {
+	READING = "READING",
+	LISTENING = "LISTENING",
+	WRITING = "WRITING",
+	SPEAKING = "SPEAKING",
+}
 
+export enum Category {
+	THPTQG = "THPTQG",
+	IELTS = "IELTS",
+	HSK = "HSK",
+}
+
+export enum FetchingType {
+	FULL = "full",
+	AUTO = "auto",
+}
 
 export interface CreateFillingQuiz {
-    type: typeof QuizType[keyof typeof QuizType];
-    description: string[];
-    answer: string[];
-    explaination: string[];
-    quizId: string;
+	description: string;
+	answer: string;
+	explaination: string;
+}
+
+export interface CreateFillingGroup {
+	type: QuizType;
+	question: String;
+	startFrom: Number;
+	quizzes: CreateFillingQuiz[];
+	quizId: string;
+}
+
+export interface UpdateFillingQuiz {
+	id?: UUID;
+	description?: string;
+	answer?: string;
+	explaination?: string;
+}
+
+export interface UpdateFillingGroup {
+	id?: UUID;
+	type?: QuizType;
+	question?: String;
+	startFrom?: Number;
+	quizzes?: UpdateFillingQuiz[];
 }
 
 export interface CreateMultipleChoiceQuiz {
-    type: typeof QuizType[keyof typeof QuizType];
-    options: any;
-    description: string[];
-    numberOfAnswer: number[];
-    answer: string[][];
-    explaination: string[];
-    quizId: string;
+	description: string;
+	options: string[];
+	answer: string[];
+	numOfAnswers: number;
+	explaination: string;
+}
+export interface CreateMultipleChoiceGroup {
+	type: QuizType;
+	question: String;
+	startFrom: Number;
+	quizzes: CreateMultipleChoiceQuiz[];
+	quizId: string;
 }
 
+export interface UpdateMultipleChoiceGroup {
+	id?: UUID;
+	type?: QuizType;
+	question?: String;
+	startFrom?: Number;
+	quizzes?: UpdateMultipleChoiceQuiz[];
+}
 
-/*    
-    Trường quizes là array object, 
-    mà mỗi phần tử object có kiểu là CreateMultipleChoiceQuiz hoặc CreateFillingQuiz
-
-    Trường quizOrder ban đầu tạo không truyền vào (null), 
-    BE sẽ căn cứ vào thứ tự trong mảng quizes để tạo quizOrder
-    mỗi phần tử quizOrder là quizId
-*/
-export interface CreateQuiz {
-    content: string;
-    catagoryId: string;
-    groupId: string;
-    skill: typeof Skill[keyof typeof Skill];
-    quizes: (CreateMultipleChoiceQuiz | CreateFillingQuiz)[];
-    quizOrder?: string[]
+export interface UpdateMultipleChoiceQuiz {
+	id?: UUID;
+	description?: string;
+	options?: string[];
+	answer?: string[];
+	numOfAnswers?: number;
+	explaination?: string;
 }
 
 export interface UpdateQuiz {
-    content?: string;
-    catagoryId?: string;
-    groupId?: string;
-    skill?: typeof Skill[keyof typeof Skill];
-    quizes?: (CreateMultipleChoiceQuiz | CreateFillingQuiz)[];
-    quizOrder?: string[]
+	id?: UUID;
+	content?: string;
+	skill?: Skill;
+	category?: Category;
+	tag?: string;
+	groups?: (UpdateMultipleChoiceGroup | UpdateFillingGroup)[];
+	order?: UUID[];
+}
+
+export interface CreateQuiz {
+	content: string;
+	category: Category;
+	tag: string;
+	skill: Skill;
+	groups: (CreateMultipleChoiceGroup | CreateFillingGroup)[];
+}
+
+export interface CreateTestFromQuizIds {
+	reading: UUID[];
+	listening: UUID[];
+	writing: UUID[];
+	speaking: UUID[];
 }
 
 // Test interface
 
 /**
  * Mỗi phần tử là 1 quizId
-*/
+ */
 export interface CreateTest {
-    reading?: string[];
-    listening?: string[];
-    writing?: string[];
-    speaking?: string[];
+	reading: CreateQuiz[];
+	listening: CreateQuiz[];
+	writing: CreateQuiz[];
+	speaking: CreateQuiz[];
 }
 
 export interface UpdateTest {
-    reading?: string[];
-    listening?: string[];
-    writing?: string[];
-    speaking?: string[];
+	reading?: UUID[];
+	listening?: UUID[];
+	writing?: UUID[];
+	speaking?: UUID[];
 }
-
 
 // Record Interface
 
@@ -135,51 +191,78 @@ export interface UpdateTest {
  * Từ quizId tìm ra bài quiz rồi so khớp answer để tính điểm
  * duration là thời gian làm bài
  */
-export class Reading {
-    id: string;
-    answer: string[];
-    duration: number;
+export interface Reading {
+	id: string;
+	answer: string[];
+	duration: number;
 }
 
-export class Listening {
-    id: string;
-    answer: string[];
-    duration: number;
+export interface Listening {
+	id: string;
+	answer: string[];
+	duration: number;
 }
 
-export class Writing {
-    id: string;
-    answer: string;
-    duration: number;
+export interface Writing {
+	id: string;
+	answer: string;
+	duration: number;
 }
 
-export class Speaking {
-    id: string;
-    answer: File;
-    duration: number;
+export interface Speaking {
+	id: string;
+	answer: File;
+	duration: number;
+}
+
+export interface MultipleChoiceAnswer {
+	id: UUID;
+	answer: string[][];
+}
+
+export interface FillingAnswer {
+	id: UUID;
+	answer: string[];
+}
+
+export interface AnswerQuiz {
+	id: UUID;
+	answer: string[] | string;
+}
+export interface AnswerGroup {
+	id: UUID;
+	quizzes: AnswerQuiz[];
+}
+
+export interface CreateAnswer {
+	recordId: UUID;
+	score: number;
+	multipleChoiceQuizId: UUID;
+	fillingQuizId: UUID;
+	content: string[] | string;
 }
 
 export interface CreateRecord {
-    testId: string;
-    userId: string;
+	testId: UUID;
+	accountId: UUID;
 
-    reading?: Reading[];
-    listening?: Listening[];
-    writing?: Writing[];
-    speaking?: Speaking[];
+	reading: AnswerGroup[];
+	listening: AnswerGroup[];
+	writing: AnswerGroup[];
+	speaking: AnswerGroup[];
 }
 
 export interface GetRecord {
-    testId?: string;
-    userId?: string;
+	testId: string;
+	accountId: string;
 }
 
 export interface UpdateRecord {
-    testId: string;
-    userId: string;
+	testId: string;
+	accountId: string;
 
-    reading?: Reading[];
-    listening?: Listening[];
-    writing?: Writing[];
-    speaking?: Speaking[];
+	reading?: AnswerGroup[];
+	listening?: AnswerGroup[];
+	writing?: AnswerGroup[];
+	speaking?: AnswerGroup[];
 }

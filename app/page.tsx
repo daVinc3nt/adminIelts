@@ -1,11 +1,6 @@
 "use client";
-import SearchBar from "@/components/SearchBar/SearchBar";
 import { useRef, useState } from "react";
 import Select from "@/components/Select/Select";
-import Card from "./component/Card";
-import { TestInfor } from "./component/interface";
-import TestDescription from "./component/TestDescription";
-import TestList from "./component/TestList";
 import {
 	BarPlot,
 	ChartsAxisHighlight,
@@ -42,12 +37,7 @@ export default function Home() {
 							option={selectOption}
 						/>
 					</div>
-					<div className="w-full h-full col-span-6 col-start-4">
-						<SearchBar
-							searchValue={searchValue}
-							setSearchValue={setSearchValue}
-						/>
-					</div>
+					<div className="w-full h-full col-span-6 col-start-4"></div>
 				</div>
 
 				<div className="flex flex-row h-112 w-full gap-8 overflow-auto">
@@ -80,11 +70,6 @@ export default function Home() {
 							<ChartsTooltip />
 						</ResponsiveChartContainer>
 					</div>
-					<TestList
-						currentTest={currentTest}
-						setCurrentTest={setCurrentTest}
-						testInfor={testInfor}
-					/>
 				</div>
 
 				<div className="flex w-full h-128 p-4 bg-white rounded-lg shadow-md border">
@@ -143,119 +128,4 @@ const generateXlabels = () => {
 const wrongFreqData = [
 	1, 5, 1, 3, 4, 6, 9, 4, 10, 20, 12, 17, 13, 7, 2, 3, 10, 18, 0, 1, 13, 16,
 	15, 14, 13, 12, 7, 10, 9, 4, 16, 15, 19, 10, 12, 17, 20, 20, 41, 30,
-];
-
-const testInfor: TestInfor[] = [
-	{
-		testName: "Reading Test 1",
-		testType: "Reading Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Listening Test 1",
-		testType: "Listening Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Reading Test 2",
-		testType: "Reading Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Writing Test 1",
-		testType: "Writing Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Reading Test 3",
-		testType: "Reading Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Reading Test 4",
-		testType: "Reading Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Listening Test 2",
-		testType: "Listening Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Listening Test 3",
-		testType: "Listening Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Reading Test 5",
-		testType: "Reading Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Writing Test 2",
-		testType: "Writing Test",
-		author: "Author 1",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 1`,
-	},
-	{
-		testName: "Listening Test 4",
-		testType: "Listening Test",
-		author: "Author 2",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 2`,
-	},
-	{
-		testName: "Listening Test 4",
-		testType: "Listening Test",
-		author: "Author 2",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 2`,
-	},
-	{
-		testName: "Listening Test 4",
-		testType: "Listening Test",
-		author: "Author 2",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 2`,
-	},
-	{
-		testName: "Listening Test 4",
-		testType: "Listening Test",
-		author: "Author 2",
-		dateCreated: "2021-07-01",
-		lastModified: "2021-07-01",
-		description: `This is test 2`,
-	},
 ];

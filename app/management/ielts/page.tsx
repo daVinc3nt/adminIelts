@@ -24,13 +24,7 @@ export default function Page() {
 				</div>
 
 				<div className="flex items-center justify-center w-full h-fit">
-					<div className="w-1/2">
-						<SearchBar
-							searchValue={searchValue}
-							setSearchValue={setSearchValue}
-							placeholder="Search for a test..."
-						/>
-					</div>
+					<div className="w-1/2"></div>
 				</div>
 
 				<div className="flex flex-col items-center justify-center w-full h-fit"></div>
