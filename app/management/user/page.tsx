@@ -1,5 +1,5 @@
 "use client";
-import { UserDataProvider } from "./context/UserDataProvider";
+import { UserDataProvider } from "./provider/UserDataProvider";
 import FilterButton from "./components/FilterButton";
 import FilterList from "./components/FilterList";
 import UserList from "./components/UserList";

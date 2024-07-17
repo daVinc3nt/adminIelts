@@ -1,5 +1,5 @@
 import { FaSearch } from "react-icons/fa";
-import { useUserData } from "../context/UserDataProvider";
+import { useUserData } from "../provider/UserDataProvider";
 
 export default function SearchButton() {
 	const { search } = useUserData();

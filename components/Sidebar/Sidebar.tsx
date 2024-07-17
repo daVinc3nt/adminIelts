@@ -15,7 +15,7 @@ export default function SideBar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 	return (
 		<div
 			style={{ left: isOpenSidebar ? "0px" : "-240px" }}
-			className="w-[240px] h-screen bg-white dark:bg-pot-black fixed duration-200 z-50 p-2 flex flex-col gap-4 shadow-md">
+			className="w-[240px] h-screen bg-white dark:bg-pot-black fixed duration-200 z-[1101] p-2 flex flex-col gap-4 shadow-md">
 			<img
 				src={"/images/Logo_name.png"}
 				className="w-full px-3 duration-200 bg-white rounded-md dark:bg-pot-black h-fit"

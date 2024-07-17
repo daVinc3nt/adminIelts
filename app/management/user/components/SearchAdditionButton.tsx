@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { SearchAddition } from "@/app/interface/interfaces";
 import { FaAngleRight } from "react-icons/fa";
-import { useUserData } from "../context/UserDataProvider";
+import { useUserData } from "../provider/UserDataProvider";
 import { BsTrash } from "react-icons/bs";
 import { FaSearchPlus } from "react-icons/fa";
 import Select from "@/components/Select/Select";
@@ -86,7 +86,7 @@ function InputUserPerPage() {
 				placeholder="1"
 			/>
 			<span className="w-2/3 text-center whitespace-nowrap">
-				users / page
+				users / search
 			</span>
 		</div>
 	);

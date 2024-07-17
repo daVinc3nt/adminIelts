@@ -10,12 +10,12 @@
 
 
 	--ck-color-base-foreground: var(--red-200);
-	--ck-color-base-background: white;
+	--ck-color-base-background: #161616;
 
 	--ck-color-base-border: var(--foreground-red);
 	--ck-color-base-action: 									hsl(104, 50.2%, 42.5%);
 	--ck-color-base-focus: var(--red-200);
-	--ck-color-base-text: 										black;
+	--ck-color-base-text: 										white;
 	--ck-color-base-active: var(--red-500);
 	--ck-color-base-active-focus: var(--red-500);
 	--ck-color-base-error:										hsl(15, 100%, 43%);
@@ -69,7 +69,7 @@
 
 	/* -- Dialog -------------------------------------------------------------------------------- */
 
-	--ck-color-dialog-background: white;
+	--ck-color-dialog-background: #161616;
 	--ck-color-dialog-form-header-border: transparent;
 
 	/* -- Input --------------------------------------------------------------------------------- */
@@ -97,7 +97,7 @@
 
 	/* -- Toolbar ------------------------------------------------------------------------------- */
 
-	--ck-color-toolbar-background: 								white;
+	--ck-color-toolbar-background: 								#161616;
 	--ck-color-toolbar-border: 									var(--ck-color-base-border);
 
 	/* -- Tooltip ------------------------------------------------------------------------------- */
@@ -128,6 +128,16 @@
 
     --ck-color-focus-disabled-shadow: var(--red-200);
     --ck-color-selector-focused-cell-background: var(--red-100);
+
+
+	--ck-accessibility-help-dialog-code-background-color: #222222;
+
+
+	--ck-powered-by-background: #222222;
+	--ck-powered-by-text-color: white;
+
+
+	--ck-color-split-button-hover-background: #222222;
 }
 
 @media print {
@@ -168,19 +178,13 @@
 }
 
 .ck-sticky-panel__content {
-	border: 2px solid #CB0000 !important;
+	border: 1px solid #CB0000 !important;
 	border-bottom: 0px !important;
-	border-top-left-radius: 6px !important;
-	border-top-right-radius: 6px !important;
 }
 
-.ck-toolbar {
-	border-top-left-radius: 6px !important;
-	border-top-right-radius: 6px !important;
-}
 
 .ck-content {
-	border: 2px solid #CB0000 !important;
+	border: 1px solid #CB0000 !important;
 	border-bottom-left-radius: 6px !important;
 	border-bottom-right-radius: 6px !important;
 }

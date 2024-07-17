@@ -159,6 +159,7 @@ export interface CreateQuiz {
 }
 
 export interface CreateTestFromQuizIds {
+	name: string;
 	reading: UUID[];
 	listening: UUID[];
 	writing: UUID[];
@@ -171,6 +172,7 @@ export interface CreateTestFromQuizIds {
  * Mỗi phần tử là 1 quizId
  */
 export interface CreateTest {
+	name: string;
 	reading: CreateQuiz[];
 	listening: CreateQuiz[];
 	writing: CreateQuiz[];
@@ -178,6 +180,7 @@ export interface CreateTest {
 }
 
 export interface UpdateTest {
+	name?: string;
 	reading?: UUID[];
 	listening?: UUID[];
 	writing?: UUID[];

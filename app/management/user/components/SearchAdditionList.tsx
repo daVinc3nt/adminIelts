@@ -1,5 +1,5 @@
 import { FaXmark } from "react-icons/fa6";
-import { useUserData } from "../context/UserDataProvider";
+import { useUserData } from "../provider/UserDataProvider";
 
 const fieldLabels = [
 	{ label: "First name", value: "firstName" },
@@ -33,7 +33,7 @@ export default function SearchAdditionList() {
 				Search addition:
 			</span>
 			<div className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-gray-600 duration-200 rounded-md shadow-sm cursor-default bg-mecury-gray dark:bg-gray-22 w-fit h-fit dark:text-gray-400">
-				{`${searchAddition.size} users per page`}
+				{`${searchAddition.size} users per times`}
 			</div>
 			<div className="flex flex-row items-center justify-center gap-2 px-2 py-1 text-gray-600 duration-200 rounded-md shadow-sm cursor-default bg-mecury-gray dark:bg-gray-22 w-fit h-fit dark:text-gray-400">
 				{`${searchAddition.group ? searchAddition.group : "Group none"}`}

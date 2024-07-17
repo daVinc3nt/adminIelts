@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { SearchCriteria } from "@/app/interface/interfaces";
 import { TbFilterPlus } from "react-icons/tb";
 import { FaAngleRight } from "react-icons/fa";
-import { useUserData } from "../context/UserDataProvider";
+import { useUserData } from "../provider/UserDataProvider";
 import { BsTrash } from "react-icons/bs";
 
 export default function FilterButton() {

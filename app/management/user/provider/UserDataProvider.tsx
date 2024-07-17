@@ -65,7 +65,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 				testToken
 			)
 			.then((response) => {
-				console.log(response);
+				console.log(response.data as UserInformation[]);
 				setUserInforList(response.data as UserInformation[]);
 			});
 	};

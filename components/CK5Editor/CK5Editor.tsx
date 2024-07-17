@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 
+
 import {
 	ClassicEditor,
 	AccessibilityHelp,
@@ -43,10 +44,11 @@ import {
 
 import "ckeditor5/ckeditor5.css";
 import { useTheme } from "next-themes";
+import dynamic from "next/dynamic";
 
 const themes = {
-	light: "/CKEditor5/light-theme.css",
-	dark: "/CKEditor5/dark-theme.css",
+	light: "/light-theme.css",
+	dark: "/dark-theme.css",
 };
 
 interface Props {
@@ -58,6 +60,7 @@ export default function CK5Editor({ content, onChangeContent }: Props) {
 	const editorContainerRef = useRef(null);
 	const editorRef = useRef(null);
 	const [isLayoutReady, setIsLayoutReady] = useState(false);
+
 	const { theme } = useTheme(); // Extract the theme using useTheme
 
 	useEffect(() => {
@@ -65,7 +68,7 @@ export default function CK5Editor({ content, onChangeContent }: Props) {
 		if (!theme) return;
 		const link = document.createElement("link");
 		link.rel = "stylesheet";
-		link.href = themes.hasOwnProperty(theme) ? themes.dark : themes.light;
+		link.href = themes[theme] || themes.light;
 		document.head.appendChild(link);
 
 		// Cleanup function to remove the link element when the component unmounts or theme changes

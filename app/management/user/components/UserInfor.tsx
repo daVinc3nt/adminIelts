@@ -1,6 +1,6 @@
 "use client";
 import { FaXmark } from "react-icons/fa6";
-import { useUserData } from "../context/UserDataProvider";
+import { useUserData } from "../provider/UserDataProvider";
 import { CiMail } from "react-icons/ci";
 import { MdAlternateEmail } from "react-icons/md";
 import { LuEye, LuEyeOff } from "react-icons/lu";
@@ -65,31 +65,18 @@ export default function UserInfor() {
 						<span className="text-base text-zinc-400 w-1/4">
 							Role:
 						</span>
-						<span className="text-base text-pot-black w-3/4 dark:text-gray-200">
-							Not yet
-						</span>
-					</div>
-					<div className="w-full flex flex-row gap-4">
-						<span className="text-base text-zinc-400 w-3/12">
-							Password:
-						</span>
-						<span className="text-base text-pot-black w-8/12 break-all dark:text-gray-200">
-							{showPassword
-								? currentUser.password
-								: "**************"}
-						</span>
-						<div className="w-1/12">
-							{!showPassword ? (
-								<LuEye
-									onClick={() => setShowPassword(true)}
-									className="size-5 cursor-pointer text-black dark:text-gray-200"
-								/>
-							) : (
-								<LuEyeOff
-									onClick={() => setShowPassword(false)}
-									className="size-5 cursor-pointer text-black dark:text-gray-200"
-								/>
-							)}
+						<div className="h-fit flex flex-wrap gap-2 w-3/4">
+							{currentUser.roles.map((role, index) => (
+								<span
+									key={index}
+									className="bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200 px-2 py-1 rounded-md text-xs">
+									{
+										roleLabel.find(
+											(label) => label.value === role.role
+										)?.label
+									}
+								</span>
+							))}
 						</div>
 					</div>
 					<div className="w-full flex flex-row gap-4">
@@ -117,3 +104,9 @@ export default function UserInfor() {
 		</motion.div>
 	);
 }
+
+const roleLabel = [
+	{ label: "Admin", value: "Quản trị viên" },
+	{ label: "Non-paid user", value: "Người dùng không trả phí" },
+	{ label: "Premium user", value: "Người dùng trả phí" },
+];

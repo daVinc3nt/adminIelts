@@ -1,7 +1,7 @@
 "use client";
 import { use, useEffect, useRef, useState } from "react";
 import { FaCircleUser } from "react-icons/fa6";
-import { useUserData } from "../context/UserDataProvider";
+import { useUserData } from "../provider/UserDataProvider";
 import { UserInformation } from "@/app/interface/user";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { on } from "events";
@@ -64,7 +64,19 @@ function List() {
 								@{user.username}
 							</span>
 						</div>
-						<div className="w-[20%]"></div>
+						<div className="w-[20%] flex flex-row gap-2">
+							{user.roles.map((role, index) => (
+								<div
+									key={index}
+									className="p-1 text-xs text-white bg-foreground-blue dark:bg-foreground-red rounded-md">
+									{
+										roleLabel.find(
+											(label) => label.value === role.role
+										)?.label
+									}
+								</div>
+							))}
+						</div>
 						<div className="w-[25%] font-semibold">
 							{user.email}
 						</div>
@@ -81,6 +93,12 @@ function List() {
 		</>
 	);
 }
+
+const roleLabel = [
+	{ label: "Admin", value: "Quản trị viên" },
+	{ label: "Non-paid user", value: "Người dùng không trả phí" },
+	{ label: "Premium user", value: "Người dùng trả phí" },
+];
 
 interface OptionButtonProps {
 	user: UserInformation;
