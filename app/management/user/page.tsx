@@ -3,10 +3,11 @@ import { UserDataProvider } from "./provider/UserDataProvider";
 import FilterButton from "./components/FilterButton";
 import FilterList from "./components/FilterList";
 import UserList from "./components/UserList";
-import SearchAdditionButton from "./components/SearchAdditionButton";
-import SearchAdditionList from "./components/SearchAdditionList";
 import SearchButton from "./components/SearchButton";
 import UserInfor from "./components/UserInfor";
+import SelectRoleButton from "./components/SelectRoleButton";
+import SelectStatusButton from "./components/SelectStatusButton";
+import SelectSearchFieldButton from "./components/SelectSearchFieldButton";
 
 export default function Page() {
 	return (
@@ -26,13 +27,13 @@ function UserManagement() {
 						User Management
 					</span>
 				</div>
-				<div className="flex flex-row w-full gap-2 pt-4 h-14">
-					<FilterButton />
-					<SearchAdditionButton />
+				<div className="flex flex-row w-full gap-2 pt-4 h-fit">
+					<SelectRoleButton />
+					<SelectStatusButton />
+					<SelectSearchFieldButton />
 					<SearchButton />
 				</div>
-				<div className="flex flex-col w-full gap-2 py-2">
-					<SearchAdditionList />
+				<div className="flex flex-row w-full gap-2 py-2">
 					<FilterList />
 				</div>
 

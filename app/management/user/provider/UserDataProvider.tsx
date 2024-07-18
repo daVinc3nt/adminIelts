@@ -21,12 +21,17 @@ interface UserContextType {
 	setCurrentUser: Dispatch<SetStateAction<UserInformation>>;
 	searchCiterias: SearchCriteria[];
 	setSearchCiterias: Dispatch<SetStateAction<SearchCriteria[]>>;
-	searchAddition: SearchAddition;
-	setSearchAddition: Dispatch<SetStateAction<SearchAddition>>;
-	isLoading: boolean;
-	setIsLoading: Dispatch<SetStateAction<boolean>>;
 	search: () => Promise<void>;
-	loadMore: () => Promise<void>;
+	role: string;
+	setRole: Dispatch<SetStateAction<string>>;
+	status: string;
+	setStatus: Dispatch<SetStateAction<string>>;
+	searchField: string;
+	setSearchField: Dispatch<SetStateAction<string>>;
+	searchValue: string;
+	setSearchValue: Dispatch<SetStateAction<string>>;
+	currentPage: number;
+	setCurrentPage: Dispatch<SetStateAction<number>>;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -40,19 +45,19 @@ export const useUserData = () => {
 };
 
 export const UserDataProvider = ({ children }: { children: ReactNode }) => {
-	const [isLoading, setIsLoading] = useState<boolean>(false);
-
 	const [userInforList, setUserInforList] = useState<UserInformation[]>([]);
 
 	const [currentUser, setCurrentUser] = useState<UserInformation>(null);
 
 	const [searchCiterias, setSearchCiterias] = useState<SearchCriteria[]>([]);
-	const [searchAddition, setSearchAddition] = useState<SearchAddition>({
-		sort: [],
-		page: 1,
-		size: 10,
-		group: null,
-	});
+
+	const [role, setRole] = useState<string>("");
+	const [status, setStatus] = useState<string>("");
+
+	const [searchField, setSearchField] = useState<string>("");
+	const [searchValue, setSearchValue] = useState<string>("");
+
+	const [currentPage, setCurrentPage] = useState<number>(1);
 
 	const search = async () => {
 		const accoutOperation = new AccountOperation();
@@ -60,32 +65,18 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 			.search(
 				{
 					criteria: searchCiterias,
-					addition: searchAddition,
+					addition: {
+						sort: [],
+						page: currentPage,
+						size: 6,
+						group: null,
+					},
 				} as SearchPayload,
 				testToken
 			)
 			.then((response) => {
-				console.log(response.data as UserInformation[]);
+				console.log(response.data);
 				setUserInforList(response.data as UserInformation[]);
-			});
-	};
-
-	const loadMore = async () => {
-		const accoutOperation = new AccountOperation();
-
-		const pageNumber =
-			Math.ceil(userInforList.length / searchAddition.size) + 1;
-
-		await accoutOperation
-			.search(
-				{
-					criteria: searchCiterias,
-					addition: { ...searchAddition, page: pageNumber },
-				} as SearchPayload,
-				testToken
-			)
-			.then((response) => {
-				setUserInforList((prev) => [...prev, ...response.data]);
 			});
 	};
 
@@ -98,12 +89,17 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 				setCurrentUser,
 				searchCiterias,
 				setSearchCiterias,
-				searchAddition,
-				setSearchAddition,
-				isLoading,
-				setIsLoading,
 				search,
-				loadMore,
+				role,
+				setRole,
+				status,
+				setStatus,
+				searchField,
+				setSearchField,
+				searchValue,
+				setSearchValue,
+				currentPage,
+				setCurrentPage,
 			}}>
 			{children}
 		</UserContext.Provider>

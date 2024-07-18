@@ -42,7 +42,7 @@ export default function TextArea({
 			spellCheck={false}
 			disabled={disabled}
 			className={
-				"w-full h-fit px-2 py-1 overflow-hidden border border-gray-400 border-solid rounded-md outline-none resize-none focus:border-blue-400 focus:outline focus:ring-1 focus:ring-blue-400 " +
+				"w-full h-fit px-2 py-1 duration-200 overflow-hidden border border-gray-400 border-solid rounded-md outline-none resize-none focus:border-blue-400 focus:outline focus:ring-1 focus:ring-blue-400 " +
 				className
 			}
 		/>

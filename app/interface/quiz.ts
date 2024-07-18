@@ -52,6 +52,18 @@ export interface Test {
 	speaking: Quiz[];
 }
 
+export const getQuestionGroupNumber = (
+	quizList: Quiz[],
+	quizIndex: number,
+	quizGroupIndex: number
+) => {
+	let count = 0;
+	for (let i = 0; i < quizIndex; i++) {
+		count += quizList[i].groups.length;
+	}
+	return count + quizGroupIndex + 1;
+};
+
 export const getQuestionNumber = (
 	quizList: Quiz[],
 	quizIndex: number,

@@ -7,7 +7,7 @@ import {
 	useContext,
 	useEffect, // Import useContext
 } from "react";
-import { FillingGroup, MultipleChoiceGroup, Quiz } from "@/app/interface/quiz";
+import { Quiz, Test } from "@/app/interface/quiz";
 import { Category, Skill } from "@/app/interface/interfaces";
 
 interface QuizContextType {
@@ -15,7 +15,6 @@ interface QuizContextType {
 	setQuizList: Dispatch<SetStateAction<Quiz[]>>;
 	currentQuizIndex: number;
 	setCurrentQuizIndex: Dispatch<SetStateAction<number>>;
-	addQuiz: (newQuiz: Quiz) => void;
 }
 
 const QuizContext = createContext<QuizContextType | null>(null);
@@ -31,27 +30,17 @@ export const useQuizData = () => {
 export const QuizDataProvider = ({ children }: { children: ReactNode }) => {
 	const [quizList, setQuizList] = useState<Quiz[]>([
 		{
-			id: undefined,
-			content: "bla 1",
-			category: Category.IELTS,
-			tag: "",
-			skill: Skill.READING,
-			groups: [],
-		},
-		{
-			id: undefined,
-			content: "bla 2",
+			content: "",
 			category: Category.IELTS,
 			tag: "",
 			skill: Skill.READING,
 			groups: [],
 		},
 	]);
+
 	const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
 
-	const addQuiz = (newQuiz: Quiz) => {
-		setQuizList([...quizList, newQuiz]);
-	};
+	const [currentTest, setCurrentTest] = useState<Test | null>(null);
 
 	return (
 		<QuizContext.Provider
@@ -60,7 +49,6 @@ export const QuizDataProvider = ({ children }: { children: ReactNode }) => {
 				setQuizList,
 				currentQuizIndex,
 				setCurrentQuizIndex,
-				addQuiz,
 			}}>
 			{children}
 		</QuizContext.Provider>

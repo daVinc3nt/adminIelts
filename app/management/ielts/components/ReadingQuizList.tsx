@@ -5,24 +5,25 @@ import { useDraggable } from "react-use-draggable-scroll";
 import { Quiz } from "@/app/interface/quiz";
 import { Category, Skill } from "@/app/interface/interfaces";
 
-export default function QuizList() {
+interface QuizListProps {}
+
+export default function ReadingQuizList({}: QuizListProps) {
 	const Tabref =
 		useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
 	const { events } = useDraggable(Tabref);
 
-	const { quizList, addQuiz, currentQuizIndex, setCurrentQuizIndex } =
+	const { quizList, setQuizList, currentQuizIndex, setCurrentQuizIndex } =
 		useQuizData();
 
 	const addReadingQuiz = () => {
 		const newReadingQuiz: Quiz = {
-			id: undefined,
 			content: "",
 			category: Category.IELTS,
 			tag: "",
 			skill: Skill.READING,
 			groups: [],
 		};
-		addQuiz(newReadingQuiz);
+		setQuizList([...quizList, newReadingQuiz]);
 	};
 
 	const onSelectQuiz = (index: number) => {
@@ -33,7 +34,7 @@ export default function QuizList() {
 		<div className="flex flex-row w-full gap-2 pt-2">
 			<button
 				title="Add Part"
-				className="flex items-center justify-center rounded-full dark:bg-foreground-red size-8 bg-foreground-blue"
+				className="flex items-center justify-center duration-200 rounded-full dark:bg-foreground-red size-8 bg-foreground-blue"
 				onClick={() => addReadingQuiz()}>
 				<BsPlus size={35} color="white" strokeWidth={0.5} />
 			</button>
@@ -46,8 +47,8 @@ export default function QuizList() {
 						<div
 							onClick={() => onSelectQuiz(index)}
 							key={index}
-							className={`inline-block w-20 h-8 p-1 mr-2 text-center rounded-md shadow-md cursor-pointer  ${currentQuizIndex == index ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-mecury-gray duration-200"}`}>
-							Part {index + 1}
+							className={`inline-block w-fit h-8 px-2 py-1 mr-2 text-center rounded-md shadow-md cursor-pointer duration-200 ${currentQuizIndex == index ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-mecury-gray"}`}>
+							Reading Part {index + 1}
 						</div>
 					);
 				})}

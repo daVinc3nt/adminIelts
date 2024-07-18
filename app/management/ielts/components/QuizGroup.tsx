@@ -13,26 +13,42 @@ export default function QuizGroup({ quizIndex }: QuizGroupProps) {
 	const { quizList, setQuizList } = useQuizData();
 
 	const addFillingGroup = () => {
-		const newGroup: FillingGroup = {
-			type: QuizType.FILLING,
-			question: "",
-			startFrom: 0,
-			quizzes: [],
-			quizId: quizList[quizIndex].id,
-		};
+		const newGroup: FillingGroup =
+			quizList[quizIndex].id == undefined
+				? {
+						type: QuizType.FILLING,
+						question: "",
+						startFrom: 0,
+						quizzes: [],
+					}
+				: {
+						type: QuizType.FILLING,
+						question: "",
+						startFrom: 0,
+						quizzes: [],
+						quizId: quizList[quizIndex].id,
+					};
 		const newQuizList = [...quizList];
 		newQuizList[quizIndex].groups.push(newGroup);
 		setQuizList(newQuizList);
 	};
 
 	const addMultipleChoiceGroup = () => {
-		const newGroup: MultipleChoiceGroup = {
-			type: QuizType.MULTIPLE_CHOICE,
-			question: "",
-			startFrom: 0,
-			quizzes: [],
-			quizId: quizList[quizIndex].id,
-		};
+		const newGroup: MultipleChoiceGroup =
+			quizList[quizIndex].id == undefined
+				? {
+						type: QuizType.MULTIPLE_CHOICE,
+						question: "",
+						startFrom: 0,
+						quizzes: [],
+					}
+				: {
+						type: QuizType.MULTIPLE_CHOICE,
+						question: "",
+						startFrom: 0,
+						quizzes: [],
+						quizId: quizList[quizIndex].id,
+					};
 		const newQuizList = [...quizList];
 		newQuizList[quizIndex].groups.push(newGroup);
 		setQuizList(newQuizList);

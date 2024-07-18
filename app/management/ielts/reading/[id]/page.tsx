@@ -1,71 +1,64 @@
 "use client";
 import { QuizDataProvider, useQuizData } from "../../provider/QuizDataProvider";
-import QuizList from "../../components/QuizList";
+import ReadingQuizList from "../../components/ReadingQuizList";
 import QuizContent from "../../components/QuizContent";
 import QuizGroup from "../../components/QuizGroup";
 import { Fragment, useEffect } from "react";
-import { getQuestionNumber, quizDataRecieve2Quiz } from "@/app/interface/quiz";
+import { QuizDataRecieve, quizDataRecieve2Quiz } from "@/app/interface/quiz";
+import ReadingMenuBar from "../../components/ReadingMenuBar";
+import { TestOperation } from "@/app/interface/main";
+import { Quiz } from "@/app/interface/quiz";
 
-export default function Page() {
+export default function Page({ params }: { params: { id: string } }) {
 	return (
 		<QuizDataProvider>
-			<QuizManagement />
+			<QuizManagement id={params.id} />
 		</QuizDataProvider>
 	);
 }
 
-function QuizManagement() {
+interface QuizManagementProps {
+	id: string;
+}
+
+function QuizManagement({ id }: QuizManagementProps) {
 	const { quizList, currentQuizIndex, setQuizList } = useQuizData();
 
 	useEffect(() => {
-		const newQuizList = [];
-		newQuizList.push(quizDataRecieve2Quiz(data));
-		setQuizList(newQuizList);
-	}, []);
+		let fetchdata = true;
 
-	const onSave = () => {
-		let newQuizList = [...quizList];
-		newQuizList.forEach((quiz, quizindex) => {
-			quiz.groups.forEach((group, groupIndex) => {
-				group.startFrom = getQuestionNumber(
-					newQuizList,
-					quizindex,
-					groupIndex,
-					0
-				);
-			});
-		});
-		console.log(newQuizList);
-		setQuizList(newQuizList);
-	};
+		// if (fetchdata) {
+		// 	const testOperation = new TestOperation();
+		// 	testOperation.findOne(id as any, testToken).then((data) => {
+		// 		console.log(data);
+		// 		if (data.data.reading) {
+		// 			const quizData = data.data.reading as QuizDataRecieve[];
+		// 			let quizList: Quiz[] = [];
+		// 			quizData.forEach((quizdata) => {
+		// 				const quiz = quizDataRecieve2Quiz(quizdata);
+		// 				quizList.push(quiz);
+		// 			});
+		// 			setQuizList(quizList);
+		// 		}
+		// 	});
+		// }
+
+		return () => {
+			fetchdata = false;
+		};
+	}, []);
 
 	return (
 		<main className="flex items-center justify-center flex-1">
 			<div className="flex flex-col items-center w-11/12 min-h-screen gap-4 py-4">
 				<div className="flex flex-col w-full gap-1 h-fit">
-					<div className="flex flex-row gap-2 cursor-pointer">
-						<span
-							onClick={() => onSave()}
-							className="px-1 rounded-md hover:text-white dark:hover:bg-foreground-red hover:bg-foreground-blue">
-							Save & exit
-						</span>
-						<span className="px-1 rounded-md hover:text-white dark:hover:bg-foreground-red hover:bg-foreground-blue">
-							Save
-						</span>
-						<span className="px-1 rounded-md hover:text-white dark:hover:bg-foreground-red hover:bg-foreground-blue">
-							Edit test detail
-						</span>
-					</div>
+					<ReadingMenuBar />
 
 					<hr className="w-full border-[0.5px] border-gray-200" />
 
 					<div className="flex flex-row w-full gap-8 h-fit">
 						<div className="flex flex-col w-2/3">
-							<QuizList />
-
-							<span className="text-3xl font-bold">
-								IELTS test very very very long ass name
-							</span>
+							<ReadingQuizList />
 						</div>
 
 						<div className="flex-1 m-1"></div>
@@ -73,7 +66,7 @@ function QuizManagement() {
 				</div>
 
 				<div className="flex flex-row w-full gap-8 h-fit">
-					{quizList.map((quiz, index) => {
+					{quizList.map((_, index) => {
 						if (index != currentQuizIndex) return null;
 						return (
 							<Fragment key={index}>
@@ -87,6 +80,9 @@ function QuizManagement() {
 		</main>
 	);
 }
+
+const testToken =
+	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIwOTgxMTE1LCJleHAiOjE3NTI1MTcxMTV9.VHdXs5y2Vey-YjmqLN7Uxn1kF1dC-TXZF0ro9_u5mJQ";
 
 const data = {
 	id: "f6c113a6-4a5a-423e-b666-92845f9b5054",

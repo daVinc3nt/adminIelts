@@ -1,6 +1,11 @@
 import { useQuizData } from "../provider/QuizDataProvider";
 import TextArea from "@/components/TextArea/TextArea";
-import { FillingQuiz, getQuestionNumber, Quiz } from "@/app/interface/quiz";
+import {
+	FillingQuiz,
+	getQuestionGroupNumber,
+	getQuestionNumber,
+	Quiz,
+} from "@/app/interface/quiz";
 import { BsThreeDots } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef } from "react";
@@ -70,9 +75,20 @@ export default function FillingQuizGroup({
 		<div className="flex flex-col items-center w-full gap-6 h-fit">
 			<div className="flex flex-col w-full h-fit">
 				<div className="flex flex-row items-center justify-between w-full p-2 h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 rounded-t-md">
-					<span className="text-2xl font-bold text-white ">
-						Filling Question Group
-					</span>
+					<div className="flex flex-col w-full h-fit">
+						<span className="text-2xl font-bold text-white ">
+							Question Group{" "}
+							{getQuestionGroupNumber(
+								quizList,
+								quizIndex,
+								quizGroupIndex
+							)}
+							:
+						</span>
+						<span className="text-base font-semibold text-gray-400 ">
+							Filling
+						</span>
+					</div>
 					<details ref={quizGroupSettingRef} className="relative">
 						<summary className="list-none">
 							<BsThreeDots className="p-1 text-white size-8" />
@@ -184,10 +200,10 @@ function FillingQuestion({
 	};
 
 	return (
-		<div className="flex flex-col w-full gap-1 bg-white rounded-md shadow-md h-fit dark:bg-pot-black">
-			<div className="flex flex-col w-full p-2 text-white rounded-t-md h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200">
+		<div className="flex flex-col w-full gap-1 duration-200 bg-white border rounded-md shadow-md h-fit dark:bg-pot-black border-foreground-blue dark:border-foreground-red">
+			<div className="flex flex-col w-full p-2 text-black rounded-t-md h-fit dark:text-gray-200">
 				<div className="flex flex-row items-center justify-between w-full h-fit">
-					<span className="text-xl font-semibold">
+					<span className="text-xl font-semibold duration-200">
 						Filling question{" "}
 						{getQuestionNumber(
 							quizList,
@@ -198,7 +214,7 @@ function FillingQuestion({
 					</span>
 					<details ref={questionSettingRef} className="relative">
 						<summary className="list-none">
-							<BsThreeDots className="p-1 text-white size-8" />
+							<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
 						</summary>
 						<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
 							<button
@@ -217,10 +233,11 @@ function FillingQuestion({
 					}
 					onChangeInput={onChangeDescription}
 					placeholder="Type in your question here or leave it blank"
-					className="text-base border-transparent bg-foreground-blue dark:bg-foreground-red focus:border-transparent focus:ring-transparent dark:placeholder:text-gray-300"
+					className="text-base bg-white border-transparent dark:bg-pot-black focus:border-transparent focus:ring-transparent dark:placeholder:text-gray-300"
 				/>
 			</div>
-			<div className="flex flex-col w-full gap-2 px-4 py-2 h-fit ">
+			<div className="flex flex-col w-full gap-4 p-4 pt-0 h-fit ">
+				<hr className="w-full border-t border-gray-200 dark:border-gray-400" />
 				<div className="flex flex-row items-center w-full gap-2 h-fit">
 					<span className="text-base text-gray-400">Answer:</span>
 					<TextArea

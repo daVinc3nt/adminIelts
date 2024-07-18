@@ -27,7 +27,7 @@ export default function QuizContent({ quizIndex }: QuizContentProps) {
 
 	return (
 		<div className="flex flex-col w-1/2 h-fit">
-			<div className="flex flex-row items-center w-full p-2 h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 rounded-t-md">
+			<div className="flex flex-row items-center w-full p-2 duration-200 h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 rounded-t-md">
 				<span className="text-2xl font-bold text-white ">
 					Part {currentQuizIndex + 1} Paragraph
 				</span>

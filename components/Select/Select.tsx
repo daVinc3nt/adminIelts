@@ -61,13 +61,13 @@ export default function Select({
 
 	return (
 		<div
-			className={`relative border-2 rounded-md min-w-fit w-full cursor-pointer bg-white shadow-sm
-			${open ? "border-red-500 ring-1 ring-red-500" : "border"}
+			className={`relative border-2 rounded-md min-w-fit w-full cursor-pointer bg-foreground-blue dark:bg-foreground-red shadow-md
+			${open ? "border-foreground-blue dark:border-foreground-red" : "border-transparent"}
 			`}>
 			<div
 				onClick={openDropdown}
 				onBlur={onBlur}
-				className="flex flex-row items-center justify-start gap-2 px-2 py-2 control">
+				className="flex flex-row items-center justify-start gap-2 px-2 py-1 control">
 				<input
 					ref={inputRef}
 					type="text"
@@ -78,24 +78,23 @@ export default function Select({
 					}
 					value={searchValue}
 					onChange={(e) => setSearchValue(e.target.value)}
-					className={`w-full text-base border-none outline-none cursor-pointer mr-auto
-					${input == "" ? "placeholder-gray-400" : "placeholder-black"}`}
+					className={`w-full text-base border-none outline-none cursor-pointer mr-auto bg-foreground-blue dark:bg-foreground-red placeholder-white dark:placeholder-gray-200 text-white dark:text-gray-200`}
 				/>
 
 				<span className="w-0 h-5 border border-gray-200" />
 
 				<FaAngleDown
 					size={20}
-					className={`hover:text-gray-500 ${
-						open ? "text-gray-500" : "text-gray-200"
+					className={`hover:text-gray-400 ${
+						open ? "text-gray-400" : "text-gray-200"
 					}`}
 				/>
 			</div>
 
 			{open && (
-				<div className="w-full absolute left-0 top-12 max-h-[162px] border-2 border-red-400 overflow-hidden rounded-md shadow-md shadow-gray-100 option bg-white">
+				<div className="absolute left-0 w-full overflow-hidden bg-white rounded-md shadow-md top-10 h-fit option dark:bg-gray-22">
 					<div
-						className={`flex flex-col w-full overflow-y-scroll  max-h-[162px]`}>
+						className={`flex flex-col w-full overflow-y-scroll  h-fit scrollbar-hide`}>
 						{option.map((item, index) => {
 							if (!containSearchValue(item.label)) return null;
 
@@ -105,7 +104,7 @@ export default function Select({
 									onClick={() =>
 										selectValue(item.value, index)
 									}
-									className={`${input == item.value ? "bg-red-200" : ""} w-full px-3 py-2 h-fit hover:bg-red-200`}>
+									className={`${input == item.value ? "bg-foreground-blue dark:bg-foreground-red text-white" : "text-black hover:text-white"} w-full px-3 py-1 h-fit hover:bg-foreground-blue dark:hover:bg-foreground-red  dark:text-gray-200`}>
 									{item.label}
 								</div>
 							);

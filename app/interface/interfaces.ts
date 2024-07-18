@@ -86,7 +86,7 @@ export interface CreateFillingQuiz {
 }
 
 export interface CreateFillingGroup {
-	type: QuizType;
+	type: QuizType.FILLING;
 	question: String;
 	startFrom: Number;
 	quizzes: CreateFillingQuiz[];
@@ -102,7 +102,7 @@ export interface UpdateFillingQuiz {
 
 export interface UpdateFillingGroup {
 	id?: UUID;
-	type?: QuizType;
+	type?: QuizType.FILLING;
 	question?: String;
 	startFrom?: Number;
 	quizzes?: UpdateFillingQuiz[];
@@ -116,7 +116,7 @@ export interface CreateMultipleChoiceQuiz {
 	explaination: string;
 }
 export interface CreateMultipleChoiceGroup {
-	type: QuizType;
+	type: QuizType.MULTIPLE_CHOICE;
 	question: String;
 	startFrom: Number;
 	quizzes: CreateMultipleChoiceQuiz[];
@@ -125,7 +125,7 @@ export interface CreateMultipleChoiceGroup {
 
 export interface UpdateMultipleChoiceGroup {
 	id?: UUID;
-	type?: QuizType;
+	type?: QuizType.MULTIPLE_CHOICE;
 	question?: String;
 	startFrom?: Number;
 	quizzes?: UpdateMultipleChoiceQuiz[];

@@ -1,14 +1,11 @@
 "use client";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { useUserData } from "../provider/UserDataProvider";
 import { UserInformation } from "@/app/interface/user";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { on } from "events";
 
 export default function UserList() {
-	const { loadMore, userInforList } = useUserData();
-
 	return (
 		<div className="flex flex-col items-center w-full px-4 py-2 duration-200 bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-112 h-fit dark:bg-pot-black">
 			<div className="flex flex-row items-center w-full gap-2 py-2 font-medium text-gray-400 h-fit">
@@ -24,22 +21,12 @@ export default function UserList() {
 			</div>
 			<hr className="w-full my-1 border border-gray-200 dark:border-gray-400" />
 			<List />
-			<div className="flex items-center justify-center w-full">
-				{userInforList == null ||
-					(userInforList.length != 0 && (
-						<button
-							onClick={() => loadMore()}
-							className="p-2 mt-4 duration-200 bg-white rounded-md shadow-md dark:bg-zinc-800 text-pot-black dark:text-gray-200">
-							Load more
-						</button>
-					))}
-			</div>
 		</div>
 	);
 }
 
 function List() {
-	const { userInforList, setCurrentUser } = useUserData();
+	const { userInforList } = useUserData();
 
 	if (!userInforList) return null;
 
@@ -68,7 +55,7 @@ function List() {
 							{user.roles.map((role, index) => (
 								<div
 									key={index}
-									className="p-1 text-xs text-white bg-foreground-blue dark:bg-foreground-red rounded-md">
+									className="p-1 text-xs text-white rounded-md bg-foreground-blue dark:bg-foreground-red">
 									{
 										roleLabel.find(
 											(label) => label.value === role.role

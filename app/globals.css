@@ -39,3 +39,29 @@ select:-webkit-autofill {
   }
 }
 
+.main-container {
+	font-family: 'Lato';
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.ck-content {
+	font-family: 'Roboto';
+	line-height: 1.6;
+	word-break: break-word;
+}
+
+.ck-content h1 {
+  font-size: xx-large;
+  font-weight: bold;
+}
+.ck-content h2 {
+  font-size: x-large;
+  font-weight: bold;
+}
+.ck-content h3 {
+  font-size: larger;
+  font-weight: bold;
+}
+
