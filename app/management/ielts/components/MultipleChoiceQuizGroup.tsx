@@ -18,6 +18,7 @@ import {
 } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { MdDone } from "react-icons/md";
+import { Skill } from "@/app/interface/interfaces";
 
 interface MultipleChoiceQuizGroupProps {
 	quizIndex: number;
@@ -92,7 +93,8 @@ export default function MultipleChoiceQuizGroup({
 							{getQuestionGroupNumber(
 								quizList,
 								quizIndex,
-								quizGroupIndex
+								quizGroupIndex,
+								quizList[quizIndex].skill as Skill
 							)}
 							:
 						</span>
@@ -238,7 +240,8 @@ function MultipleChoiceQuestion({
 							quizList,
 							quizIndex,
 							quizGroupIndex,
-							multipleChoiceIndex
+							multipleChoiceIndex,
+							quizList[quizIndex].skill
 						) + ":"}
 					</span>
 					<details ref={questionSettingRef} className="relative">

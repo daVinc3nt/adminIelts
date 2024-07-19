@@ -1,25 +1,21 @@
 import { useQuizData } from "../provider/QuizDataProvider";
 import TextArea from "@/components/TextArea/TextArea";
 import {
-	FillingQuiz,
 	getQuestionGroupNumber,
 	getQuestionNumber,
-	Quiz,
 } from "@/app/interface/quiz";
 import { BsThreeDots } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef } from "react";
 import { Skill } from "@/app/interface/interfaces";
 
-interface FillingQuizGroupProps {
+interface SpeakingQuizGroupProps {
 	quizIndex: number;
-	quizGroupIndex: number;
 }
 
-export default function FillingQuizGroup({
+export default function SpeakingQuizGroup({
 	quizIndex,
-	quizGroupIndex,
-}: FillingQuizGroupProps) {
+}: SpeakingQuizGroupProps) {
 	const CK5Editor = useMemo(
 		() =>
 			dynamic(() => import("@/components/CK5Editor/CK5Editor"), {
@@ -28,28 +24,11 @@ export default function FillingQuizGroup({
 		[]
 	);
 
-	const quizGroupSettingRef = useRef<HTMLDetailsElement>(null);
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				quizGroupSettingRef.current &&
-				!quizGroupSettingRef.current.contains(event.target as Node)
-			) {
-				quizGroupSettingRef.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
-
 	const { quizList, setQuizList } = useQuizData();
 
 	const onChangeQuestion = (question: string) => {
 		const newQuizList = [...quizList];
-		newQuizList[quizIndex].groups[quizGroupIndex].question = question;
+		newQuizList[quizIndex].groups[0].question = question;
 		setQuizList(newQuizList);
 	};
 
@@ -60,15 +39,7 @@ export default function FillingQuizGroup({
 			explaination: "",
 		};
 		const newQuizList = [...quizList];
-		newQuizList[quizIndex].groups[quizGroupIndex].quizzes.push(
-			newFillingQuiz as any
-		);
-		setQuizList(newQuizList);
-	};
-
-	const removeQuizGroup = () => {
-		const newQuizList = [...quizList];
-		newQuizList[quizIndex].groups.splice(quizGroupIndex, 1);
+		newQuizList[quizIndex].groups[0].quizzes.push(newFillingQuiz as any);
 		setQuizList(newQuizList);
 	};
 
@@ -82,51 +53,32 @@ export default function FillingQuizGroup({
 							{getQuestionGroupNumber(
 								quizList,
 								quizIndex,
-								quizGroupIndex,
+								0,
 								quizList[quizIndex].skill as Skill
 							)}
 							:
 						</span>
 						<span className="text-base font-semibold text-gray-400 ">
-							Filling
+							Speaking
 						</span>
 					</div>
-					<details ref={quizGroupSettingRef} className="relative">
-						<summary className="list-none">
-							<BsThreeDots className="p-1 text-white size-8" />
-						</summary>
-						<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
-							<button className="flex items-start justify-start w-full p-2 text-sm rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Scan question
-							</button>
-							<button
-								onClick={() => removeQuizGroup()}
-								className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Delete group
-							</button>
-						</div>
-					</details>
 				</div>
 				<CK5Editor
-					content={
-						quizList[quizIndex].groups[quizGroupIndex].question
-					}
+					content={quizList[quizIndex].groups[0].question}
 					onChangeContent={onChangeQuestion}
 				/>
 			</div>
 			<div className="flex flex-col w-full gap-8 h-fit">
-				{quizList[quizIndex].groups[quizGroupIndex].quizzes.map(
-					(_, index) => {
-						return (
-							<FillingQuestion
-								key={index}
-								quizIndex={quizIndex}
-								quizGroupIndex={quizGroupIndex}
-								fillingIndex={index}
-							/>
-						);
-					}
-				)}
+				{quizList[quizIndex].groups[0].quizzes.map((_, index) => {
+					return (
+						<FillingQuestion
+							key={index}
+							quizIndex={quizIndex}
+							quizGroupIndex={0}
+							fillingIndex={index}
+						/>
+					);
+				})}
 			</div>
 
 			<button
@@ -176,22 +128,6 @@ function FillingQuestion({
 		setQuizList(newQuizList);
 	};
 
-	const onChangeAnswer = (answer: string) => {
-		const newQuizList = [...quizList];
-		newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-			fillingIndex
-		].answer = answer;
-		setQuizList(newQuizList);
-	};
-
-	const onChangeExplaination = (explaination: string) => {
-		const newQuizList = [...quizList];
-		newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-			fillingIndex
-		].explaination = explaination;
-		setQuizList(newQuizList);
-	};
-
 	const removeQuestion = () => {
 		const newQuizList = [...quizList];
 		newQuizList[quizIndex].groups[quizGroupIndex].quizzes.splice(
@@ -206,7 +142,7 @@ function FillingQuestion({
 			<div className="flex flex-col w-full p-2 text-black rounded-t-md h-fit dark:text-gray-200">
 				<div className="flex flex-row items-center justify-between w-full h-fit">
 					<span className="text-xl font-semibold duration-200">
-						Filling question{" "}
+						Speaking question{" "}
 						{getQuestionNumber(
 							quizList,
 							quizIndex,
@@ -235,40 +171,9 @@ function FillingQuestion({
 						].description
 					}
 					onChangeInput={onChangeDescription}
-					placeholder="Type in your question here or leave it blank"
+					placeholder="Type in your speaking question here..."
 					className="text-base bg-white border-transparent dark:bg-pot-black focus:border-transparent focus:ring-transparent dark:placeholder:text-gray-300"
 				/>
-			</div>
-			<div className="flex flex-col w-full gap-4 p-4 pt-0 h-fit ">
-				<hr className="w-full border-t border-gray-200 dark:border-gray-400" />
-				<div className="flex flex-row items-center w-full gap-2 h-fit">
-					<span className="text-base text-gray-400">Answer:</span>
-					<TextArea
-						value={
-							(
-								quizList[quizIndex].groups[quizGroupIndex]
-									.quizzes[fillingIndex] as FillingQuiz
-							).answer
-						}
-						onChangeInput={onChangeAnswer}
-						className="flex-1 text-sm text-gray-400 dark:bg-pot-black focus:border-foreground-blue focus:ring-foreground-blue dark:focus:border-foreground-red dark:focus:ring-foreground-red"
-					/>
-				</div>
-				<div className="flex flex-row items-center w-full gap-2 h-fit">
-					<span className="text-base text-gray-400">
-						Explaination:
-					</span>
-					<TextArea
-						value={
-							(
-								quizList[quizIndex].groups[quizGroupIndex]
-									.quizzes[fillingIndex] as FillingQuiz
-							).explaination
-						}
-						onChangeInput={onChangeExplaination}
-						className="flex-1 text-sm text-gray-400 dark:bg-pot-black focus:border-foreground-blue focus:ring-foreground-blue dark:focus:border-foreground-red dark:focus:ring-foreground-red"
-					/>
-				</div>
 			</div>
 		</div>
 	);

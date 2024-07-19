@@ -261,7 +261,7 @@ export class QuizOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -269,7 +269,7 @@ export class QuizOperation {
 			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -291,7 +291,7 @@ export class QuizOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -299,7 +299,7 @@ export class QuizOperation {
 			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -320,7 +320,7 @@ export class QuizOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -328,7 +328,7 @@ export class QuizOperation {
 			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -350,7 +350,7 @@ export class QuizOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -358,7 +358,7 @@ export class QuizOperation {
 			console.log("Error updating account: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -379,7 +379,7 @@ export class QuizOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -387,7 +387,7 @@ export class QuizOperation {
 			console.log("Error updating account: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -417,7 +417,7 @@ export class TestOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -425,7 +425,7 @@ export class TestOperation {
 			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -447,7 +447,7 @@ export class TestOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -455,7 +455,7 @@ export class TestOperation {
 			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -483,7 +483,7 @@ export class TestOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -491,7 +491,7 @@ export class TestOperation {
 			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -512,7 +512,7 @@ export class TestOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -520,7 +520,7 @@ export class TestOperation {
 			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -542,7 +542,7 @@ export class TestOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -550,7 +550,7 @@ export class TestOperation {
 			console.log("Error updating account: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -571,7 +571,7 @@ export class TestOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -579,7 +579,7 @@ export class TestOperation {
 			console.log("Error updating account: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -609,7 +609,7 @@ export class RecordOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -617,7 +617,7 @@ export class RecordOperation {
 			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -639,7 +639,7 @@ export class RecordOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -647,7 +647,7 @@ export class RecordOperation {
 			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -669,7 +669,7 @@ export class RecordOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -677,7 +677,7 @@ export class RecordOperation {
 			console.log("Error updating account: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};
@@ -698,7 +698,7 @@ export class RecordOperation {
 			);
 
 			return {
-				error: response.data.error,
+				success: response.data.success,
 				message: response.data.message,
 				data: response.data.data,
 			};
@@ -706,7 +706,7 @@ export class RecordOperation {
 			console.log("Error updating account: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
-				error: error?.response?.data,
+				success: error?.response?.data,
 				request: error?.request,
 				status: error.response ? error.response.status : null,
 			};

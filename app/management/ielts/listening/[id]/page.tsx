@@ -6,7 +6,7 @@ import QuizGroup from "../../components/QuizGroup";
 import { Fragment, useEffect } from "react";
 import { QuizDataRecieve, quizDataRecieve2Quiz } from "@/app/interface/quiz";
 import ReadingMenuBar from "../../components/MenuBar";
-import { QuizOperation, TestOperation } from "@/app/interface/main";
+import { TestOperation } from "@/app/interface/main";
 import { Quiz } from "@/app/interface/quiz";
 import { Category, Skill } from "@/app/interface/interfaces";
 
@@ -26,16 +26,7 @@ function QuizManagement({ id }: QuizManagementProps) {
 	const { quizList, currentQuizIndex, setQuizList } = useQuizData();
 
 	useEffect(() => {
-		const quizOperation = new QuizOperation();
-		quizOperation.findOne(id as any, testToken).then((response) => {
-			console.log(response);
-			if (response.data && response.data.id) {
-				const quizData = response.data as QuizDataRecieve;
-				let quizList: Quiz[] = [];
-				quizList.push(quizDataRecieve2Quiz(quizData));
-				setQuizList(quizList);
-			}
-		});
+		const testOperation = new TestOperation();
 	}, []);
 
 	return (
@@ -51,7 +42,7 @@ function QuizManagement({ id }: QuizManagementProps) {
 					</div>
 				</div>
 
-				<div className="flex flex-row w-full gap-8 h-fit">
+				<div className="flex flex-row w-full gap-8 h-fit justify-center">
 					{quizList.map((_, index) => {
 						if (index != currentQuizIndex) return null;
 						return (
@@ -69,5 +60,3 @@ function QuizManagement({ id }: QuizManagementProps) {
 
 const testToken =
 	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIwOTgxMTE1LCJleHAiOjE3NTI1MTcxMTV9.VHdXs5y2Vey-YjmqLN7Uxn1kF1dC-TXZF0ro9_u5mJQ";
-
-const testPart = "26d40bbd-27e5-4b4d-b4aa-4c835075c255";

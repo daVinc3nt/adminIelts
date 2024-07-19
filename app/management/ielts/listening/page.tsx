@@ -30,7 +30,7 @@ function QuizManagement() {
 						<div className="flex flex-col w-2/3">
 							<QuizList
 								category={Category.IELTS}
-								skill={Skill.READING}
+								skill={Skill.LISTENING}
 							/>
 						</div>
 

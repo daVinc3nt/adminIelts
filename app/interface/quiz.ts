@@ -1,4 +1,4 @@
-import { Category, QuizType, Skill } from "./interfaces";
+import { Category, QuizType, Skill, UpdateTest } from "./interfaces";
 
 export interface FillingQuiz {
 	id?: string;
@@ -13,7 +13,6 @@ export interface FillingGroup {
 	question: string;
 	startFrom: Number;
 	quizzes: FillingQuiz[];
-	quizId?: string;
 }
 
 export interface MultipleChoiceQuiz {
@@ -31,7 +30,6 @@ export interface MultipleChoiceGroup {
 	question: string;
 	startFrom: Number;
 	quizzes: MultipleChoiceQuiz[];
-	quizId?: string;
 }
 
 export interface Quiz {
@@ -55,10 +53,12 @@ export interface Test {
 export const getQuestionGroupNumber = (
 	quizList: Quiz[],
 	quizIndex: number,
-	quizGroupIndex: number
+	quizGroupIndex: number,
+	skill: Skill
 ) => {
 	let count = 0;
 	for (let i = 0; i < quizIndex; i++) {
+		if (quizList[i].skill != skill) continue;
 		count += quizList[i].groups.length;
 	}
 	return count + quizGroupIndex + 1;
@@ -68,10 +68,12 @@ export const getQuestionNumber = (
 	quizList: Quiz[],
 	quizIndex: number,
 	quizGroupIndex: number,
-	multipleChoiceIndex: number
+	multipleChoiceIndex: number,
+	skill: Skill
 ) => {
 	let count = 0;
 	for (let i = 0; i < quizIndex; i++) {
+		if (quizList[i].skill != skill) continue;
 		for (let j = 0; j < quizList[i].groups.length; j++) {
 			count += quizList[i].groups[j].quizzes.length;
 		}
@@ -83,6 +85,108 @@ export const getQuestionNumber = (
 	return count + multipleChoiceIndex + 1;
 };
 
+interface MCQuizDataRecieve {
+	id: string;
+	description: string;
+	options: string[];
+	answer: string[];
+	numOfAnswers: number;
+	explaination: string;
+	groupId: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
+const MCQuizDataRecieve2MCQuiz = (
+	data: MCQuizDataRecieve
+): MultipleChoiceQuiz => {
+	return {
+		id: data.id,
+		description: data.description,
+		options: data.options,
+		answer: data.answer,
+		numOfAnswers: data.numOfAnswers,
+		explaination: data.explaination,
+	};
+};
+
+interface MultipleChoiceGroupDataRecieve {
+	id: string;
+	question: string;
+	startFrom: number;
+	order: string[];
+	quizId: string;
+	createdAt: string;
+	updatedAt: string;
+	quizzes: MCQuizDataRecieve[];
+}
+
+const MultipleChoiceGroupDataRecieve2MultipleChoiceGroup = (
+	data: MultipleChoiceGroupDataRecieve
+): MultipleChoiceGroup => {
+	return {
+		id: data.id,
+		type: QuizType.MULTIPLE_CHOICE,
+		question: data.question,
+		startFrom: data.startFrom,
+		quizzes: data.order.map((quizid) => {
+			for (let i = 0; i < data.quizzes.length; i++) {
+				if (data.quizzes[i].id == quizid) {
+					return MCQuizDataRecieve2MCQuiz(data.quizzes[i]);
+				}
+			}
+		}),
+	};
+};
+
+interface FQuizDataRecieve {
+	id: string;
+	description: string;
+	answer: string;
+	explaination: string;
+	groupId: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
+const FQuizDataRecieve2FQuiz = (data: FQuizDataRecieve): FillingQuiz => {
+	return {
+		id: data.id,
+		description: data.description,
+		answer: data.answer,
+		explaination: data.explaination,
+	};
+};
+
+interface FillingQuizDataRecieve {
+	id: string;
+	question: string;
+	startFrom: number;
+	order: string[];
+	quizId: string;
+	createdAt: string;
+	updatedAt: string;
+	quizzes: FQuizDataRecieve[];
+}
+
+const FillingQuizDataRecieve2FillingGroup = (
+	data: FillingQuizDataRecieve
+): FillingGroup => {
+	return {
+		id: data.id,
+		type: QuizType.FILLING,
+		question: data.question,
+		startFrom: data.startFrom,
+		quizzes: data.order.map((quizid) => {
+			for (let i = 0; i < data.quizzes.length; i++) {
+				if (data.quizzes[i].id == quizid) {
+					return FQuizDataRecieve2FQuiz(data.quizzes[i]);
+				}
+			}
+		}),
+	};
+};
+
 export interface QuizDataRecieve {
 	id: string;
 	category: string;
@@ -92,56 +196,11 @@ export interface QuizDataRecieve {
 	order: string[];
 	createdAt: string;
 	updatedAt: string;
-	multipleChoiceQuiz: {
-		id: string;
-		question: string;
-		startFrom: number;
-		order: string[];
-		quizId: string;
-		createdAt: string;
-		updatedAt: string;
-		quizzes: {
-			id: string;
-			description: string;
-			options: string[];
-			answer: string[];
-			numOfAnswers: number;
-			explaination: string;
-			groupId: string;
-			createdAt: string;
-			updatedAt: string;
-		}[];
-	}[];
-	fillingQuiz: {
-		id: string;
-		question: string;
-		startFrom: number;
-		order: string[];
-		quizId: string;
-		createdAt: string;
-		updatedAt: string;
-		quizzes: {
-			id: string;
-			description: string;
-			answer: string;
-			explaination: string;
-			groupId: string;
-			createdAt: string;
-			updatedAt: string;
-		}[];
-	}[];
-}
-export interface TestDataRecieve {
-	id: string;
-	createAt: string;
-	updatedAt: string;
-	reading: QuizDataRecieve[];
-	listening: QuizDataRecieve[];
-	writing: QuizDataRecieve[];
-	speaking: QuizDataRecieve[];
+	multipleChoiceQuiz: MultipleChoiceGroupDataRecieve[];
+	fillingQuiz: FillingQuizDataRecieve[];
 }
 
-export function quizDataRecieve2Quiz(data: QuizDataRecieve): Quiz {
+export const quizDataRecieve2Quiz = (data: QuizDataRecieve): Quiz => {
 	let newQuiz = {
 		id: data.id,
 		content: data.content,
@@ -158,65 +217,97 @@ export function quizDataRecieve2Quiz(data: QuizDataRecieve): Quiz {
 		let quizId = order[i];
 		for (let j = 0; j < data.multipleChoiceQuiz.length; j++) {
 			if (data.multipleChoiceQuiz[j].id == quizId) {
-				newQuiz.groups.push({
-					id: data.multipleChoiceQuiz[j].id,
-					type: QuizType.MULTIPLE_CHOICE,
-					question: data.multipleChoiceQuiz[j].question,
-					startFrom: data.multipleChoiceQuiz[j].startFrom,
-					quizId: data.multipleChoiceQuiz[j].quizId,
-					quizzes: data.multipleChoiceQuiz[j].quizzes.map((quiz) => {
-						return {
-							id: quiz.id,
-							description: quiz.description,
-							options: quiz.options,
-							answer: quiz.answer,
-							numOfAnswers: quiz.numOfAnswers,
-							explaination: quiz.explaination,
-						} as MultipleChoiceQuiz;
-					}),
-				} as MultipleChoiceGroup);
+				newQuiz.groups.push(
+					MultipleChoiceGroupDataRecieve2MultipleChoiceGroup(
+						data.multipleChoiceQuiz[j]
+					)
+				);
 				continue;
 			}
 		}
 		for (let j = 0; j < data.fillingQuiz.length; j++) {
 			if (data.fillingQuiz[j].id == quizId) {
-				newQuiz.groups.push({
-					id: data.fillingQuiz[j].id,
-					type: QuizType.FILLING,
-					question: data.fillingQuiz[j].question,
-					startFrom: data.fillingQuiz[j].startFrom,
-					quizId: data.fillingQuiz[j].quizId,
-					quizzes: data.fillingQuiz[j].quizzes.map((quiz) => {
-						return {
-							id: quiz.id,
-							description: quiz.description,
-							answer: quiz.answer,
-							explaination: quiz.explaination,
-						} as FillingQuiz;
-					}),
-				} as FillingGroup);
+				newQuiz.groups.push(
+					FillingQuizDataRecieve2FillingGroup(data.fillingQuiz[j])
+				);
 			}
 		}
 	}
 	return newQuiz;
+};
+
+export interface TestDataRecieve {
+	name: string;
+	id: string;
 }
 
-export function TestDataRecieve2Test(data: TestDataRecieve): Test {
+export const TestDataRecieve2Test = (
+	data: TestDataRecieve,
+	quizList: Quiz[]
+): UpdateTest => {
 	let newTest = {
-		id: data.id,
-		name: data.id,
-		reading: data.reading.map((quizData) => {
-			return quizDataRecieve2Quiz(quizData);
-		}),
-		listening: data.listening.map((quizData) => {
-			return quizDataRecieve2Quiz(quizData);
-		}),
-		writing: data.writing.map((quizData) => {
-			return quizDataRecieve2Quiz(quizData);
-		}),
-		speaking: data.speaking.map((quizData) => {
-			return quizDataRecieve2Quiz(quizData);
-		}),
+		name: data.name ? data.name : "",
+		reading: [],
+		listening: [],
+		writing: [],
+		speaking: [],
 	} as Test;
-	return newTest;
-}
+
+	for (let i = 0; i < quizList.length; i++) {
+		switch (quizList[i].skill) {
+			case Skill.READING:
+				newTest.reading.push(quizList[i]);
+				break;
+			case Skill.LISTENING:
+				newTest.listening.push(quizList[i]);
+				break;
+			case Skill.WRITING:
+				newTest.writing.push(quizList[i]);
+				break;
+			case Skill.SPEAKING:
+				newTest.speaking.push(quizList[i]);
+				break;
+		}
+	}
+	return newTest as any;
+};
+
+export const setStartNumber = (quizList: Quiz[]) => {
+	let readingQuiz = quizList.filter((quiz) => quiz.skill == Skill.READING);
+	let listeningQuiz = quizList.filter(
+		(quiz) => quiz.skill == Skill.LISTENING
+	);
+	let writingQuiz = quizList.filter((quiz) => quiz.skill == Skill.WRITING);
+	let speakingQuiz = quizList.filter((quiz) => quiz.skill == Skill.SPEAKING);
+
+	let count = 1;
+	readingQuiz.forEach((quiz) => {
+		quiz.groups.forEach((group) => {
+			group.startFrom = count;
+			count += group.quizzes.length;
+		});
+	});
+	count = 1;
+	listeningQuiz.forEach((quiz) => {
+		quiz.groups.forEach((group) => {
+			group.startFrom = count;
+			count += group.quizzes.length;
+		});
+	});
+	count = 1;
+	writingQuiz.forEach((quiz) => {
+		quiz.groups.forEach((group) => {
+			group.startFrom = count;
+			count += group.quizzes.length;
+		});
+	});
+	count = 1;
+	speakingQuiz.forEach((quiz) => {
+		quiz.groups.forEach((group) => {
+			group.startFrom = count;
+			count += group.quizzes.length;
+		});
+	});
+
+	return [...readingQuiz, ...listeningQuiz, ...writingQuiz, ...speakingQuiz];
+};

@@ -90,7 +90,6 @@ export interface CreateFillingGroup {
 	question: String;
 	startFrom: Number;
 	quizzes: CreateFillingQuiz[];
-	quizId: string;
 }
 
 export interface UpdateFillingQuiz {
@@ -120,7 +119,6 @@ export interface CreateMultipleChoiceGroup {
 	question: String;
 	startFrom: Number;
 	quizzes: CreateMultipleChoiceQuiz[];
-	quizId: string;
 }
 
 export interface UpdateMultipleChoiceGroup {
@@ -181,10 +179,10 @@ export interface CreateTest {
 
 export interface UpdateTest {
 	name?: string;
-	reading?: UUID[];
-	listening?: UUID[];
-	writing?: UUID[];
-	speaking?: UUID[];
+	reading?: UpdateQuiz[];
+	listening?: UpdateQuiz[];
+	writing?: UpdateQuiz[];
+	speaking?: UpdateQuiz[];
 }
 
 // Record Interface

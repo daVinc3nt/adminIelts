@@ -13,49 +13,31 @@ export default function QuizGroup({ quizIndex }: QuizGroupProps) {
 	const { quizList, setQuizList } = useQuizData();
 
 	const addFillingGroup = () => {
-		const newGroup: FillingGroup =
-			quizList[quizIndex].id == undefined
-				? {
-						type: QuizType.FILLING,
-						question: "",
-						startFrom: 0,
-						quizzes: [],
-					}
-				: {
-						type: QuizType.FILLING,
-						question: "",
-						startFrom: 0,
-						quizzes: [],
-						quizId: quizList[quizIndex].id,
-					};
+		const newGroup: FillingGroup = {
+			type: QuizType.FILLING,
+			question: "",
+			startFrom: 0,
+			quizzes: [],
+		};
 		const newQuizList = [...quizList];
 		newQuizList[quizIndex].groups.push(newGroup);
 		setQuizList(newQuizList);
 	};
 
 	const addMultipleChoiceGroup = () => {
-		const newGroup: MultipleChoiceGroup =
-			quizList[quizIndex].id == undefined
-				? {
-						type: QuizType.MULTIPLE_CHOICE,
-						question: "",
-						startFrom: 0,
-						quizzes: [],
-					}
-				: {
-						type: QuizType.MULTIPLE_CHOICE,
-						question: "",
-						startFrom: 0,
-						quizzes: [],
-						quizId: quizList[quizIndex].id,
-					};
+		const newGroup: MultipleChoiceGroup = {
+			type: QuizType.MULTIPLE_CHOICE,
+			question: "",
+			startFrom: 0,
+			quizzes: [],
+		};
 		const newQuizList = [...quizList];
 		newQuizList[quizIndex].groups.push(newGroup);
 		setQuizList(newQuizList);
 	};
 
 	return (
-		<div className="flex flex-col items-center w-1/2 gap-8 h-fit">
+		<div className="flex flex-col items-center w-full gap-8 h-fit">
 			{quizList[quizIndex].groups.map((group, index) => {
 				return (
 					<Fragment key={index}>
@@ -69,7 +51,7 @@ export default function QuizGroup({ quizIndex }: QuizGroupProps) {
 				);
 			})}
 
-			<div className="flex flex-row w-full gap-2">
+			<div className="flex flex-row w-full gap-2 items-center justify-center">
 				<button
 					onClick={() => addFillingGroup()}
 					className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">

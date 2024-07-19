@@ -7,7 +7,7 @@ import {
 	useContext,
 	useEffect, // Import useContext
 } from "react";
-import { Quiz, Test } from "@/app/interface/quiz";
+import { Quiz, Test, TestDataRecieve } from "@/app/interface/quiz";
 import { Category, Skill } from "@/app/interface/interfaces";
 
 interface QuizContextType {
@@ -15,6 +15,8 @@ interface QuizContextType {
 	setQuizList: Dispatch<SetStateAction<Quiz[]>>;
 	currentQuizIndex: number;
 	setCurrentQuizIndex: Dispatch<SetStateAction<number>>;
+	currentTest: TestDataRecieve;
+	setCurrentTest: Dispatch<SetStateAction<TestDataRecieve>>;
 }
 
 const QuizContext = createContext<QuizContextType | null>(null);
@@ -40,7 +42,9 @@ export const QuizDataProvider = ({ children }: { children: ReactNode }) => {
 
 	const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
 
-	const [currentTest, setCurrentTest] = useState<Test | null>(null);
+	const [currentTest, setCurrentTest] = useState<TestDataRecieve | null>(
+		null
+	);
 
 	return (
 		<QuizContext.Provider
@@ -49,6 +53,8 @@ export const QuizDataProvider = ({ children }: { children: ReactNode }) => {
 				setQuizList,
 				currentQuizIndex,
 				setCurrentQuizIndex,
+				currentTest,
+				setCurrentTest,
 			}}>
 			{children}
 		</QuizContext.Provider>

@@ -1,9 +1,3 @@
-import {
-	getQuestionNumber,
-	Quiz,
-	QuizDataRecieve,
-	quizDataRecieve2Quiz,
-} from "@/app/interface/quiz";
 import { useQuizData } from "../provider/QuizDataProvider";
 import { CreateQuiz, UpdateQuiz } from "@/app/interface/interfaces";
 import { QuizOperation } from "@/app/interface/main";
@@ -13,16 +7,6 @@ export default function ReadingMenuBar() {
 
 	const onSave = () => {
 		let newQuizList = [...quizList];
-		newQuizList.forEach((quiz, quizindex) => {
-			quiz.groups.forEach((group, groupIndex) => {
-				group.startFrom = getQuestionNumber(
-					newQuizList,
-					quizindex,
-					groupIndex,
-					0
-				);
-			});
-		});
 
 		// Save to server
 		newQuizList.forEach((quiz) => {
@@ -31,21 +15,9 @@ export default function ReadingMenuBar() {
 			if (quiz.id) {
 				quizOperation
 					.update(quiz.id as any, quiz as UpdateQuiz, testToken)
-					.then((data) => {
-						console.log(data);
-						if (data.data && data.data.reading) {
-							const quizData = data.data
-								.reading as QuizDataRecieve[];
-							let quizList: Quiz[] = [];
-							quizData.forEach((quizdata) => {
-								const quiz = quizDataRecieve2Quiz(quizdata);
-								quizList.push(quiz);
-							});
-							setQuizList(quizList);
-						}
+					.then((response) => {
+						console.log(response);
 					});
-			} else {
-				console.log("Create new quiz", JSON.stringify(quiz));
 			}
 		});
 
