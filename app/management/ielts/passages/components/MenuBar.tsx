@@ -1,4 +1,4 @@
-import { useQuizData } from "../provider/QuizDataProvider";
+import { useQuizData } from "../../provider/QuizDataProvider";
 import { CreateQuiz, UpdateQuiz } from "@/app/interface/interfaces";
 import { QuizOperation } from "@/app/interface/main";
 

@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useRef } from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { useUserData } from "../provider/UserDataProvider";
@@ -7,7 +6,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 export default function UserList() {
 	return (
-		<div className="flex flex-col items-center w-full px-4 py-2 duration-200 bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-112 h-fit dark:bg-pot-black">
+		<div className="flex flex-col items-center w-full px-4 py-2 duration-200 bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black h-[434px] dark:bg-pot-black">
 			<div className="flex flex-row items-center w-full gap-2 py-2 font-medium text-gray-400 h-fit">
 				<div className="flex items-center justify-center w-[3%]">
 					<div className="border-2 rounded-md border-foreground-blue dark:border-foreground-red size-5"></div>
@@ -140,4 +139,3 @@ function OptionButton({ user }: OptionButtonProps) {
 		</details>
 	);
 }
-

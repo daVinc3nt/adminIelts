@@ -1,12 +1,24 @@
 import Select from "@/components/Select/Select";
 import { useUserData } from "../provider/UserDataProvider";
 
+
+enum UserRole {
+	ADMIN = "Quản trị viên",
+	SYS_ADMIN = "Quản trị viên hệ thống",
+	EXAM_ADMIN = "Quản trị viên đề thi",
+	STUDENT = "Học viên",
+	PAID_USER = "Người dùng có trả phí",
+	NONPAID_USER = "Người dùng không trả phí",
+}
+
 const option = [
 	{ value: "", label: "All Role" },
-	{ value: "1", label: "Unpaid user" },
-	{ value: "2", label: "Paid user" },
-	{ value: "3", label: "Teacher" },
-	{ value: "3", label: "System Admin" },
+	{ value: UserRole.NONPAID_USER, label: "Non-paid user" },
+	{ value: UserRole.PAID_USER, label: "Paid user" },
+	{ value: UserRole.STUDENT, label: "Student" },
+	{ value: UserRole.ADMIN, label: "Admin" },
+	{ value: UserRole.EXAM_ADMIN, label: "Exam admin" },
+	{ value: UserRole.SYS_ADMIN, label: "System admin" },
 ];
 
 export default function SelectRoleButton() {

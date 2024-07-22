@@ -10,6 +10,7 @@ import { BsThreeDots } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef } from "react";
 import { Skill } from "@/app/interface/interfaces";
+import { RemoveStyleRegex } from "@/regex/IeltsRegex";
 
 interface FillingQuizGroupProps {
 	quizIndex: number;
@@ -72,6 +73,14 @@ export default function FillingQuizGroup({
 		setQuizList(newQuizList);
 	};
 
+	const removeStyle = () => {
+		const newQuizList = [...quizList];
+		newQuizList[quizIndex].groups[quizGroupIndex].question = newQuizList[
+			quizIndex
+		].groups[quizGroupIndex].question.replace(RemoveStyleRegex, "");
+		setQuizList(newQuizList);
+	};
+
 	return (
 		<div className="flex flex-col items-center w-full gap-6 h-fit">
 			<div className="flex flex-col w-full h-fit">
@@ -98,6 +107,11 @@ export default function FillingQuizGroup({
 						<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
 							<button className="flex items-start justify-start w-full p-2 text-sm rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
 								Scan question
+							</button>
+							<button
+								onClick={() => removeStyle()}
+								className="flex items-start justify-start w-full p-2 text-sm rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+								Remove style
 							</button>
 							<button
 								onClick={() => removeQuizGroup()}
@@ -170,34 +184,33 @@ function FillingQuestion({
 
 	const onChangeDescription = (description: string) => {
 		const newQuizList = [...quizList];
-		newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-			fillingIndex
-		].description = description;
+		const currentQuiz =
+			newQuizList[quizIndex].groups[quizGroupIndex].quizzes[fillingIndex];
+		currentQuiz.description = description;
 		setQuizList(newQuizList);
 	};
 
 	const onChangeAnswer = (answer: string) => {
 		const newQuizList = [...quizList];
-		newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-			fillingIndex
-		].answer = answer;
+		const currentQuiz =
+			newQuizList[quizIndex].groups[quizGroupIndex].quizzes[fillingIndex];
+		currentQuiz.answer = answer;
 		setQuizList(newQuizList);
 	};
 
 	const onChangeExplaination = (explaination: string) => {
 		const newQuizList = [...quizList];
-		newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-			fillingIndex
-		].explaination = explaination;
+		const currentQuiz =
+			newQuizList[quizIndex].groups[quizGroupIndex].quizzes[fillingIndex];
+		currentQuiz.explaination = explaination;
 		setQuizList(newQuizList);
 	};
 
 	const removeQuestion = () => {
 		const newQuizList = [...quizList];
-		newQuizList[quizIndex].groups[quizGroupIndex].quizzes.splice(
-			fillingIndex,
-			1
-		);
+		let currentGroup = newQuizList[quizIndex].groups[quizGroupIndex];
+		currentGroup.quizzes.splice(fillingIndex, 1);
+
 		setQuizList(newQuizList);
 	};
 
@@ -256,7 +269,7 @@ function FillingQuestion({
 				</div>
 				<div className="flex flex-row items-center w-full gap-2 h-fit">
 					<span className="text-base text-gray-400">
-						Explaination:
+						Explanation:
 					</span>
 					<TextArea
 						value={

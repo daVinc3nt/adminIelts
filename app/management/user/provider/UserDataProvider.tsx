@@ -1,8 +1,4 @@
-import {
-	SearchAddition,
-	SearchCriteria,
-	SearchPayload,
-} from "@/app/interface/interfaces";
+import { SearchCriteria, SearchPayload } from "@/app/interface/interfaces";
 import { AccountOperation } from "@/app/interface/main";
 import { UserInformation } from "@/app/interface/user";
 import {
@@ -11,7 +7,8 @@ import {
 	ReactNode,
 	Dispatch,
 	SetStateAction,
-	useContext, // Import useContext
+	useContext,
+	useEffect, // Import useContext
 } from "react";
 
 interface UserContextType {
@@ -24,14 +21,18 @@ interface UserContextType {
 	search: () => Promise<void>;
 	role: string;
 	setRole: Dispatch<SetStateAction<string>>;
-	status: string;
-	setStatus: Dispatch<SetStateAction<string>>;
+	status: string | boolean;
+	setStatus: Dispatch<SetStateAction<string | boolean>>;
 	searchField: string;
 	setSearchField: Dispatch<SetStateAction<string>>;
 	searchValue: string;
 	setSearchValue: Dispatch<SetStateAction<string>>;
 	currentPage: number;
 	setCurrentPage: Dispatch<SetStateAction<number>>;
+	handleChangePage: (
+		event: React.ChangeEvent<unknown>,
+		value: number
+	) => void;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -52,7 +53,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 	const [searchCiterias, setSearchCiterias] = useState<SearchCriteria[]>([]);
 
 	const [role, setRole] = useState<string>("");
-	const [status, setStatus] = useState<string>("");
+	const [status, setStatus] = useState<boolean | string>("");
 
 	const [searchField, setSearchField] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
@@ -61,10 +62,34 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 
 	const search = async () => {
 		const accoutOperation = new AccountOperation();
+		const newSearchCriteria: SearchCriteria[] = [];
+		if (role !== "") {
+			newSearchCriteria.push({
+				field: "role",
+				operator: "=",
+				value: role,
+			});
+		}
+		if (status !== "") {
+			newSearchCriteria.push({
+				field: "active",
+				operator: "=",
+				value: status,
+			});
+		}
+
+		if (searchField !== "" && searchValue !== "") {
+			newSearchCriteria.push({
+				field: searchField,
+				operator: "~",
+				value: searchValue,
+			});
+		}
+
 		await accoutOperation
 			.search(
 				{
-					criteria: searchCiterias,
+					criteria: newSearchCriteria,
 					addition: {
 						sort: [],
 						page: currentPage,
@@ -78,6 +103,17 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 				console.log(response.data);
 				setUserInforList(response.data as UserInformation[]);
 			});
+	};
+
+	useEffect(() => {
+		search();
+	}, [currentPage]);
+
+	const handleChangePage = (
+		event: React.ChangeEvent<unknown>,
+		value: number
+	) => {
+		setCurrentPage(value);
 	};
 
 	return (
@@ -100,6 +136,7 @@ export const UserDataProvider = ({ children }: { children: ReactNode }) => {
 				setSearchValue,
 				currentPage,
 				setCurrentPage,
+				handleChangePage,
 			}}>
 			{children}
 		</UserContext.Provider>

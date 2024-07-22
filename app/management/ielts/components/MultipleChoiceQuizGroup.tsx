@@ -181,22 +181,24 @@ function MultipleChoiceQuestion({
 
 	const [isSelect, setIsSelect] = useState<number[]>(() => {
 		let newSelectArray = [];
-		const question = quizList[quizIndex].groups[quizGroupIndex].quizzes[
+		const currentQuiz = quizList[quizIndex].groups[quizGroupIndex].quizzes[
 			multipleChoiceIndex
 		] as MultipleChoiceQuiz;
-		for (let i = 0; i < question.options.length; i++) {
-			newSelectArray.push(question.answer.indexOf(question.options[i]));
+		for (let i = 0; i < currentQuiz.options.length; i++) {
+			newSelectArray.push(
+				currentQuiz.answer.indexOf(currentQuiz.options[i])
+			);
 		}
 		return newSelectArray;
 	});
 
 	const addOption = () => {
 		const newQuizList = [...quizList];
-		(
-			newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-				multipleChoiceIndex
-			] as MultipleChoiceQuiz
-		).options.push("");
+
+		const currentQuiz = quizList[quizIndex].groups[quizGroupIndex].quizzes[
+			multipleChoiceIndex
+		] as MultipleChoiceQuiz;
+		currentQuiz.options.push("");
 
 		setQuizList(newQuizList);
 
@@ -308,7 +310,7 @@ function MultipleChoiceQuestion({
 				</div>
 				<div className="flex flex-row items-center w-full gap-2 h-fit">
 					<span className="text-base text-gray-400">
-						Explaination:
+						Explanation:
 					</span>
 					<TextArea
 						value={
@@ -351,6 +353,10 @@ function Option({
 		const newQuizList = [...quizList];
 		const newIsSelect = [...isSelect];
 
+		const currentQuiz = quizList[quizIndex].groups[quizGroupIndex].quizzes[
+			multipleChoiceIndex
+		] as MultipleChoiceQuiz;
+
 		const answerIndex = newIsSelect[index];
 		if (answerIndex > -1) {
 			for (let i = 0; i < newIsSelect.length; i++) {
@@ -358,45 +364,27 @@ function Option({
 					newIsSelect[i] -= 1;
 				}
 			}
-			(
-				newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-					multipleChoiceIndex
-				] as MultipleChoiceQuiz
-			).answer.splice(answerIndex, 1);
+			currentQuiz.answer.splice(answerIndex, 1);
 		}
 		newIsSelect.splice(index, 1);
 		setIsSelect(newIsSelect);
+		currentQuiz.numOfAnswers -= 1;
 
-		(
-			newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-				multipleChoiceIndex
-			] as MultipleChoiceQuiz
-		).numOfAnswers -= 1;
-
-		(
-			newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-				multipleChoiceIndex
-			] as MultipleChoiceQuiz
-		).options.splice(index, 1);
+		currentQuiz.options.splice(index, 1);
 		setQuizList(newQuizList);
 	};
 
 	const onChangeOption = (option: string) => {
+		const currentQuiz = quizList[quizIndex].groups[quizGroupIndex].quizzes[
+			multipleChoiceIndex
+		] as MultipleChoiceQuiz;
 		const newQuizList = [...quizList];
-		(
-			newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-				multipleChoiceIndex
-			] as MultipleChoiceQuiz
-		).options[optionIndex] = option;
+		currentQuiz.options[optionIndex] = option;
 		setQuizList(newQuizList);
 
 		if (isSelect[optionIndex] > -1) {
 			const answerIndex = isSelect[optionIndex];
-			(
-				newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-					multipleChoiceIndex
-				] as MultipleChoiceQuiz
-			).answer[answerIndex] = option;
+			currentQuiz.answer[answerIndex] = option;
 		}
 	};
 
@@ -409,30 +397,16 @@ function Option({
 		const newQuizList = [...quizList];
 		const newIsSelect = [...isSelect];
 
+		const currentQuiz = quizList[quizIndex].groups[quizGroupIndex].quizzes[
+			multipleChoiceIndex
+		] as MultipleChoiceQuiz;
+
 		if (newIsSelect[index] == -1) {
-			const answerLengh = (
-				quizList[quizIndex].groups[quizGroupIndex].quizzes[
-					multipleChoiceIndex
-				] as MultipleChoiceQuiz
-			).answer.length;
+			const answerLengh = currentQuiz.answer.length;
 
 			newIsSelect[index] = answerLengh;
-			(
-				newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-					multipleChoiceIndex
-				] as MultipleChoiceQuiz
-			).answer.push(
-				(
-					quizList[quizIndex].groups[quizGroupIndex].quizzes[
-						multipleChoiceIndex
-					] as MultipleChoiceQuiz
-				).options[index]
-			);
-			(
-				newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-					multipleChoiceIndex
-				] as MultipleChoiceQuiz
-			).numOfAnswers += 1;
+			currentQuiz.answer.push(currentQuiz.options[index]);
+			currentQuiz.numOfAnswers += 1;
 		} else {
 			const answerIndex = newIsSelect[index];
 			for (let i = 0; i < newIsSelect.length; i++) {
@@ -440,18 +414,9 @@ function Option({
 					newIsSelect[i] -= 1;
 				}
 			}
-			(
-				newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-					multipleChoiceIndex
-				] as MultipleChoiceQuiz
-			).answer.splice(answerIndex, 1);
+			currentQuiz.answer.splice(answerIndex, 1);
 			newIsSelect[index] = -1;
-
-			(
-				newQuizList[quizIndex].groups[quizGroupIndex].quizzes[
-					multipleChoiceIndex
-				] as MultipleChoiceQuiz
-			).numOfAnswers -= 1;
+			currentQuiz.numOfAnswers -= 1;
 		}
 		setIsSelect(newIsSelect);
 		setQuizList(newQuizList);

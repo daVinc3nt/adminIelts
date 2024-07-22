@@ -6,6 +6,7 @@ import ThemeProvider from "./provider/ThemeProvider";
 import { Roboto } from "next/font/google";
 
 import "./globals.css";
+import AuthProvider from "./provider/AuthProvider";
 
 const roboto = Roboto({
 	weight: "400",
@@ -25,23 +26,25 @@ export default function RootLayout({
 			className={roboto.className}
 			suppressHydrationWarning={true}>
 			<body className="flex flex-col w-full min-h-screen overflow-x-hidden overflow-y-scroll">
-				<ThemeProvider>
-					<SideBar
-						isOpenSidebar={isOpenSidebar}
-						setIsOpenSidebar={setIsOpenSidebar}
-					/>
-					<Navbar
-						isOpenSidebar={isOpenSidebar}
-						setIsOpenSidebar={setIsOpenSidebar}
-					/>
-					<div
-						style={{
-							paddingLeft: isOpenSidebar ? "240px" : "0px",
-						}}
-						className="flex flex-col min-h-screen pt-16 duration-200 bg-gray-50 dark:bg-black-night">
-						{children}
-					</div>
-				</ThemeProvider>
+				<AuthProvider>
+					<ThemeProvider>
+						<SideBar
+							isOpenSidebar={isOpenSidebar}
+							setIsOpenSidebar={setIsOpenSidebar}
+						/>
+						<Navbar
+							isOpenSidebar={isOpenSidebar}
+							setIsOpenSidebar={setIsOpenSidebar}
+						/>
+						<div
+							style={{
+								paddingLeft: isOpenSidebar ? "240px" : "0px",
+							}}
+							className="flex flex-col min-h-screen pt-16 duration-200 bg-gray-50 dark:bg-black-night">
+							{children}
+						</div>
+					</ThemeProvider>
+				</AuthProvider>
 			</body>
 		</html>
 	);

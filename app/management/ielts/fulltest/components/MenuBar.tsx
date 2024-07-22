@@ -25,7 +25,11 @@ export default function ReadingMenuBar() {
 
 	const print = () => {
 		let newQuizList = [...quizList];
-		console.log(setStartNumber(newQuizList));
+		console.log(
+			JSON.stringify(
+				TestDataRecieve2Test(currentTest, setStartNumber(newQuizList))
+			)
+		);
 		setQuizList(newQuizList);
 	};
 

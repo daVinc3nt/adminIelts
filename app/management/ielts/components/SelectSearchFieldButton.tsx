@@ -1,24 +1,22 @@
 import Select from "@/components/Select/Select";
-import { useUserData } from "../provider/UserDataProvider";
+import { useTest } from "../provider/TestDataProvider";
 
 const option = [
 	{ value: "", label: "Select field" },
-	{ value: "firstName", label: "First name" },
-	{ value: "lastName", label: "Last name" },
-	{ value: "emial", label: "Email" },
+	{ value: "name", label: "Test Name" },
 ];
 
 export default function SelectSearchFieldButton() {
-	const { searchField, setSearchField } = useUserData();
+	const { searchPayload, setSearchPayload } = useTest();
 
 	const onChangeField = (value: string) => {
-		setSearchField(value);
+		setSearchPayload({ ...searchPayload, searchField: value });
 	};
 
 	return (
 		<div className="z-10 ml-auto w-36">
 			<Select
-				input={searchField}
+				input={searchPayload.searchField}
 				onChangeInput={onChangeField}
 				option={option}
 				placeholder="Select Field"

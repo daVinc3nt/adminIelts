@@ -72,7 +72,7 @@ export default function Select({
 					ref={inputRef}
 					type="text"
 					placeholder={
-						input == ""
+						input === ""
 							? defaultPlaceholder
 							: option[currentOption].label
 					}
@@ -104,7 +104,7 @@ export default function Select({
 									onClick={() =>
 										selectValue(item.value, index)
 									}
-									className={`${input == item.value ? "bg-foreground-blue dark:bg-foreground-red text-white" : "text-black hover:text-white"} w-full px-3 py-1 h-fit hover:bg-foreground-blue dark:hover:bg-foreground-red  dark:text-gray-200`}>
+									className={`${input === item.value ? "bg-foreground-blue dark:bg-foreground-red text-white" : "text-black hover:text-white"} w-full px-3 py-1 h-fit hover:bg-foreground-blue dark:hover:bg-foreground-red  dark:text-gray-200`}>
 									{item.label}
 								</div>
 							);

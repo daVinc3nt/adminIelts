@@ -3,8 +3,8 @@ import { useUserData } from "../provider/UserDataProvider";
 
 const option = [
 	{ value: "", label: "All Status" },
-	{ value: "1", label: "Active" },
-	{ value: "2", label: "Non active" },
+	{ value: true, label: "Active" },
+	{ value: false, label: "Non active" },
 ];
 
 export default function SelectStatusButton() {
