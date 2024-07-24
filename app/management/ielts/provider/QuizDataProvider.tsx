@@ -30,15 +30,7 @@ export const useQuizData = () => {
 };
 
 export const QuizDataProvider = ({ children }: { children: ReactNode }) => {
-	const [quizList, setQuizList] = useState<Quiz[]>([
-		{
-			content: "",
-			category: Category.IELTS,
-			tag: "",
-			skill: Skill.READING,
-			groups: [],
-		},
-	]);
+	const [quizList, setQuizList] = useState<Quiz[]>([]);
 
 	const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
 

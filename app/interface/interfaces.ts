@@ -86,10 +86,11 @@ export interface CreateFillingQuiz {
 }
 
 export interface CreateFillingGroup {
-	type: QuizType.FILLING;
+	type: QuizType;
 	question: String;
 	startFrom: Number;
 	quizzes: CreateFillingQuiz[];
+	quizId: string;
 }
 
 export interface UpdateFillingQuiz {
@@ -101,7 +102,7 @@ export interface UpdateFillingQuiz {
 
 export interface UpdateFillingGroup {
 	id?: UUID;
-	type?: QuizType.FILLING;
+	type?: QuizType;
 	question?: String;
 	startFrom?: Number;
 	quizzes?: UpdateFillingQuiz[];
@@ -115,15 +116,16 @@ export interface CreateMultipleChoiceQuiz {
 	explaination: string;
 }
 export interface CreateMultipleChoiceGroup {
-	type: QuizType.MULTIPLE_CHOICE;
+	type: QuizType;
 	question: String;
 	startFrom: Number;
 	quizzes: CreateMultipleChoiceQuiz[];
+	quizId: string;
 }
 
 export interface UpdateMultipleChoiceGroup {
 	id?: UUID;
-	type?: QuizType.MULTIPLE_CHOICE;
+	type?: QuizType;
 	question?: String;
 	startFrom?: Number;
 	quizzes?: UpdateMultipleChoiceQuiz[];
@@ -146,6 +148,15 @@ export interface UpdateQuiz {
 	tag?: string;
 	groups?: (UpdateMultipleChoiceGroup | UpdateFillingGroup)[];
 	order?: UUID[];
+}
+
+export interface UpdateQuizStatisticsDto {
+	readingCount: number;
+	listeningCount: number;
+	writingCount: number;
+	speakingCount: number;
+	multipleChoiceCount: number;
+	fillingCount: number;
 }
 
 export interface CreateQuiz {
@@ -175,6 +186,11 @@ export interface CreateTest {
 	listening: CreateQuiz[];
 	writing: CreateQuiz[];
 	speaking: CreateQuiz[];
+}
+
+export interface CreateFullTest {
+	files: FileList; //listening file in order
+	data: CreateTest;
 }
 
 export interface UpdateTest {
@@ -259,11 +275,25 @@ export interface GetRecord {
 }
 
 export interface UpdateRecord {
-	testId: string;
-	accountId: string;
-
+	testId: UUID;
+	readingDuration?: number;
+	listeningDuration?: number;
+	writingDuration?: number;
+	speakingDuration?: number;
+	completeReading?: boolean;
+	completeListening?: boolean;
+	completeWriting?: boolean;
+	completeSpeaking?: boolean;
 	reading?: AnswerGroup[];
 	listening?: AnswerGroup[];
 	writing?: AnswerGroup[];
 	speaking?: AnswerGroup[];
+}
+
+export interface InitRecord {
+	testId: UUID;
+	readingAmount: number;
+	listeningAmount: number;
+	speakingAmount: number;
+	writingAmount: number;
 }

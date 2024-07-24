@@ -28,11 +28,6 @@ export default function Navbar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 
 			<div className="mr-auto" />
 
-			<Notification />
-
-			<Mail />
-
-			<div className="border boder-black h-4/6" />
 
 			<ThemeSwich />
 

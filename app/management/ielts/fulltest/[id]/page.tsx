@@ -25,8 +25,13 @@ interface QuizManagementProps {
 }
 
 function QuizManagement({ id }: QuizManagementProps) {
-	const { quizList, currentQuizIndex, setQuizList, setCurrentTest } =
-		useQuizData();
+	const {
+		quizList,
+		currentQuizIndex,
+		setQuizList,
+		currentTest,
+		setCurrentTest,
+	} = useQuizData();
 
 	useEffect(() => {
 		const testOperation = new TestOperation();
@@ -73,20 +78,35 @@ function QuizManagement({ id }: QuizManagementProps) {
 		});
 	}, []);
 
+	const onChangeName = (e: any) => {
+		let newTest = { ...currentTest };
+		newTest.name = e.target.value;
+		setCurrentTest(newTest);
+	};
+
 	return (
 		<main className="flex items-center justify-center flex-1">
 			<div className="flex flex-col items-center w-11/12 min-h-screen gap-4 py-4">
 				<div className="flex flex-col w-full gap-1 h-fit">
 					<MenuBar />
 
-					<hr className="w-full border-[0.5px] border-gray-200" />
+					<hr className="w-full border-[0.5px] border-gray-200 dark:border-gray-400" />
 
-					<div className="flex flex-row w-full gap-8 h-fit">
-						<div className="flex flex-col w-2/3">
-							<QuizList />
-						</div>
+					<div className="flex flex-col w-full gap-2 h-fit pt-2 font-bold">
+						<input
+							value={
+								currentTest
+									? currentTest.name
+										? currentTest.name
+										: ""
+									: ""
+							}
+							onChange={onChangeName}
+							className="w-full h-fit px-4 py-1 text-2xl bg-white dark:bg-pot-black focus:ring-0 focus:outline-none duration-200"
+							placeholder="Enter your test name"
+						/>
 
-						<div className="flex-1 m-1"></div>
+						<QuizList />
 					</div>
 				</div>
 
@@ -99,10 +119,7 @@ function QuizManagement({ id }: QuizManagementProps) {
 								return (
 									<Fragment key={index}>
 										<div className="w-1/2 h-fit">
-											<QuizContent
-												quizIndex={index}
-												oneQuiz
-											/>
+											<QuizContent quizIndex={index} />
 										</div>
 										<div className="w-1/2 h-fit">
 											<QuizGroup quizIndex={index} />

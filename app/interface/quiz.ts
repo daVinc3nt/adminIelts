@@ -311,3 +311,16 @@ export const setStartNumber = (quizList: Quiz[]) => {
 
 	return [...readingQuiz, ...listeningQuiz, ...writingQuiz, ...speakingQuiz];
 };
+
+export interface TestInfor {
+	id: string;
+	name: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface QuizInfor {
+	id: string;
+	createdAt: string;
+	updatedAt: string;
+}

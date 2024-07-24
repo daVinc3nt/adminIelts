@@ -65,3 +65,23 @@ select:-webkit-autofill {
   font-weight: bold;
 }
 
+.preview h1 {
+  font-size: xx-large;
+  font-weight: bold;
+}
+.preview h2 {
+  font-size: x-large;
+  font-weight: bold;
+}
+.preview h3 {
+  font-size: larger;
+  font-weight: bold;
+}
+
+.preview table,
+.preview th,
+.preview td {
+    border: 1px solid;
+    border-collapse: collapse;
+}
+

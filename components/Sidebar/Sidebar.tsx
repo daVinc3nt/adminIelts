@@ -32,12 +32,12 @@ export default function SideBar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 						IELTS
 					</Link>
 
-					<span className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-400 dark:hover:text-pot-black">
+					<span className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer">
 						<FaBook size={30} className="inline-block" />
 						Đánh giá năng lực
 					</span>
 
-					<span className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-400 dark:hover:text-pot-black">
+					<span className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer">
 						<BsClipboard2PlusFill
 							size={30}
 							className="inline-block"

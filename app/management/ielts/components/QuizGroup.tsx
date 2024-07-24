@@ -7,9 +7,10 @@ import MultipleChoiceQuizGroup from "./MultipleChoiceQuizGroup";
 
 interface QuizGroupProps {
 	quizIndex: number;
+	isPreview?: boolean;
 }
 
-export default function QuizGroup({ quizIndex }: QuizGroupProps) {
+export default function QuizGroup({ quizIndex, isPreview }: QuizGroupProps) {
 	const { quizList, setQuizList } = useQuizData();
 
 	const addFillingGroup = () => {
@@ -45,24 +46,27 @@ export default function QuizGroup({ quizIndex }: QuizGroupProps) {
 							type={group.type}
 							quizIndex={quizIndex}
 							quizGroupIndex={index}
+							isPreview={isPreview}
 						/>
 						<hr className="w-11/12 border border-gray-200 dark:border-gray-600" />
 					</Fragment>
 				);
 			})}
 
-			<div className="flex flex-row w-full gap-2 items-center justify-center">
-				<button
-					onClick={() => addFillingGroup()}
-					className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
-					Add Filling Group
-				</button>
-				<button
-					onClick={() => addMultipleChoiceGroup()}
-					className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
-					Add Multiple Choice Group
-				</button>
-			</div>
+			{!isPreview && (
+				<div className="flex flex-row w-full gap-2 items-center justify-center">
+					<button
+						onClick={() => addFillingGroup()}
+						className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
+						Add Filling Group
+					</button>
+					<button
+						onClick={() => addMultipleChoiceGroup()}
+						className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
+						Add Multiple Choice Group
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }
@@ -71,15 +75,17 @@ interface GroupInterface {
 	type: QuizType;
 	quizIndex: number;
 	quizGroupIndex: number;
+	isPreview?: boolean;
 }
 
-function Group({ type, quizIndex, quizGroupIndex }: GroupInterface) {
+function Group({ type, quizIndex, quizGroupIndex, isPreview }: GroupInterface) {
 	switch (type) {
 		case QuizType.FILLING:
 			return (
 				<FillingQuizGroup
 					quizGroupIndex={quizGroupIndex}
 					quizIndex={quizIndex}
+					isPreview={isPreview}
 				/>
 			);
 		case QuizType.MULTIPLE_CHOICE:
@@ -87,6 +93,7 @@ function Group({ type, quizIndex, quizGroupIndex }: GroupInterface) {
 				<MultipleChoiceQuizGroup
 					quizGroupIndex={quizGroupIndex}
 					quizIndex={quizIndex}
+					isPreview={isPreview}
 				/>
 			);
 		default:

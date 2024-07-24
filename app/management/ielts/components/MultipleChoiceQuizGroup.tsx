@@ -23,11 +23,13 @@ import { Skill } from "@/app/interface/interfaces";
 interface MultipleChoiceQuizGroupProps {
 	quizIndex: number;
 	quizGroupIndex: number;
+	isPreview?: boolean;
 }
 
 export default function MultipleChoiceQuizGroup({
 	quizIndex,
 	quizGroupIndex,
+	isPreview,
 }: MultipleChoiceQuizGroupProps) {
 	const CK5Editor = useMemo(
 		() =>
@@ -102,28 +104,39 @@ export default function MultipleChoiceQuizGroup({
 							Multiple Choice
 						</span>
 					</div>
-					<details ref={quizGroupSettingRef} className="relative">
-						<summary className="list-none">
-							<BsThreeDots className="p-1 text-white size-8" />
-						</summary>
-						<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
-							<button className="flex items-start justify-start w-full p-2 text-sm rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Scan question
-							</button>
-							<button
-								onClick={() => removeQuizGroup()}
-								className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Delete group
-							</button>
-						</div>
-					</details>
+					{!isPreview && (
+						<details ref={quizGroupSettingRef} className="relative">
+							<summary className="list-none">
+								<BsThreeDots className="p-1 text-white size-8" />
+							</summary>
+							<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
+								<button className="flex items-start justify-start w-full p-2 text-sm rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Scan question
+								</button>
+								<button
+									onClick={() => removeQuizGroup()}
+									className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Delete group
+								</button>
+							</div>
+						</details>
+					)}
 				</div>
-				<CK5Editor
-					content={
-						quizList[quizIndex].groups[quizGroupIndex].question
-					}
-					onChangeContent={onChangeQuestion}
-				/>
+				{!isPreview ? (
+					<CK5Editor
+						content={
+							quizList[quizIndex].groups[quizGroupIndex].question
+						}
+						onChangeContent={onChangeQuestion}
+					/>
+				) : (
+					<div
+						className="w-full h-fit preview border border-foreground-blue dark:border-foreground-red rounded-b-md p-2"
+						dangerouslySetInnerHTML={{
+							__html: quizList[quizIndex].groups[quizGroupIndex]
+								.question,
+						}}></div>
+				)}
 			</div>
 			<div className="flex flex-col w-full gap-8 h-fit">
 				{quizList[quizIndex].groups[quizGroupIndex].quizzes.map(
@@ -134,17 +147,20 @@ export default function MultipleChoiceQuizGroup({
 								quizIndex={quizIndex}
 								quizGroupIndex={quizGroupIndex}
 								multipleChoiceIndex={index}
+								isPreview={isPreview}
 							/>
 						);
 					}
 				)}
 			</div>
 
-			<button
-				onClick={() => addMultipleChoiceQuiz()}
-				className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
-				Add Question
-			</button>
+			{!isPreview && (
+				<button
+					onClick={() => addMultipleChoiceQuiz()}
+					className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
+					Add Question
+				</button>
+			)}
 		</div>
 	);
 }
@@ -153,12 +169,14 @@ interface MultipleChoiceQuestionProps {
 	quizIndex: number;
 	quizGroupIndex: number;
 	multipleChoiceIndex: number;
+	isPreview?: boolean;
 }
 
 function MultipleChoiceQuestion({
 	quizIndex,
 	quizGroupIndex,
 	multipleChoiceIndex,
+	isPreview,
 }: MultipleChoiceQuestionProps) {
 	const questionSettingRef = useRef<HTMLDetailsElement>(null);
 
@@ -246,18 +264,20 @@ function MultipleChoiceQuestion({
 							quizList[quizIndex].skill
 						) + ":"}
 					</span>
-					<details ref={questionSettingRef} className="relative">
-						<summary className="list-none">
-							<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
-						</summary>
-						<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
-							<button
-								onClick={() => removeQuestion()}
-								className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Delete
-							</button>
-						</div>
-					</details>
+					{!isPreview && (
+						<details ref={questionSettingRef} className="relative">
+							<summary className="list-none">
+								<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
+							</summary>
+							<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
+								<button
+									onClick={() => removeQuestion()}
+									className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Delete
+								</button>
+							</div>
+						</details>
+					)}
 				</div>
 				<TextArea
 					value={
@@ -265,6 +285,7 @@ function MultipleChoiceQuestion({
 							multipleChoiceIndex
 						].description
 					}
+					disabled={isPreview}
 					onChangeInput={onChangeDescription}
 					placeholder="Type in your question here"
 					className="text-base bg-white border-transparent dark:bg-pot-black focus:border-transparent focus:ring-transparent dark:placeholder:text-gray-300"
@@ -286,15 +307,20 @@ function MultipleChoiceQuestion({
 								optionIndex={index}
 								isSelect={isSelect}
 								setIsSelect={setIsSelect}
+								isPreview={isPreview}
 							/>
 						);
 					})}
 
-					<div className="flex items-center justify-center w-full h-fit">
-						<button title="Add option" onClick={() => addOption()}>
-							<FaPlus className="text-foreground-blue dark:text-foreground-red size-5" />
-						</button>
-					</div>
+					{!isPreview && (
+						<div className="flex items-center justify-center w-full h-fit">
+							<button
+								title="Add option"
+								onClick={() => addOption()}>
+								<FaPlus className="text-foreground-blue dark:text-foreground-red size-5" />
+							</button>
+						</div>
+					)}
 				</div>
 				<hr className="w-full border-t dark:border-gray-400" />
 
@@ -321,6 +347,7 @@ function MultipleChoiceQuestion({
 								] as MultipleChoiceQuiz
 							).explaination
 						}
+						disabled={isPreview}
 						onChangeInput={onChangeExplaination}
 						className="flex-1 text-sm text-gray-400 dark:bg-pot-black focus:border-foreground-blue focus:ring-foreground-blue dark:focus:border-foreground-red dark:focus:ring-foreground-red"
 					/>
@@ -337,6 +364,7 @@ interface OptionProps {
 	optionIndex: number;
 	isSelect: number[];
 	setIsSelect: Dispatch<SetStateAction<number[]>>;
+	isPreview?: boolean;
 }
 
 function Option({
@@ -346,6 +374,7 @@ function Option({
 	optionIndex,
 	isSelect,
 	setIsSelect,
+	isPreview,
 }: OptionProps) {
 	const { quizList, setQuizList } = useQuizData();
 
@@ -424,13 +453,15 @@ function Option({
 
 	return (
 		<div className="flex flex-row items-center justify-center w-full gap-2 h-fit">
-			<div
-				onClick={() => onSelectOption(optionIndex)}
-				className="flex items-center justify-center border rounded-full size-5 border-foreground-blue dark:border-foreground-red">
-				{isSelect[optionIndex] > -1 && (
-					<MdDone className="size-4 text-foreground-blue dark:text-foreground-red" />
-				)}
-			</div>
+			{!isPreview && (
+				<div
+					onClick={() => onSelectOption(optionIndex)}
+					className="flex items-center justify-center border rounded-full size-5 border-foreground-blue dark:border-foreground-red">
+					{isSelect[optionIndex] > -1 && (
+						<MdDone className="size-4 text-foreground-blue dark:text-foreground-red" />
+					)}
+				</div>
+			)}
 			<span className="text-lg font-bold text-black dark:text-gray-200">
 				{getOptionAlpha(optionIndex)}.
 			</span>
@@ -442,12 +473,15 @@ function Option({
 						] as MultipleChoiceQuiz
 					).options[optionIndex]
 				}
+				disabled={isPreview}
 				onChangeInput={onChangeOption}
 				className="flex-1 text-sm text-gray-white dark:text-gray-200 dark:bg-pot-black focus:border-foreground-blue focus:ring-foreground-blue dark:focus:border-foreground-red dark:focus:ring-foreground-red"
 			/>
-			<div onClick={() => removeOption(optionIndex)}>
-				<FaMinus className="text-foreground-blue dark:text-foreground-red" />
-			</div>
+			{!isPreview && (
+				<div onClick={() => removeOption(optionIndex)}>
+					<FaMinus className="text-foreground-blue dark:text-foreground-red" />
+				</div>
+			)}
 		</div>
 	);
 }

@@ -1,11 +1,13 @@
 import axios, { AxiosResponse } from "axios";
 import {
+	CreateFullTest,
 	CreateQuiz,
 	CreateRecord,
 	CreateTest,
 	CreateTestFromQuizIds,
 	FetchingType,
 	GetRecord,
+	InitRecord,
 	LoginPayload,
 	SearchPayload,
 	SignUpPayload,
@@ -402,11 +404,37 @@ export class TestOperation {
 		this.baseUrl = "https://engo.tiendungcorp.com/v1/tests";
 	}
 
-	async create(payload: CreateTest, token: string) {
+	// async create(payload: CreateTest, token: string) {
+	//     try {
+	// 		const response: AxiosResponse = await axios.post(`${this.baseUrl}/create`, payload, {
+	// 			withCredentials: true,
+	//             validateStatus: status => status >= 200 && status <= 500,
+	//             headers: {
+	//                 Authorization: `Bearer ${token}`
+	//             },
+	// 		});
+
+	// 		return { success: response.data.success, message: response.data.message, data: response.data.data };
+	// 	}
+	// 	catch (error: any) {
+	// 		console.log("Error searching accounts: ", error?.response?.data);
+	//         console.error("Request that caused the error: ", error?.request);
+	//         return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+	// 	}
+	// }
+
+	async createFullTest(payload: CreateFullTest, token: string) {
 		try {
+			const formData = new FormData();
+			for (let i = 0; i < payload.files.length; i++) {
+				formData.append("file", payload.files[i]);
+			}
+
+			formData.append("data", JSON.stringify(payload.data));
+
 			const response: AxiosResponse = await axios.post(
 				`${this.baseUrl}/create`,
-				payload,
+				formData,
 				{
 					withCredentials: true,
 					validateStatus: (status) => status >= 200 && status <= 500,
@@ -422,7 +450,6 @@ export class TestOperation {
 				data: response.data.data,
 			};
 		} catch (error: any) {
-			console.log("Error searching accounts: ", error?.response?.data);
 			console.error("Request that caused the error: ", error?.request);
 			return {
 				success: error?.response?.data,
@@ -594,10 +621,29 @@ export class RecordOperation {
 		this.baseUrl = "https://engo.tiendungcorp.com/v1/records";
 	}
 
-	async create(payload: CreateRecord, token: string) {
+	// async create(payload: CreateRecord, token: string) {
+	//     try {
+	// 		const response: AxiosResponse = await axios.post(`${this.baseUrl}/create`, payload, {
+	// 			withCredentials: true,
+	//             validateStatus: status => status >= 200 && status <= 500,
+	//             headers: {
+	//                 Authorization: `Bearer ${token}`
+	//             },
+	// 		});
+
+	// 		return { success: response.data.success, message: response.data.message, data: response.data.data };
+	// 	}
+	// 	catch (error: any) {
+	// 		console.log("Error searching accounts: ", error?.response?.data);
+	//         console.error("Request that caused the error: ", error?.request);
+	//         return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+	// 	}
+	// }
+
+	async init(payload: InitRecord, token: string) {
 		try {
 			const response: AxiosResponse = await axios.post(
-				`${this.baseUrl}/create`,
+				`${this.baseUrl}/init`,
 				payload,
 				{
 					withCredentials: true,

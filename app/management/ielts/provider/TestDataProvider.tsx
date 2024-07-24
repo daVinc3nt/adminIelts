@@ -1,5 +1,7 @@
 "use client";
-import { Quiz, Test } from "@/app/interface/quiz";
+import { QuizOperation, TestOperation } from "@/app/interface/main";
+import { TestInfor, QuizInfor } from "@/app/interface/quiz";
+import { useRouter } from "next/navigation";
 import {
 	createContext,
 	Dispatch,
@@ -10,10 +12,10 @@ import {
 } from "react";
 
 interface TestContextType {
-	TestList: Test[];
-	setTestList: Dispatch<SetStateAction<Test[]>>;
-	quizList: Quiz[];
-	setQuizList: Dispatch<SetStateAction<Quiz[]>>;
+	testList: TestInfor[];
+	setTestList: Dispatch<SetStateAction<TestInfor[]>>;
+	quizList: QuizInfor[];
+	setQuizList: Dispatch<SetStateAction<QuizInfor[]>>;
 	currentPage: number;
 	setCurrentPage: Dispatch<SetStateAction<number>>;
 	handleChangePage: (
@@ -35,6 +37,8 @@ interface TestContextType {
 	skillType: string;
 	setSkillType: Dispatch<SetStateAction<string>>;
 	search: () => void;
+	deleteTestOrQuiz: (id: string) => void;
+	createTest: () => void;
 }
 
 const TestContext = createContext<TestContextType | null>(null);
@@ -52,20 +56,59 @@ export default function TestDataProvider({
 }: {
 	children: ReactNode;
 }) {
-	const [TestList, setTestList] = useState<Test[]>([]);
-	const [quizList, setQuizList] = useState<Quiz[]>([]);
+	const [testList, setTestList] = useState<TestInfor[]>([]);
+	const [quizList, setQuizList] = useState<QuizInfor[]>([]);
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
-	const [fetchType, setFetchType] = useState<string>("fulltests");
+	const [fetchType, setFetchType] = useState<string>("fulltest");
 	const [skillType, setSkillType] = useState<string>("");
 
 	const [searchPayload, setSearchPayload] = useState({
 		searchValue: "",
-		searchField: "",
+		searchField: "name",
 	});
 
+	const router = useRouter();
+
 	const search = () => {};
+
+	const deleteTestOrQuiz = (id: string) => {
+		const newTestOperation = new TestOperation();
+		const newQuizOperation = new QuizOperation();
+
+		if (fetchType == "fulltest") {
+			newTestOperation.delete(id as any, testToken).then((response) => {
+				if (response.success) {
+					alert("Delete successfully");
+					const newTestList = [];
+					testList.forEach((test) => {
+						if (test.id != id) {
+							newTestList.push(test);
+						}
+					});
+					setTestList(newTestList);
+				} else {
+					alert("Delete failed");
+				}
+			});
+		} else {
+			newQuizOperation.delete(id as any, testToken).then((response) => {
+				if (response.success) {
+					alert("Delete successfully");
+					const newQuizList = [];
+					quizList.forEach((quiz) => {
+						if (quiz.id != id) {
+							newQuizList.push(quiz);
+						}
+					});
+					setQuizList(newQuizList);
+				} else {
+					alert("Delete failed");
+				}
+			});
+		}
+	};
 
 	const handleChangePage = (
 		event: React.ChangeEvent<unknown>,
@@ -74,10 +117,34 @@ export default function TestDataProvider({
 		setCurrentPage(value);
 	};
 
+	const createTest = () => {
+		const newTestOperation = new TestOperation();
+		newTestOperation
+			.create(
+				{
+					name: "New test",
+					reading: [],
+					listening: [],
+					writing: [],
+					speaking: [],
+				},
+				testToken
+			)
+			.then((response) => {
+				if (response.success) {
+					router.push(
+						`/management/ielts/fulltest/${response.data.id}`
+					);
+				} else {
+					alert("Create failed");
+				}
+			});
+	};
+
 	return (
 		<TestContext.Provider
 			value={{
-				TestList,
+				testList,
 				setTestList,
 				quizList,
 				setQuizList,
@@ -91,8 +158,13 @@ export default function TestDataProvider({
 				skillType,
 				setSkillType,
 				search,
+				deleteTestOrQuiz,
+				createTest,
 			}}>
 			{children}
 		</TestContext.Provider>
 	);
 }
+
+const testToken =
+	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIwOTgxMTE1LCJleHAiOjE3NTI1MTcxMTV9.VHdXs5y2Vey-YjmqLN7Uxn1kF1dC-TXZF0ro9_u5mJQ";

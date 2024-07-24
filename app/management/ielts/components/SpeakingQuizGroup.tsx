@@ -11,10 +11,12 @@ import { Skill } from "@/app/interface/interfaces";
 
 interface SpeakingQuizGroupProps {
 	quizIndex: number;
+	isPreview?: boolean;
 }
 
 export default function SpeakingQuizGroup({
 	quizIndex,
+	isPreview,
 }: SpeakingQuizGroupProps) {
 	const CK5Editor = useMemo(
 		() =>
@@ -76,16 +78,19 @@ export default function SpeakingQuizGroup({
 							quizIndex={quizIndex}
 							quizGroupIndex={0}
 							fillingIndex={index}
+							isPreview={isPreview}
 						/>
 					);
 				})}
 			</div>
 
-			<button
-				onClick={() => addFillingQuiz()}
-				className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
-				Add Question
-			</button>
+			{!isPreview && (
+				<button
+					onClick={() => addFillingQuiz()}
+					className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
+					Add Question
+				</button>
+			)}
 		</div>
 	);
 }
@@ -94,12 +99,14 @@ interface FillingQuestionProps {
 	quizIndex: number;
 	quizGroupIndex: number;
 	fillingIndex: number;
+	isPreview?: boolean;
 }
 
 function FillingQuestion({
 	quizIndex,
 	quizGroupIndex,
 	fillingIndex,
+	isPreview,
 }: FillingQuestionProps) {
 	const questionSettingRef = useRef<HTMLDetailsElement>(null);
 
@@ -151,18 +158,20 @@ function FillingQuestion({
 							quizList[quizIndex].skill as Skill
 						) + ":"}
 					</span>
-					<details ref={questionSettingRef} className="relative">
-						<summary className="list-none">
-							<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
-						</summary>
-						<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
-							<button
-								onClick={() => removeQuestion()}
-								className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Delete
-							</button>
-						</div>
-					</details>
+					{!isPreview && (
+						<details ref={questionSettingRef} className="relative">
+							<summary className="list-none">
+								<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
+							</summary>
+							<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
+								<button
+									onClick={() => removeQuestion()}
+									className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Delete
+								</button>
+							</div>
+						</details>
+					)}
 				</div>
 				<TextArea
 					value={
@@ -170,6 +179,7 @@ function FillingQuestion({
 							fillingIndex
 						].description
 					}
+					disabled={isPreview}
 					onChangeInput={onChangeDescription}
 					placeholder="Type in your speaking question here..."
 					className="text-base bg-white border-transparent dark:bg-pot-black focus:border-transparent focus:ring-transparent dark:placeholder:text-gray-300"

@@ -1,14 +1,15 @@
 "use client";
-
 import Pagination from "@/components/Pagnitation/Pagnitation";
 import TestDataProvider, { useTest } from "./provider/TestDataProvider";
 import SelectFetchTypeButton from "./components/SelectFetchTypeButton";
 import SelectSkillButton from "./components/SelectSkillButton";
-import SelectSearchFieldButton from "./components/SelectSearchFieldButton";
 import SearchButton from "./components/SearchButton";
 import { useEffect } from "react";
 import { TestOperation } from "@/app/interface/main";
 import { FetchingType, SearchPayload, Skill } from "@/app/interface/interfaces";
+import TestList from "./components/TestList";
+import { TestInfor } from "@/app/interface/quiz";
+import AddButton from "./components/AddButton";
 
 export default function Page() {
 	return (
@@ -19,7 +20,8 @@ export default function Page() {
 }
 
 function IELTSManagement() {
-	const { currentPage, handleChangePage, setTestList } = useTest();
+	const { currentPage, handleChangePage, setTestList } =
+		useTest();
 
 	useEffect(() => {
 		const newTestOperation = new TestOperation();
@@ -40,23 +42,27 @@ function IELTSManagement() {
 			)
 			.then((response) => {
 				console.log(response);
+				setTestList(response.data as TestInfor[]);
 			});
-	});
+	}, []);
 
 	return (
-		<main className="flex justify-center flex-1">
-			<div className="flex flex-col items-center w-11/12 h-full py-4 gap-6">
-				<div className="w-full h-fit">
+		<main className="main flex justify-center flex-1">
+			<div className="flex flex-col items-center w-10/12 h-full py-4 gap-6">
+				<div className="w-full h-fit flex flex-row justify-between items-center">
 					<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
 						IELTS MANAGEMENT
 					</span>
+					<AddButton />
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
 					<SelectFetchTypeButton />
 					<SelectSkillButton />
 
-					<SelectSearchFieldButton />
 					<SearchButton />
+				</div>
+				<div className="w-full">
+					<TestList />
 				</div>
 
 				<Pagination

@@ -63,7 +63,6 @@ export default function QuizList() {
 		currentQuizIndex,
 		setCurrentQuizIndex,
 		currentTest,
-		setCurrentTest,
 	} = useQuizData();
 
 	const addQuiz = (category: Category, skill: Skill) => {
@@ -104,12 +103,12 @@ export default function QuizList() {
 		let newQuizList = [...quizList, newQuiz];
 
 		const testOperation = new TestOperation();
-		const updateTest: UpdateTest = TestDataRecieve2Test(
+		const updateTestPayLoad: UpdateTest = TestDataRecieve2Test(
 			currentTest,
 			newQuizList
 		);
 		testOperation
-			.update(currentTest.id as any, updateTest, testToken)
+			.update(currentTest.id as any, updateTestPayLoad, testToken)
 			.then((response) => {
 				console.log(response);
 				if (response.success == true) {
@@ -224,7 +223,7 @@ export default function QuizList() {
 						<div
 							onClick={() => onSelectQuiz(index)}
 							key={index}
-							className={`relative flex flex-row items-center justify-center whitespace-nowrap w-fit h-fit px-2 py-1 text-center rounded-md cursor-pointer duration-200 ${currentQuizIndex == index ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-mecury-gray"}`}>
+							className={`relative flex flex-row items-center justify-center whitespace-nowrap w-fit h-fit px-1 py-1 text-center rounded-md cursor-pointer duration-200 ${currentQuizIndex == index ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-mecury-gray"}`}>
 							{partLabel(quiz.skill, countQuizSkillBeforeIndex())}
 							{currentQuizIndex == index ? (
 								<details
@@ -233,20 +232,22 @@ export default function QuizList() {
 									<summary className="list-none">
 										<BsThreeDots className="p-1 text-white size-6" />
 									</summary>
-									<div className="top-8 -left-10 absolute w-48 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
+									<div className="top-8 right-0 absolute w-fit h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
 										<button
 											onClick={() =>
 												deletePart(index, false)
 											}
+											title="Remove part from test"
 											className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-											Delete part from test
+											Remove part
 										</button>
 										<button
 											onClick={() =>
 												deletePart(index, true)
 											}
+											title="Delete part from database"
 											className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-											Delete part from database
+											Delete part
 										</button>
 									</div>
 								</details>

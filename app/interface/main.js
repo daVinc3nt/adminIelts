@@ -642,19 +642,41 @@ var TestOperation = /** @class */ (function () {
 	function TestOperation() {
 		this.baseUrl = "https://engo.tiendungcorp.com/v1/tests";
 	}
-	TestOperation.prototype.create = function (payload, token) {
-		var _a, _b;
+	// async create(payload: CreateTest, token: string) {
+	//     try {
+	// 		const response: AxiosResponse = await axios.post(`${this.baseUrl}/create`, payload, {
+	// 			withCredentials: true,
+	//             validateStatus: status => status >= 200 && status <= 500,
+	//             headers: {
+	//                 Authorization: `Bearer ${token}`
+	//             },
+	// 		});
+	// 		return { success: response.data.success, message: response.data.message, data: response.data.data };
+	// 	}
+	// 	catch (error: any) {
+	// 		console.log("Error searching accounts: ", error?.response?.data);
+	//         console.error("Request that caused the error: ", error?.request);
+	//         return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+	// 	}
+	// }
+	TestOperation.prototype.createFullTest = function (payload, token) {
+		var _a;
 		return __awaiter(this, void 0, void 0, function () {
-			var response, error_13;
-			return __generator(this, function (_c) {
-				switch (_c.label) {
+			var formData, i, response, error_13;
+			return __generator(this, function (_b) {
+				switch (_b.label) {
 					case 0:
-						_c.trys.push([0, 2, , 3]);
+						_b.trys.push([0, 2, , 3]);
+						formData = new FormData();
+						for (i = 0; i < payload.files.length; i++) {
+							formData.append("file", payload.files[i]);
+						}
+						formData.append("data", JSON.stringify(payload.data));
 						return [
 							4 /*yield*/,
 							axios_1.default.post(
 								"".concat(this.baseUrl, "/create"),
-								payload,
+								formData,
 								{
 									withCredentials: true,
 									validateStatus: function (status) {
@@ -667,7 +689,7 @@ var TestOperation = /** @class */ (function () {
 							),
 						];
 					case 1:
-						response = _c.sent();
+						response = _b.sent();
 						return [
 							2 /*return*/,
 							{
@@ -677,17 +699,7 @@ var TestOperation = /** @class */ (function () {
 							},
 						];
 					case 2:
-						error_13 = _c.sent();
-						console.log(
-							"Error searching accounts: ",
-							(_a =
-								error_13 === null || error_13 === void 0
-									? void 0
-									: error_13.response) === null ||
-								_a === void 0
-								? void 0
-								: _a.data
-						);
+						error_13 = _b.sent();
 						console.error(
 							"Request that caused the error: ",
 							error_13 === null || error_13 === void 0
@@ -698,13 +710,13 @@ var TestOperation = /** @class */ (function () {
 							2 /*return*/,
 							{
 								success:
-									(_b =
+									(_a =
 										error_13 === null || error_13 === void 0
 											? void 0
 											: error_13.response) === null ||
-									_b === void 0
+									_a === void 0
 										? void 0
-										: _b.data,
+										: _a.data,
 								request:
 									error_13 === null || error_13 === void 0
 										? void 0
@@ -1122,7 +1134,24 @@ var RecordOperation = /** @class */ (function () {
 	function RecordOperation() {
 		this.baseUrl = "https://engo.tiendungcorp.com/v1/records";
 	}
-	RecordOperation.prototype.create = function (payload, token) {
+	// async create(payload: CreateRecord, token: string) {
+	//     try {
+	// 		const response: AxiosResponse = await axios.post(`${this.baseUrl}/create`, payload, {
+	// 			withCredentials: true,
+	//             validateStatus: status => status >= 200 && status <= 500,
+	//             headers: {
+	//                 Authorization: `Bearer ${token}`
+	//             },
+	// 		});
+	// 		return { success: response.data.success, message: response.data.message, data: response.data.data };
+	// 	}
+	// 	catch (error: any) {
+	// 		console.log("Error searching accounts: ", error?.response?.data);
+	//         console.error("Request that caused the error: ", error?.request);
+	//         return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+	// 	}
+	// }
+	RecordOperation.prototype.init = function (payload, token) {
 		var _a, _b;
 		return __awaiter(this, void 0, void 0, function () {
 			var response, error_19;
@@ -1133,7 +1162,7 @@ var RecordOperation = /** @class */ (function () {
 						return [
 							4 /*yield*/,
 							axios_1.default.post(
-								"".concat(this.baseUrl, "/create"),
+								"".concat(this.baseUrl, "/init"),
 								payload,
 								{
 									withCredentials: true,
