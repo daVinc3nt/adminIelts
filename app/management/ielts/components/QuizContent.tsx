@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { useQuizData } from "../provider/QuizDataProvider";
+import { useTestData } from "../provider/TestDataProvider";
 import { useEffect, useMemo, useRef } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { QuizOperation } from "@/app/interface/main";
@@ -21,7 +21,7 @@ export default function QuizContent({
 		[]
 	);
 
-	const { quizList, setQuizList, currentQuizIndex } = useQuizData();
+	const { quizList, setQuizList, currentQuizIndex } = useTestData();
 
 	const onChangeContent = (content: string) => {
 		setQuizList((prev) => {

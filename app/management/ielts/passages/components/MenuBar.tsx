@@ -1,9 +1,9 @@
-import { useQuizData } from "../../provider/QuizDataProvider";
+import { useTestData } from "../../provider/TestDataProvider";
 import { CreateQuiz, UpdateQuiz } from "@/app/interface/interfaces";
 import { QuizOperation } from "@/app/interface/main";
 
 export default function ReadingMenuBar() {
-	const { quizList, setQuizList } = useQuizData();
+	const { quizList, setQuizList } = useTestData();
 
 	const onSave = () => {
 		let newQuizList = [...quizList];

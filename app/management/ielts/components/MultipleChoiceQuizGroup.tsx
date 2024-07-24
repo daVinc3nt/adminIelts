@@ -1,5 +1,5 @@
 "use client";
-import { useQuizData } from "../provider/QuizDataProvider";
+import { useTestData } from "../provider/TestDataProvider";
 import TextArea from "@/components/TextArea/TextArea";
 import {
 	getQuestionGroupNumber,
@@ -56,7 +56,7 @@ export default function MultipleChoiceQuizGroup({
 		};
 	}, []);
 
-	const { quizList, setQuizList } = useQuizData();
+	const { quizList, setQuizList } = useTestData();
 
 	const onChangeQuestion = (question: string) => {
 		const newQuizList = [...quizList];
@@ -195,7 +195,7 @@ function MultipleChoiceQuestion({
 		};
 	}, []);
 
-	const { quizList, setQuizList } = useQuizData();
+	const { quizList, setQuizList } = useTestData();
 
 	const [isSelect, setIsSelect] = useState<number[]>(() => {
 		let newSelectArray = [];
@@ -376,7 +376,7 @@ function Option({
 	setIsSelect,
 	isPreview,
 }: OptionProps) {
-	const { quizList, setQuizList } = useQuizData();
+	const { quizList, setQuizList } = useTestData();
 
 	const removeOption = (index: number) => {
 		const newQuizList = [...quizList];

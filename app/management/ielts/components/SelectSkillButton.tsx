@@ -1,5 +1,5 @@
 import Select from "@/components/Select/Select";
-import { useTest } from "../provider/TestDataProvider";
+import { useTestManagement } from "../provider/TestManagementProvider";
 
 const option = [
 	{ value: "", label: "All skill" },
@@ -10,7 +10,7 @@ const option = [
 ];
 
 export default function SelectSkillButton() {
-	const { skillType, setSkillType } = useTest();
+	const { skillType, setSkillType } = useTestManagement();
 
 	const onChangeSkillType = (value: string) => {
 		setSkillType(value);

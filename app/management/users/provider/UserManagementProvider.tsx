@@ -37,15 +37,19 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | null>(null);
 
-export const useUserData = () => {
+export const useUserManagement = () => {
 	const context = useContext(UserContext);
 	if (!context) {
-		throw new Error("useUserData must be used within a UserProvider");
+		throw new Error("useUserManagement must be used within a UserProvider");
 	}
 	return context;
 };
 
-export const UserDataProvider = ({ children }: { children: ReactNode }) => {
+export const UserManagementProvider = ({
+	children,
+}: {
+	children: ReactNode;
+}) => {
 	const [userInforList, setUserInforList] = useState<UserInformation[]>([]);
 
 	const [currentUser, setCurrentUser] = useState<UserInformation>(null);

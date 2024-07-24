@@ -1,5 +1,5 @@
 "use client";
-import { QuizDataProvider, useQuizData } from "../provider/QuizDataProvider";
+import { TestDataProvider, useTestData } from "../provider/TestDataProvider";
 import QuizContent from "../components/QuizContent";
 import QuizGroup from "../components/QuizGroup";
 import { Fragment, useEffect } from "react";
@@ -14,14 +14,14 @@ import SpeakingQuizGroup from "../components/SpeakingQuizGroup";
 
 export default function Page() {
 	return (
-		<QuizDataProvider>
+		<TestDataProvider>
 			<QuizManagement />
-		</QuizDataProvider>
+		</TestDataProvider>
 	);
 }
 
 function QuizManagement() {
-	const { quizList, currentQuizIndex } = useQuizData();
+	const { quizList, currentQuizIndex } = useTestData();
 
 	return (
 		<main className="flex items-center justify-center flex-1">

@@ -1,6 +1,5 @@
 import Select from "@/components/Select/Select";
-import { useUserData } from "../provider/UserDataProvider";
-
+import { useUserManagement } from "../provider/UserManagementProvider";
 
 enum UserRole {
 	ADMIN = "Quản trị viên",
@@ -22,7 +21,7 @@ const option = [
 ];
 
 export default function SelectRoleButton() {
-	const { role, setRole } = useUserData();
+	const { role, setRole } = useUserManagement();
 
 	const onChangeRole = (value: string) => {
 		setRole(value);

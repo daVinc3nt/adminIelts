@@ -1,8 +1,8 @@
 import { FaSearch } from "react-icons/fa";
-import { useTest } from "../provider/TestDataProvider";
+import { useTestManagement } from "../provider/TestManagementProvider";
 
 export default function SearchButton() {
-	const { searchPayload, setSearchPayload, search } = useTest();
+	const { searchPayload, setSearchPayload, search } = useTestManagement();
 
 	const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchPayload({

@@ -49,11 +49,24 @@ export default function SideBar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 
 			<div className="flex flex-col w-full gap-2 h-fit">
 				<span className="font-bold text-pot-black dark:text-gray-200">
+					RECORD MANAGEMENT
+				</span>
+				<div className="flex flex-col w-full gap-1 text-sm text-gray-600 dark:text-gray-400 h-fit">
+					<Link
+						href="/management/ielts-records"
+						className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-400 dark:hover:text-pot-black">
+						<FaUserGraduate size={30} className="inline-block" />
+						IELTS Record Management
+					</Link>
+				</div>
+			</div>
+			<div className="flex flex-col w-full gap-2 h-fit">
+				<span className="font-bold text-pot-black dark:text-gray-200">
 					USER MANAGEMENT
 				</span>
 				<div className="flex flex-col w-full gap-1 text-sm text-gray-600 dark:text-gray-400 h-fit">
 					<Link
-						href="/management/user"
+						href="/management/users"
 						className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-400 dark:hover:text-pot-black">
 						<FaUserGraduate size={30} className="inline-block" />
 						User Management

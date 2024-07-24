@@ -1,8 +1,8 @@
 import { FaSearch } from "react-icons/fa";
-import { useUserData } from "../provider/UserDataProvider";
+import { useUserManagement } from "../provider/UserManagementProvider";
 
 export default function SearchButton() {
-	const { search, searchValue, setSearchValue } = useUserData();
+	const { search, searchValue, setSearchValue } = useUserManagement();
 
 	const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchValue(e.target.value ? e.target.value : "");

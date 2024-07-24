@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { FaPlus } from "react-icons/fa";
-import { useTest } from "../provider/TestDataProvider";
+import { useTestManagement } from "../provider/TestManagementProvider";
 
 export default function AddButton() {
-	const { createTest } = useTest();
+	const { createTest } = useTestManagement();
 
 	const addButtonRef = useRef<HTMLDetailsElement>(null);
 

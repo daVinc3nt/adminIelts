@@ -1,4 +1,4 @@
-import { useTest } from "../provider/TestDataProvider";
+import { useTestManagement } from "../provider/TestManagementProvider";
 import { useEffect, useRef } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Link from "next/link";
@@ -20,7 +20,7 @@ export default function TestList() {
 }
 
 function FullTestList() {
-	const { testList } = useTest();
+	const { testList } = useTestManagement();
 	if (!testList) return null;
 
 	return (
@@ -65,7 +65,7 @@ interface OptionButtonProps {
 }
 
 function OptionButton({ id }: OptionButtonProps) {
-	const { deleteTestOrQuiz } = useTest();
+	const { deleteTestOrQuiz } = useTestManagement();
 
 	const inforRef = useRef<HTMLDetailsElement>(null);
 

@@ -1,5 +1,5 @@
 import Select from "@/components/Select/Select";
-import { useUserData } from "../provider/UserDataProvider";
+import { useUserManagement } from "../provider/UserManagementProvider";
 
 const option = [
 	{ value: "", label: "All Status" },
@@ -8,7 +8,7 @@ const option = [
 ];
 
 export default function SelectStatusButton() {
-	const { status, setStatus } = useUserData();
+	const { status, setStatus } = useUserManagement();
 
 	const onChangeStatus = (value: string) => {
 		setStatus(value);

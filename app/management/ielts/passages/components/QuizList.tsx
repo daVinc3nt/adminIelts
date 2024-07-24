@@ -1,5 +1,5 @@
 import { BsPlus } from "react-icons/bs";
-import { useQuizData } from "../../provider/QuizDataProvider";
+import { useTestData } from "../../provider/TestDataProvider";
 import { useEffect, useRef } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 import { FillingGroup, Quiz, quizDataRecieve2Quiz } from "@/app/interface/quiz";
@@ -33,7 +33,7 @@ export default function QuizList({ oneQuiz }: QuizListProps) {
 	}, []);
 
 	const { quizList, setQuizList, currentQuizIndex, setCurrentQuizIndex } =
-		useQuizData();
+		useTestData();
 
 	const addQuiz = (category: Category, skill: Skill) => {
 		const newQuiz: Quiz = {

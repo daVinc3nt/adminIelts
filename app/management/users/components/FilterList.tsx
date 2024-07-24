@@ -1,5 +1,5 @@
 import { FaXmark } from "react-icons/fa6";
-import { useUserData } from "../provider/UserDataProvider";
+import { useUserManagement } from "../provider/UserManagementProvider";
 
 const fieldLabels = [
 	{ label: "First name", value: "firstName" },
@@ -23,7 +23,7 @@ const operatorLabels = [
 ];
 
 export default function FilterList() {
-	const { searchCiterias, setSearchCiterias } = useUserData();
+	const { searchCiterias, setSearchCiterias } = useUserManagement();
 
 	const removeSearchCriteria = (index: number) => {
 		const newSearchCiterias = searchCiterias.filter((_, i) => i !== index);

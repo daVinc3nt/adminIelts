@@ -1,5 +1,5 @@
 import Select from "@/components/Select/Select";
-import { useUserData } from "../provider/UserDataProvider";
+import { useUserManagement } from "../provider/UserManagementProvider";
 
 const option = [
 	{ value: "", label: "Select field" },
@@ -9,7 +9,7 @@ const option = [
 ];
 
 export default function SelectSearchFieldButton() {
-	const { searchField, setSearchField } = useUserData();
+	const { searchField, setSearchField } = useUserManagement();
 
 	const onChangeField = (value: string) => {
 		setSearchField(value);

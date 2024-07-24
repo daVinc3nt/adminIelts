@@ -1,6 +1,6 @@
 "use client";
 import { FillingGroup } from "@/app/interface/quiz";
-import { useQuizData } from "../provider/QuizDataProvider";
+import { useTestData } from "../provider/TestDataProvider";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef } from "react";
 import { QuizType } from "@/app/interface/interfaces";
@@ -40,7 +40,7 @@ export default function WritingQuizGroup({
 		};
 	}, []);
 
-	const { quizList, setQuizList } = useQuizData();
+	const { quizList, setQuizList } = useTestData();
 
 	const onChangeQuestion = (question: string) => {
 		const newQuizList = [...quizList];

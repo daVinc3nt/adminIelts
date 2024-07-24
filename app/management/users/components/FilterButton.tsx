@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { SearchCriteria } from "@/app/interface/interfaces";
 import { TbFilterPlus } from "react-icons/tb";
 import { FaAngleRight } from "react-icons/fa";
-import { useUserData } from "../provider/UserDataProvider";
+import { useUserManagement } from "../provider/UserManagementProvider";
 import { BsTrash } from "react-icons/bs";
 
 export default function FilterButton() {
@@ -12,7 +12,7 @@ export default function FilterButton() {
 		useState<SearchCriteria | null>();
 	const [step, setStep] = useState<number>(0);
 
-	const { searchCiterias, setSearchCiterias } = useUserData();
+	const { searchCiterias, setSearchCiterias } = useUserManagement();
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {

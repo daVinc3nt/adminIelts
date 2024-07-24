@@ -1,5 +1,8 @@
 "use client";
-import { UserDataProvider, useUserData } from "./provider/UserDataProvider";
+import {
+	UserManagementProvider,
+	useUserManagement,
+} from "./provider/UserManagementProvider";
 import UserList from "./components/UserList";
 import SearchButton from "./components/SearchButton";
 import UserInfor from "./components/UserInfor";
@@ -10,14 +13,14 @@ import Pagination from "@/components/Pagnitation/Pagnitation";
 
 export default function Page() {
 	return (
-		<UserDataProvider>
+		<UserManagementProvider>
 			<UserManagement />
-		</UserDataProvider>
+		</UserManagementProvider>
 	);
 }
 
 function UserManagement() {
-	const { currentPage, handleChangePage } = useUserData();
+	const { currentPage, handleChangePage } = useUserManagement();
 
 	return (
 		<main className="flex justify-center flex-1">

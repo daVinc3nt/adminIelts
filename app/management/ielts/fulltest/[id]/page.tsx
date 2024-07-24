@@ -1,5 +1,5 @@
 "use client";
-import { QuizDataProvider, useQuizData } from "../../provider/QuizDataProvider";
+import { TestDataProvider, useTestData } from "../../provider/TestDataProvider";
 import QuizContent from "../../components/QuizContent";
 import QuizGroup from "../../components/QuizGroup";
 import { Fragment, useEffect } from "react";
@@ -14,9 +14,9 @@ import SpeakingQuizGroup from "../../components/SpeakingQuizGroup";
 
 export default function Page({ params }: { params: { id: string } }) {
 	return (
-		<QuizDataProvider>
+		<TestDataProvider>
 			<QuizManagement id={params.id} />
-		</QuizDataProvider>
+		</TestDataProvider>
 	);
 }
 
@@ -31,7 +31,7 @@ function QuizManagement({ id }: QuizManagementProps) {
 		setQuizList,
 		currentTest,
 		setCurrentTest,
-	} = useQuizData();
+	} = useTestData();
 
 	useEffect(() => {
 		const testOperation = new TestOperation();

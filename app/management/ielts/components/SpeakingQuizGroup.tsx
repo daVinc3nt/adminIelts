@@ -1,4 +1,4 @@
-import { useQuizData } from "../provider/QuizDataProvider";
+import { useTestData } from "../provider/TestDataProvider";
 import TextArea from "@/components/TextArea/TextArea";
 import {
 	getQuestionGroupNumber,
@@ -26,7 +26,7 @@ export default function SpeakingQuizGroup({
 		[]
 	);
 
-	const { quizList, setQuizList } = useQuizData();
+	const { quizList, setQuizList } = useTestData();
 
 	const onChangeQuestion = (question: string) => {
 		const newQuizList = [...quizList];
@@ -125,7 +125,7 @@ function FillingQuestion({
 		};
 	}, []);
 
-	const { quizList, setQuizList } = useQuizData();
+	const { quizList, setQuizList } = useTestData();
 
 	const onChangeDescription = (description: string) => {
 		const newQuizList = [...quizList];

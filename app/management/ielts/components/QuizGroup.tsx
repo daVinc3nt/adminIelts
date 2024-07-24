@@ -1,5 +1,5 @@
 import { FillingGroup, MultipleChoiceGroup } from "@/app/interface/quiz";
-import { useQuizData } from "../provider/QuizDataProvider";
+import { useTestData } from "../provider/TestDataProvider";
 import { QuizType } from "@/app/interface/interfaces";
 import React, { Fragment } from "react";
 import FillingQuizGroup from "./FillingQuizGroup";
@@ -11,7 +11,7 @@ interface QuizGroupProps {
 }
 
 export default function QuizGroup({ quizIndex, isPreview }: QuizGroupProps) {
-	const { quizList, setQuizList } = useQuizData();
+	const { quizList, setQuizList } = useTestData();
 
 	const addFillingGroup = () => {
 		const newGroup: FillingGroup = {

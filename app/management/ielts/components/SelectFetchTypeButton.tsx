@@ -1,5 +1,5 @@
 import Select from "@/components/Select/Select";
-import { useTest } from "../provider/TestDataProvider";
+import { useTestManagement } from "../provider/TestManagementProvider";
 
 const option = [
 	{ value: "fulltests", label: "Full test" },
@@ -7,7 +7,7 @@ const option = [
 ];
 
 export default function SelectFetchTypeButton() {
-	const { fetchType, setFetchType } = useTest();
+	const { fetchType, setFetchType } = useTestManagement();
 
 	const onChangeFetchType = (value: string) => {
 		setFetchType(value);

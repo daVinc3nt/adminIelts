@@ -1,6 +1,8 @@
 "use client";
 import Pagination from "@/components/Pagnitation/Pagnitation";
-import TestDataProvider, { useTest } from "./provider/TestDataProvider";
+import TestManagementProvider, {
+	useTestManagement,
+} from "./provider/TestManagementProvider";
 import SelectFetchTypeButton from "./components/SelectFetchTypeButton";
 import SelectSkillButton from "./components/SelectSkillButton";
 import SearchButton from "./components/SearchButton";
@@ -13,15 +15,14 @@ import AddButton from "./components/AddButton";
 
 export default function Page() {
 	return (
-		<TestDataProvider>
+		<TestManagementProvider>
 			<IELTSManagement />
-		</TestDataProvider>
+		</TestManagementProvider>
 	);
 }
 
 function IELTSManagement() {
-	const { currentPage, handleChangePage, setTestList } =
-		useTest();
+	const { currentPage, handleChangePage, setTestList } = useTestManagement();
 
 	useEffect(() => {
 		const newTestOperation = new TestOperation();

@@ -1,6 +1,6 @@
 "use client";
 import { FaXmark } from "react-icons/fa6";
-import { useUserData } from "../provider/UserDataProvider";
+import { useUserManagement } from "../provider/UserManagementProvider";
 import { CiMail } from "react-icons/ci";
 import { MdAlternateEmail } from "react-icons/md";
 import { LuEye, LuEyeOff } from "react-icons/lu";
@@ -8,7 +8,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 export default function UserInfor() {
-	const { currentUser, setCurrentUser } = useUserData();
+	const { currentUser, setCurrentUser } = useUserManagement();
 
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 

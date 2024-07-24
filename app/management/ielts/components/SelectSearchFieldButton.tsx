@@ -1,5 +1,5 @@
 import Select from "@/components/Select/Select";
-import { useTest } from "../provider/TestDataProvider";
+import { useTestManagement } from "../provider/TestManagementProvider";
 
 const option = [
 	{ value: "", label: "Select field" },
@@ -7,7 +7,7 @@ const option = [
 ];
 
 export default function SelectSearchFieldButton() {
-	const { searchPayload, setSearchPayload } = useTest();
+	const { searchPayload, setSearchPayload } = useTestManagement();
 
 	const onChangeField = (value: string) => {
 		setSearchPayload({ ...searchPayload, searchField: value });

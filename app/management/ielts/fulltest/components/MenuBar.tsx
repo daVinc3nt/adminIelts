@@ -1,9 +1,9 @@
 import { setStartNumber, TestDataRecieve2Test } from "@/app/interface/quiz";
-import { useQuizData } from "../../provider/QuizDataProvider";
+import { useTestData } from "../../provider/TestDataProvider";
 import { QuizOperation, TestOperation } from "@/app/interface/main";
 
 export default function ReadingMenuBar() {
-	const { quizList, setQuizList, currentTest } = useQuizData();
+	const { quizList, setQuizList, currentTest } = useTestData();
 
 	const onSave = () => {
 		let newQuizList = setStartNumber(quizList);

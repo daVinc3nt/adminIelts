@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { FaCircleUser } from "react-icons/fa6";
-import { useUserData } from "../provider/UserDataProvider";
+import { useUserManagement } from "../provider/UserManagementProvider";
 import { UserInformation } from "@/app/interface/user";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
@@ -25,7 +25,7 @@ export default function UserList() {
 }
 
 function List() {
-	const { userInforList } = useUserData();
+	const { userInforList } = useUserManagement();
 
 	if (!userInforList) return null;
 
@@ -91,7 +91,7 @@ interface OptionButtonProps {
 }
 
 function OptionButton({ user }: OptionButtonProps) {
-	const { setCurrentUser } = useUserData();
+	const { setCurrentUser } = useUserManagement();
 
 	const inforRef = useRef<HTMLDetailsElement>(null);
 
