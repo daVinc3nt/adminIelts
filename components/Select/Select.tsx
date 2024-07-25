@@ -61,7 +61,7 @@ export default function Select({
 
 	return (
 		<div
-			className={`relative border-2 rounded-md min-w-fit w-full cursor-pointer bg-foreground-blue dark:bg-foreground-red shadow-md
+			className={`relative border-2 rounded-md min-w-fit w-full cursor-pointer bg-white dark:bg-pot-black shadow-md
 			${open ? "border-foreground-blue dark:border-foreground-red" : "border-transparent"}
 			`}>
 			<div
@@ -78,7 +78,7 @@ export default function Select({
 					}
 					value={searchValue}
 					onChange={(e) => setSearchValue(e.target.value)}
-					className={`w-full text-base border-none outline-none cursor-pointer mr-auto bg-foreground-blue dark:bg-foreground-red placeholder-white dark:placeholder-gray-200 text-white dark:text-gray-200`}
+					className={`w-full text-base border-none outline-none cursor-pointer mr-auto bg-white dark:bg-pot-black placeholder-black dark:placeholder-gray-200 text-black dark:text-gray-200`}
 				/>
 
 				<span className="w-0 h-5 border border-gray-200" />

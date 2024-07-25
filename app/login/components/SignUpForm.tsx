@@ -1,6 +1,6 @@
 "use client";
-import { SignUpPayload, VerifyOtpPayload } from "@/app/interface/interfaces";
-import { AuthOperation } from "@/app/interface/main";
+import { SignUpPayload, VerifyOtpPayload } from "@/app/lib/interfaces";
+import { AuthOperation } from "@/app/lib/main";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";

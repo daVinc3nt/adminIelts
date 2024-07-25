@@ -32,7 +32,7 @@ export default function SideBar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 						IELTS
 					</Link>
 
-					<span className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer">
+					{/* <span className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer">
 						<FaBook size={30} className="inline-block" />
 						Đánh giá năng lực
 					</span>
@@ -43,7 +43,7 @@ export default function SideBar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 							className="inline-block"
 						/>
 						Custom Test
-					</span>
+					</span> */}
 				</div>
 			</div>
 
@@ -53,10 +53,10 @@ export default function SideBar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 				</span>
 				<div className="flex flex-col w-full gap-1 text-sm text-gray-600 dark:text-gray-400 h-fit">
 					<Link
-						href="/management/ielts-records"
+						href="/management/ielts/records"
 						className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-400 dark:hover:text-pot-black">
 						<FaUserGraduate size={30} className="inline-block" />
-						IELTS Record Management
+						IELTS Record
 					</Link>
 				</div>
 			</div>

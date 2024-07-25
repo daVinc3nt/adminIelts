@@ -5,10 +5,10 @@ import QuizGroup from "../../components/QuizGroup";
 import { Fragment, useEffect } from "react";
 import { QuizDataRecieve, quizDataRecieve2Quiz } from "@/app/interface/quiz";
 import MenuBar from "../components/MenuBar";
-import { QuizOperation, TestOperation } from "@/app/interface/main";
+import { QuizOperation, TestOperation } from "@/app/lib/main";
 import { Quiz } from "@/app/interface/quiz";
 import QuizList from "../components/QuizList";
-import { Skill } from "@/app/interface/interfaces";
+import { Skill } from "@/app/lib/interfaces";
 import WritingQuizGroup from "../../components/WritingQuizGroup";
 import SpeakingQuizGroup from "../../components/SpeakingQuizGroup";
 

@@ -3,8 +3,8 @@ import { useTestData } from "../../provider/TestDataProvider";
 import { useEffect, useRef } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 import { FillingGroup, Quiz, quizDataRecieve2Quiz } from "@/app/interface/quiz";
-import { Category, QuizType, Skill } from "@/app/interface/interfaces";
-import { QuizOperation } from "@/app/interface/main";
+import { Category, QuizType, Skill } from "@/app/lib/interfaces";
+import { QuizOperation } from "@/app/lib/main";
 
 interface QuizListProps {
 	oneQuiz?: boolean;

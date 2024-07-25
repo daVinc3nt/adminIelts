@@ -1,0 +1,526 @@
+{
+	"id": "45222df7-4a1a-45a3-8d01-338efec56725",
+	"reading": [
+		{
+			"id": "f6f328c3-687c-43e2-8cca-4f198c8ad39c",
+			"category": "IELTS",
+			"tag": "READING BASIC",
+			"content": "<h3>READING PASSAGE 1</h3><p>You should spend about 20 minutes on Questions 1-13, which are based on Reading Passage 1 below.</p><p>&nbsp;</p><h3 style=\"text-align:center;\">STEPWELLS</h3><p>A millennium ago, stepwells were fundamental to life in the driest parts of India. Richard Cox travelled to north-western India to document these spectacular monuments from a bygone era</p><p>&nbsp;</p><p>During the sixth and seventh centuries, the inhabitants of the modern-day states of Gujarat and Rajasthan in north-western India developed a method of gaining access to clean, fresh groundwater during the dry season for drinking, bathing, watering animals and irrigation. However, the significance of this invention - the stepwell - goes beyond its utilitarian application.</p><p>&nbsp;</p><p>Unique to this region, stepwells are often architecturally complex and vary widely in size and shape. During their heyday, they were places of gathering, of leisure and relaxation and of worship for villagers of all but the lowest classes. Most stepwells are found dotted round the desert areas of Gujarat (where they are called vav) and Rajasthan (where they are called baori), while a few also survive in Delhi. Some were located in or near villages as public spaces for the community; others were positioned beside roads as resting places for travellers.</p><p>&nbsp;</p><p>As their name suggests, stepwells comprise a series of stone steps descending from ground level to the water source (normally an underground aquifer) as it recedes following the rains. When the water level was high, the user needed only to descend a few steps to reach it: when it was low, several levels would have to be negotiated.</p><p>&nbsp;</p><p>Some wells are vast, open craters with hundreds of steps paving each sloping side, often in tiers. Others are more elaborate, with long stepped passages leading to the water via several storeys. Built from stone and supported by pillars, they also included pavilions that sheltered visitors from the relentless heat. But perhaps the most impressive features are the intricate decorative sculptures that embellish many stepwells, showing activities from fighting and dancing to everyday acts such as women combing their hair or churning butter.</p><p>&nbsp;</p><p>Down the centuries, thousands of wells were constructed throughout northwestern India, but the majority have now fallen into disuse; many are derelict and dry, as groundwater has been diverted for industrial use and the wells no longer reach the water table. Their condition hasn't been helped by recent dry spells: southern Rajasthan suffered an eight-year drought between 1996 and 2004.</p><p>&nbsp;</p><p>However, some important sites in Gujarat have recently undergone major restoration, and the state government announced in June last year that it plans to restore the stepwells throughout the state.</p><p>&nbsp;</p><p>In Patan, the state's ancient capital, the stepwell of Rani Ki Vav (Queen's Stepwell) is perhaps the finest current example. It was built by Queen Udayamati during the late 11th century, but became silted up following a flood during the 13th century. But the Archaeological Survey of India began restoring it in the 1960s, and today it is in pristine condition. At 65 metres long, 20 metres wide and 27 metres deep, Rani Ki Vav features 500 sculptures carved into niches throughout the monument. Incredibly, in January 2001, this ancient structure survived an earthquake that measured 7.6 on the Richter scale.</p><p>&nbsp;</p><p>Another example is the Surya Kund in Modhera, northern Gujarat, next to the Sun Temple, built by King Bhima I in 1026 to honour the sun god Surya. It actually resembles a tank (kund means reservoir or pond) rather than a well, but displays the hallmarks of stepwell architecture, including four sides of steps that descend to the bottom in a stunning geometrical formation. The terraces house 108 small, intricately carved shrines between the sets of steps.</p><p>&nbsp;</p><p>Rajasthan also has a wealth of wells. The ancient city of Bundi, 200 kilometres south of Jaipur, is renowned for its architecture, including its stepwells.</p><p>&nbsp;</p><p>One of the larger examples is Raniji Ki Baori, which was built by the queen of the region, Nathavatji, in 1699. At 46 metres deep, 20 metres wide and 40 metres long, the intricately carved monument is one of 21 baoris commissioned in the Bundi area by Nathavatji.</p><p>&nbsp;</p><p>In the old ruined town of Abhaneri, about 95 kilometres east of Jaipur, is Chand Baori, one of India's oldest and deepest wells; aesthetically it's perhaps one of the most dramatic. Built in around 850 AD next to the temple of Harshat Mata, the baori comprises hundreds of zigzagging steps that run along three of its sides, steeply descending 11 storeys, resulting in a striking pattern when seen from afar. On the fourth side, verandas which are supported by ornate pillars overlook the steps.</p><p>&nbsp;</p><p>Still in public use is Neemrana Ki Baori, located just off the Jaipur-Delhi highway. Constructed in around 1700, it is nine storeys deep, with the last two being underwater. At ground level, there are 86 colonnaded openings from where the visitor descends 170 steps to the deepest water source.</p><p>&nbsp;</p><p>Today, following years of neglect, many of these monuments to medieval engineering have been saved by the Archaeological Survey of India, which has recognised the importance of preserving them as part of the country's rich history. Tourists flock to wells in far-flung corners of northwestern India to gaze in wonder at these architectural marvels from hundreds of years ago, which serve as a reminder of both the ingenuity and artistry of ancient civilisations and of the value of water to human existence.</p>",
+			"skill": "READING",
+			"order": [
+				"3ee3dd4e-c28b-43d1-9c7d-a7489346c097",
+				"a6f67503-7258-44c2-90fd-edb0ab69b42c",
+				"3407962b-19b1-4d8d-af2c-2aa1e3c50216"
+			],
+			"createdAt": "2024-07-19T03:55:07.000Z",
+			"updatedAt": "2024-07-23T15:06:28.000Z",
+			"multipleChoiceQuiz": [
+				{
+					"id": "3ee3dd4e-c28b-43d1-9c7d-a7489346c097",
+					"question": "<h3>Questions 1-5</h3><p>Do the following statements agree with the information given in Reading Passage 1?</p><p>In boxes 1-5 on your answer sheet, write</p><p><strong>TRUE</strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if the statement agrees with the information</p><p><strong>FALSE</strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if the statement contradicts the information</p><p><strong>NOT GIVEN</strong> &nbsp; &nbsp; if there is no information on this</p>",
+					"startFrom": 1,
+					"order": [
+						"c4997909-b3ec-47a2-8aa1-7c00e2fa24af",
+						"c33c7c2d-dec3-454f-84af-bea1bd7da89f",
+						"33c2c1ed-0b6e-4824-8d6b-01b29fc5cb83",
+						"57afb727-b6a5-4a7f-93af-9cb93ea7f85a",
+						"e4a7d306-0205-425e-9d67-9fed574e335c"
+					],
+					"quizId": "f6f328c3-687c-43e2-8cca-4f198c8ad39c",
+					"createdAt": "2024-07-20T05:56:20.000Z",
+					"updatedAt": "2024-07-23T15:06:28.000Z",
+					"quizzes": [
+						{
+							"id": "33c2c1ed-0b6e-4824-8d6b-01b29fc5cb83",
+							"description": "The few existing stepwells in Delhi are more attractive than those found elsewhere.",
+							"options": [
+								"TRUE",
+								"FALSE",
+								"NOT GIVEN"
+							],
+							"answer": [
+								"NOT GIVEN"
+							],
+							"numOfAnswers": 1,
+							"explaination": "Most stepwells are found dotted around the desert areas of Gujarat (where they are called vav) and Rajasthan (where they are known as baori), while a few also survive in Delhi.\n\n-> There is information about stepwells in Delhi and other areas, but no comparison is mentioned",
+							"groupId": "3ee3dd4e-c28b-43d1-9c7d-a7489346c097",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 49,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "57afb727-b6a5-4a7f-93af-9cb93ea7f85a",
+							"description": "It took workers many years to build the stone steps characteristic of stepwells.",
+							"options": [
+								"TRUE",
+								"FALSE",
+								"NOT GIVEN"
+							],
+							"answer": [
+								"NOT GIVEN"
+							],
+							"numOfAnswers": 1,
+							"explaination": "As their name suggests, stepwells comprise a series of stone steps descending from ground level to the water source (normally an underground aquifer) as it recedes following the rains.\n\n-> No information is about the long time the workers need to build the stone steps",
+							"groupId": "3ee3dd4e-c28b-43d1-9c7d-a7489346c097",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 50,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "c33c7c2d-dec3-454f-84af-bea1bd7da89f",
+							"description": "Stepwells had a range of functions, in addition to those related to water collection.",
+							"options": [
+								"TRUE",
+								"FALSE",
+								"NOT GIVEN"
+							],
+							"answer": [
+								"TRUE"
+							],
+							"numOfAnswers": 1,
+							"explaination": "During their heyday, they were places of gathering, of leisure, of relaxation and of worship for villagers of all but the lowest castes\n\n-> Though there is no information about the function of collecting water, the text still lists a range of functions: gathering, leisure, relaxation, worship",
+							"groupId": "3ee3dd4e-c28b-43d1-9c7d-a7489346c097",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 51,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "c4997909-b3ec-47a2-8aa1-7c00e2fa24af",
+							"description": "Examples of ancient stepwells can be found all over the world.",
+							"options": [
+								"TRUE",
+								"FALSE",
+								"NOT GIVEN"
+							],
+							"answer": [
+								"FALSE"
+							],
+							"numOfAnswers": 1,
+							"explaination": "Unique to the region, stepwells are often architecturally complex and vary widely in size and shape.\n\n-> all over the world >< unique to the region",
+							"groupId": "3ee3dd4e-c28b-43d1-9c7d-a7489346c097",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 52,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "e4a7d306-0205-425e-9d67-9fed574e335c",
+							"description": "The number of steps above the water level in a stepwell altered during the course of a year.",
+							"options": [
+								"TRUE",
+								"FALSE",
+								"NOT GIVEN"
+							],
+							"answer": [
+								"TRUE"
+							],
+							"numOfAnswers": 1,
+							"explaination": "When the water level was high, the user needed only to descend a few steps to reach it; when it was low, several levels would have to be negotiated.\n\n-> The water level altered (or changed) throughout seasons",
+							"groupId": "3ee3dd4e-c28b-43d1-9c7d-a7489346c097",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 53,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						}
+					]
+				}
+			],
+			"fillingQuiz": [
+				{
+					"id": "3407962b-19b1-4d8d-af2c-2aa1e3c50216",
+					"question": "<h3><span><strong>Questions 9-13</strong></span></h3><p><span>Complete the table below.</span></p><p><span>Choose <strong>ONE WORD AND/OR A NUMBER</strong> from the passage for each answer.</span></p><p><span>Write your answers in boxes 9-13 on your answer sheet.</span></p><p>&nbsp;</p><figure class=\"table\"><table class=\"MsoTableGrid\" width=\"100%\"><tbody><tr><td><span><strong>Stepwell</strong></span></td><td><span><strong>Date</strong></span></td><td><span><strong>Features</strong></span></td><td><span><strong>Other notes</strong></span></td></tr><tr><td><span><strong>Rani Ki Vav</strong></span></td><td><span>Late 11<sup>th</sup> century</span></td><td><span>As many as 500 sculptures decorate the monument</span></td><td><p><span>Restored in the 1960s</span></p><p><span>Excellent condition, despite the </span><span class=\"fill-para-question-index\"><strong>(9)</strong></span><span> …of the 2001</span></p></td></tr><tr><td><span><strong>Surya Kund</strong></span></td><td><span>1026</span></td><td><p><span>Steps on the </span><span class=\"fill-para-question-index\"><strong>(10)</strong></span><span> …produce a geometrical pattern</span></p><p><span>Carved shrines</span></p></td><td><span>Looks more like a </span><span class=\"fill-para-question-index\"><strong>(11)</strong></span><span> … than a well</span></td></tr><tr><td><span><strong>Raniji Ki Baori</strong></span></td><td><span>1699</span></td><td><span>Intricately carved monument</span></td><td><span>One of 21 baoris in the area commissioned by Queen Nathavatji</span></td></tr><tr><td><span><strong>Chand Baori</strong></span></td><td><span>850 AD</span></td><td><span>Steps take you down 11 storeys to the bottem</span></td><td><p><span>Old, deep and very dramatic</span></p><p><span>Has </span><span class=\"fill-para-question-index\"><strong>(12)</strong></span><span> … which provide a view of the steps</span></p></td></tr><tr><td><span><strong>Neemrana Ki Baori</strong></span></td><td><span>1700</span></td><td><span>Has two </span><span class=\"fill-para-question-index\"><strong>(13)</strong></span><span> … levels</span></td><td><span>Used by public today</span></td></tr></tbody></table></figure>",
+					"startFrom": 9,
+					"order": [
+						"1f339f0f-13aa-4833-a985-32c92c8ad7cb",
+						"57a402ca-326d-4ff6-90a0-f089192cc4c0",
+						"403f90e8-c731-4cb7-a3d5-c1afd1e2887a",
+						"622fa5c0-7fc9-484a-b2ea-eccb204ebbf4",
+						"b10a56bb-9b42-4f4c-8c39-5b965b3370c9"
+					],
+					"quizId": "f6f328c3-687c-43e2-8cca-4f198c8ad39c",
+					"createdAt": "2024-07-20T05:56:20.000Z",
+					"updatedAt": "2024-07-23T15:06:28.000Z",
+					"quizzes": [
+						{
+							"id": "1f339f0f-13aa-4833-a985-32c92c8ad7cb",
+							"description": "",
+							"answer": "earthquake",
+							"explaination": "Incredibly, in January 2001, this ancient structure survived a devastating earthquake that measured 7.6 on the Richter scale.\n\n-> Looking for keyword 2001, we can easily find Earthquake as the natural disaster that affected the ancient structure",
+							"groupId": "3407962b-19b1-4d8d-af2c-2aa1e3c50216",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 54,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "403f90e8-c731-4cb7-a3d5-c1afd1e2887a",
+							"description": "",
+							"answer": "tank",
+							"explaination": "It’s actually a tank (kund means reservoir or pond) rather than a well, but displays the hallmarks of stepwell architecture, including four sides of steps that descend to the bottom in a stunning geometrical formation.",
+							"groupId": "3407962b-19b1-4d8d-af2c-2aa1e3c50216",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 55,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "57a402ca-326d-4ff6-90a0-f089192cc4c0",
+							"description": "",
+							"answer": "4 sides / four sides",
+							"explaination": "It’s actually a tank (kund means reservoir or pond) rather than a well, but displays the hallmarks of stepwell architecture, including four sides of steps that descend to the bottom in a stunning geometrical formation.\n\n-> produce a geometric pattern = geometrical formation",
+							"groupId": "3407962b-19b1-4d8d-af2c-2aa1e3c50216",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 56,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "622fa5c0-7fc9-484a-b2ea-eccb204ebbf4",
+							"description": "",
+							"answer": "verandas / verandahs",
+							"explaination": "On the fourth side, covered verandas supported by ornate pillars overlook the steps.\n\n-> provide a view to the steps = overlook the steps",
+							"groupId": "3407962b-19b1-4d8d-af2c-2aa1e3c50216",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 57,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "b10a56bb-9b42-4f4c-8c39-5b965b3370c9",
+							"description": "",
+							"answer": "underwater",
+							"explaination": "Constructed in around 1700, it’s nine storeys deep, with the last two levels underwater.",
+							"groupId": "3407962b-19b1-4d8d-af2c-2aa1e3c50216",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 58,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						}
+					]
+				},
+				{
+					"id": "a6f67503-7258-44c2-90fd-edb0ab69b42c",
+					"question": "<h3>Questions 6-8</h3><p>Answer the questions below.</p><p>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</p><p>Write your answers in boxes 6-8 on your answer sheet.</p>",
+					"startFrom": 6,
+					"order": [
+						"437b276d-accc-4354-8378-52ae36711a88",
+						"e66baed4-e899-4742-aac3-b8796e0b8a8d",
+						"c13723a9-2fb6-4abf-b541-ceab817e50cb"
+					],
+					"quizId": "f6f328c3-687c-43e2-8cca-4f198c8ad39c",
+					"createdAt": "2024-07-20T05:56:20.000Z",
+					"updatedAt": "2024-07-23T15:06:28.000Z",
+					"quizzes": [
+						{
+							"id": "437b276d-accc-4354-8378-52ae36711a88",
+							"description": "Which part of some stepwells provided shade for people?",
+							"answer": "pavilions",
+							"explaination": "Others are more elaborate, with long stepped passages leading to the water via several storeys built from stone and supported by pillars, they also included pavilions that sheltered visitors from the relentless heat.\n\n-> provide shade for people = shelter visitors",
+							"groupId": "a6f67503-7258-44c2-90fd-edb0ab69b42c",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 59,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "c13723a9-2fb6-4abf-b541-ceab817e50cb",
+							"description": "Who are frequent visitors to stepwells nowadays?",
+							"answer": "tourists",
+							"explaination": "Tourists flock to wells in far-flung corners of northwestern India to gaze in wonder at these architectural marvels from 1,000 years ago, which serve as a reminder of both the ingenuity and artistry of ancient civilisations and of the value of water to human existence.\n\n-> Flock means gather in a large number, which means tourists frequently go there.",
+							"groupId": "a6f67503-7258-44c2-90fd-edb0ab69b42c",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 60,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						},
+						{
+							"id": "e66baed4-e899-4742-aac3-b8796e0b8a8d",
+							"description": "What type of serious climatic event, which took place in southern Rajasthan, is mentioned in the article?",
+							"answer": "drought",
+							"explaination": "Their condition hasn’t been helped by recent dry spells: southern Rajasthan suffered an eight-year drought between 1996 and 2004\n\n-> The serious climatic event here is eight-year drought which took place in southern Rajasthan",
+							"groupId": "a6f67503-7258-44c2-90fd-edb0ab69b42c",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 61,
+							"score": 0,
+							"userAnswer": [
+								""
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"listening": [
+		{
+			"id": "1dd0d1f3-0593-4575-9435-138a2efb3d51",
+			"category": "IELTS",
+			"tag": "",
+			"content": "",
+			"skill": "LISTENING",
+			"order": [
+				"b6ee1180-348c-490e-b720-8365c318a175"
+			],
+			"createdAt": "2024-07-23T12:32:08.000Z",
+			"updatedAt": "2024-07-23T15:06:28.000Z",
+			"multipleChoiceQuiz": [],
+			"fillingQuiz": [
+				{
+					"id": "b6ee1180-348c-490e-b720-8365c318a175",
+					"question": "<figure class=\"table\"><table class=\"table-question\" border=\"1\" cellpadding=\"3\" cellspacing=\"0\" width=\"100%\"><tbody><tr><td><p><span><strong>Customer details</strong></span><br><span>Name: Sophie Bird</span><br><span>Occupation:</span><span class=\"fill-para-question-index\"><strong>1</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd1f-0\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"></span><br><span>Reason for travel today:</span><span class=\"fill-para-question-index\"><strong>2</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd20-1\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"></span></p><p><br><span><strong>Journey information</strong></span><br><span>Name of station returning to:&nbsp;</span><span class=\"fill-para-question-index\"><strong>3</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd21-2\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"></span><br><span>Type of ticket purchased: standard </span><span class=\"fill-para-question-index\"><strong>4</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd22-3\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"> ticket</span><br><span>Cost of ticket:£</span><span class=\"fill-para-question-index\"><strong>5</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd23-4\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"></span><br><span>When ticket was purchased: yesterday</span><br><span>Where ticket was bought:</span><span class=\"fill-para-question-index\"><strong>6</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd24-5\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"></span></p><p><br><span><strong>Satisfaction with journey</strong></span><br><span>Most satisfied with: the wifi</span><br><span>Least satisfied with: the </span><span class=\"fill-para-question-index\"><strong>7</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd25-6\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"> this morning</span></p><p><br><span><strong>Satisfaction with station facilities</strong></span><br><span>Most satisfied with: how much </span><span class=\"fill-para-question-index\"><strong>8</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd26-7\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"> was provided</span><br><span>Least satisfied with: lack of seats, particularly on the </span><span class=\"fill-para-question-index\"><strong>9</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd27-8\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"></span><br><span>Neither satisfied nor dissatisfied with: the </span><span class=\"fill-para-question-index\"><strong>10</strong></span><span> <input class=\"fill-para-input\" id=\"618a24e30019f20949d3fd28-9\" spellcheck=\"false\" type=\"text\" autocomplete=\"off\"> available</span></p></td></tr></tbody></table></figure>",
+					"startFrom": 1,
+					"order": [
+						"870ff8a9-54ee-4de7-9252-43e65b7676f7",
+						"db82852c-4e3a-4846-827f-364c46567248",
+						"730369fe-d70b-457f-bd3e-4800f5c2d98d",
+						"f2414542-297d-4320-88f0-0cad37843044",
+						"7bbd88cb-9dd3-45d9-b2bb-d9d5280feb15",
+						"8690ca6a-3593-4ff0-aeea-78447cc26e0d",
+						"2bba7d0c-d908-4f58-98e4-6392fa8f4bae",
+						"c0504cf4-37fa-4c6f-8954-8757a0870bfa",
+						"7fa4c4ff-accf-42ab-ab0e-6c0046559819",
+						"c4cce044-2937-4829-be6c-04a40b31d6ab"
+					],
+					"quizId": "1dd0d1f3-0593-4575-9435-138a2efb3d51",
+					"createdAt": "2024-07-23T12:32:08.000Z",
+					"updatedAt": "2024-07-23T15:06:28.000Z",
+					"quizzes": [
+						{
+							"id": "2bba7d0c-d908-4f58-98e4-6392fa8f4bae",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 62,
+							"score": 0,
+							"userAnswer": null
+						},
+						{
+							"id": "730369fe-d70b-457f-bd3e-4800f5c2d98d",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 63,
+							"score": 0,
+							"userAnswer": null
+						},
+						{
+							"id": "7bbd88cb-9dd3-45d9-b2bb-d9d5280feb15",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 64,
+							"score": 0,
+							"userAnswer": null
+						},
+						{
+							"id": "7fa4c4ff-accf-42ab-ab0e-6c0046559819",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 65,
+							"score": 0,
+							"userAnswer": null
+						},
+						{
+							"id": "8690ca6a-3593-4ff0-aeea-78447cc26e0d",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 66,
+							"score": 0,
+							"userAnswer": null
+						},
+						{
+							"id": "870ff8a9-54ee-4de7-9252-43e65b7676f7",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 67,
+							"score": 0,
+							"userAnswer": null
+						},
+						{
+							"id": "c0504cf4-37fa-4c6f-8954-8757a0870bfa",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 68,
+							"score": 0,
+							"userAnswer": null
+						},
+						{
+							"id": "c4cce044-2937-4829-be6c-04a40b31d6ab",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 69,
+							"score": 0,
+							"userAnswer": null
+						},
+						{
+							"id": "db82852c-4e3a-4846-827f-364c46567248",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 70,
+							"score": 0,
+							"userAnswer": null
+						},
+						{
+							"id": "f2414542-297d-4320-88f0-0cad37843044",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "b6ee1180-348c-490e-b720-8365c318a175",
+							"createdAt": "2024-07-23T12:32:08.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 71,
+							"score": 0,
+							"userAnswer": null
+						}
+					]
+				}
+			]
+		}
+	],
+	"writing": [
+		{
+			"id": "5af2556a-e46c-4529-9a61-a877778e7767",
+			"category": "IELTS",
+			"tag": "",
+			"content": "",
+			"skill": "WRITING",
+			"order": [
+				"22a26d2e-a5cf-400e-b027-65a4ebe62be2"
+			],
+			"createdAt": "2024-07-20T05:56:20.000Z",
+			"updatedAt": "2024-07-23T15:06:28.000Z",
+			"multipleChoiceQuiz": [],
+			"fillingQuiz": [
+				{
+					"id": "22a26d2e-a5cf-400e-b027-65a4ebe62be2",
+					"question": "<h3>WRITING TASK 1:<br><strong>You should spend about 20 minutes on this task.</strong></h3><p>&nbsp;</p><p>The diagram below shows how a solar powered water pump works. Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</p><figure class=\"image image_resized\" style=\"width:43.53%;\"><img style=\"aspect-ratio:610/579;\" src=\"https://estudyme.hoc102.com/legacy-data/elearning-react/2021/11/11/85646398.PNG\" width=\"610\" height=\"579\"></figure><p>&nbsp;</p><p>Write at least 150 words</p>",
+					"startFrom": 1,
+					"order": [
+						"4ce6ccf1-3cdc-4401-a679-ce3abeb71957"
+					],
+					"quizId": "5af2556a-e46c-4529-9a61-a877778e7767",
+					"createdAt": "2024-07-20T05:56:20.000Z",
+					"updatedAt": "2024-07-23T15:06:28.000Z",
+					"quizzes": [
+						{
+							"id": "4ce6ccf1-3cdc-4401-a679-ce3abeb71957",
+							"description": "",
+							"answer": "",
+							"explaination": "",
+							"groupId": "22a26d2e-a5cf-400e-b027-65a4ebe62be2",
+							"createdAt": "2024-07-20T05:56:20.000Z",
+							"updatedAt": "2024-07-23T15:06:28.000Z",
+							"answerId": 72,
+							"score": 0,
+							"userAnswer": null
+						}
+					]
+				}
+			]
+		}
+	],
+	"speaking": [
+		{
+			"id": "b255659c-5a98-4a9b-8a3b-7b0ff4affe77",
+			"category": "IELTS",
+			"tag": "",
+			"content": "",
+			"skill": "SPEAKING",
+			"order": [
+				"fede12e3-0da8-44bc-b1aa-efcbd001d8e0"
+			],
+			"createdAt": "2024-07-23T15:06:28.000Z",
+			"updatedAt": "2024-07-23T15:06:28.000Z",
+			"multipleChoiceQuiz": [],
+			"fillingQuiz": [
+				{
+					"id": "fede12e3-0da8-44bc-b1aa-efcbd001d8e0",
+					"question": "",
+					"startFrom": 0,
+					"order": [],
+					"quizId": "b255659c-5a98-4a9b-8a3b-7b0ff4affe77",
+					"createdAt": "2024-07-23T15:06:28.000Z",
+					"updatedAt": "2024-07-23T15:06:28.000Z",
+					"quizzes": []
+				}
+			]
+		}
+	],
+	"name": "IELTS test 1",
+	"createdAt": "2024-07-18T05:37:16.000Z",
+	"updatedAt": "2024-07-23T15:06:28.000Z",
+	"score": 0
+}

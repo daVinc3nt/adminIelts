@@ -1,5 +1,5 @@
-import { SearchCriteria, SearchPayload } from "@/app/interface/interfaces";
-import { AccountOperation } from "@/app/interface/main";
+import { SearchCriteria, SearchPayload } from "@/app/lib/interfaces";
+import { AccountOperation } from "@/app/lib/main";
 import { UserInformation } from "@/app/interface/user";
 import {
 	createContext,
@@ -59,7 +59,7 @@ export const UserManagementProvider = ({
 	const [role, setRole] = useState<string>("");
 	const [status, setStatus] = useState<boolean | string>("");
 
-	const [searchField, setSearchField] = useState<string>("");
+	const [searchField, setSearchField] = useState<string>("firstName");
 	const [searchValue, setSearchValue] = useState<string>("");
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
@@ -104,7 +104,7 @@ export const UserManagementProvider = ({
 				testToken
 			)
 			.then((response) => {
-				console.log(response.data);
+				console.log(response);
 				setUserInforList(response.data as UserInformation[]);
 			});
 	};
@@ -148,4 +148,4 @@ export const UserManagementProvider = ({
 };
 
 const testToken =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIwOTgxMTE1LCJleHAiOjE3NTI1MTcxMTV9.VHdXs5y2Vey-YjmqLN7Uxn1kF1dC-TXZF0ro9_u5mJQ";
+	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIxODk4MDIwLCJleHAiOjE3NTM0MzQwMjB9.9Ut8K9PDmQt8hBgWYgxHbtvbwO6TICtqmMvhOTdkSac";

@@ -1,14 +1,6 @@
 import Select from "@/components/Select/Select";
 import { useUserManagement } from "../provider/UserManagementProvider";
-
-enum UserRole {
-	ADMIN = "Quản trị viên",
-	SYS_ADMIN = "Quản trị viên hệ thống",
-	EXAM_ADMIN = "Quản trị viên đề thi",
-	STUDENT = "Học viên",
-	PAID_USER = "Người dùng có trả phí",
-	NONPAID_USER = "Người dùng không trả phí",
-}
+import { UserRole } from "@/app/interface/user";
 
 const option = [
 	{ value: "", label: "All Role" },

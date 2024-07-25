@@ -1,21 +1,21 @@
 import { Category, QuizType, Skill, UpdateTest } from "../lib/interfaces";
 
-export interface FillingQuiz {
+export interface FillingQuizRecord {
 	id?: string;
 	description: string;
 	answer: string;
 	explaination: string;
 }
 
-export interface FillingGroup {
+export interface FillingGroupRecord {
 	id?: string;
 	type: QuizType.FILLING;
 	question: string;
 	startFrom: Number;
-	quizzes: FillingQuiz[];
+	quizzes: FillingQuizRecord[];
 }
 
-export interface MultipleChoiceQuiz {
+export interface MultipleChoiceQuizRecord {
 	id?: string;
 	description: string;
 	options: string[];
@@ -29,29 +29,29 @@ export interface MultipleChoiceGroup {
 	type: QuizType.MULTIPLE_CHOICE;
 	question: string;
 	startFrom: Number;
-	quizzes: MultipleChoiceQuiz[];
+	quizzes: MultipleChoiceQuizRecord[];
 }
 
-export interface Quiz {
+export interface QuizRecord {
 	id?: string;
 	content: string;
 	category: Category;
 	tag: string;
 	skill: Skill;
-	groups: (MultipleChoiceGroup | FillingGroup)[];
+	groups: (MultipleChoiceGroup | FillingGroupRecord)[];
 }
 
-export interface Test {
+export interface TestRecord {
 	name: string;
 	id?: string;
-	reading: Quiz[];
-	listening: Quiz[];
-	writing: Quiz[];
-	speaking: Quiz[];
+	reading: QuizRecord[];
+	listening: QuizRecord[];
+	writing: QuizRecord[];
+	speaking: QuizRecord[];
 }
 
 export const getQuestionGroupNumber = (
-	quizList: Quiz[],
+	quizList: QuizRecord[],
 	quizIndex: number,
 	quizGroupIndex: number,
 	skill: Skill
@@ -65,7 +65,7 @@ export const getQuestionGroupNumber = (
 };
 
 export const getQuestionNumber = (
-	quizList: Quiz[],
+	quizList: QuizRecord[],
 	quizIndex: number,
 	quizGroupIndex: number,
 	multipleChoiceIndex: number,
@@ -99,7 +99,7 @@ interface MCQuizDataRecieve {
 
 const MCQuizDataRecieve2MCQuiz = (
 	data: MCQuizDataRecieve
-): MultipleChoiceQuiz => {
+): MultipleChoiceQuizRecord => {
 	return {
 		id: data.id,
 		description: data.description,
@@ -149,7 +149,7 @@ interface FQuizDataRecieve {
 	updatedAt: string;
 }
 
-const FQuizDataRecieve2FQuiz = (data: FQuizDataRecieve): FillingQuiz => {
+const FQuizDataRecieve2FQuiz = (data: FQuizDataRecieve): FillingQuizRecord => {
 	return {
 		id: data.id,
 		description: data.description,
@@ -171,7 +171,7 @@ interface FillingQuizDataRecieve {
 
 const FillingQuizDataRecieve2FillingGroup = (
 	data: FillingQuizDataRecieve
-): FillingGroup => {
+): FillingGroupRecord => {
 	return {
 		id: data.id,
 		type: QuizType.FILLING,
@@ -200,7 +200,7 @@ export interface QuizDataRecieve {
 	fillingQuiz: FillingQuizDataRecieve[];
 }
 
-export const quizDataRecieve2Quiz = (data: QuizDataRecieve): Quiz => {
+export const quizDataRecieve2Quiz = (data: QuizDataRecieve): QuizRecord => {
 	let newQuiz = {
 		id: data.id,
 		content: data.content,
@@ -208,7 +208,7 @@ export const quizDataRecieve2Quiz = (data: QuizDataRecieve): Quiz => {
 		tag: data.tag,
 		skill: data.skill,
 		groups: [],
-	} as Quiz;
+	} as QuizRecord;
 
 	//merge multiple choice quiz with filling quiz using order
 	let order = data.order;
@@ -243,7 +243,7 @@ export interface TestDataRecieve {
 
 export const TestDataRecieve2Test = (
 	data: TestDataRecieve,
-	quizList: Quiz[]
+	quizList: QuizRecord[]
 ): UpdateTest => {
 	let newTest = {
 		name: data.name ? data.name : "",
@@ -251,7 +251,7 @@ export const TestDataRecieve2Test = (
 		listening: [],
 		writing: [],
 		speaking: [],
-	} as Test;
+	} as TestRecord;
 
 	for (let i = 0; i < quizList.length; i++) {
 		switch (quizList[i].skill) {
@@ -272,7 +272,7 @@ export const TestDataRecieve2Test = (
 	return newTest as any;
 };
 
-export const setStartNumber = (quizList: Quiz[]) => {
+export const setStartNumber = (quizList: QuizRecord[]) => {
 	let readingQuiz = quizList.filter((quiz) => quiz.skill == Skill.READING);
 	let listeningQuiz = quizList.filter(
 		(quiz) => quiz.skill == Skill.LISTENING
@@ -312,15 +312,23 @@ export const setStartNumber = (quizList: Quiz[]) => {
 	return [...readingQuiz, ...listeningQuiz, ...writingQuiz, ...speakingQuiz];
 };
 
-export interface TestInfor {
+export interface RecordInfor {
 	id: string;
-	name: string;
-	createdAt: string;
-	updatedAt: string;
-}
-
-export interface QuizInfor {
-	id: string;
+	accountId: string;
+	testId: string;
+	readingDuration: number;
+	listeningDuration: number;
+	writingDuration: number;
+	speakingDuration: number;
+	readingAmount: number;
+	listeningAmount: number;
+	writingAmount: number;
+	speakingAmount: number;
+	completeReading: boolean;
+	completeListening: boolean;
+	completeWriting: boolean;
+	completeSpeaking: boolean;
+	score: number;
 	createdAt: string;
 	updatedAt: string;
 }

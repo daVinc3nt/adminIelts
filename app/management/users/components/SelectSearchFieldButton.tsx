@@ -2,10 +2,9 @@ import Select from "@/components/Select/Select";
 import { useUserManagement } from "../provider/UserManagementProvider";
 
 const option = [
-	{ value: "", label: "Select field" },
 	{ value: "firstName", label: "First name" },
 	{ value: "lastName", label: "Last name" },
-	{ value: "emial", label: "Email" },
+	{ value: "email", label: "Email" },
 ];
 
 export default function SelectSearchFieldButton() {

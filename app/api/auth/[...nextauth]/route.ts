@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next"
 import GoogleProvider from "next-auth/providers/google" 
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { AuthOperation } from "@/app/interface/main"
+import { AuthOperation } from "@/app/lib/main";
 const handler = NextAuth({
     providers: [
         GoogleProvider({

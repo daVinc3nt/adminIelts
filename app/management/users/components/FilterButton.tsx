@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
-import { SearchCriteria } from "@/app/interface/interfaces";
+import { SearchCriteria } from "@/app/lib/interfaces";
 import { TbFilterPlus } from "react-icons/tb";
 import { FaAngleRight } from "react-icons/fa";
 import { useUserManagement } from "../provider/UserManagementProvider";

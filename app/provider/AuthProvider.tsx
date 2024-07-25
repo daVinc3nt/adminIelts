@@ -1,6 +1,18 @@
-import { createContext, ReactNode, useContext } from "react";
+import {
+	createContext,
+	Dispatch,
+	ReactNode,
+	SetStateAction,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
+import { getSid } from "../interface/cookies";
 
-interface AuthContextType {}
+interface AuthContextType {
+	sid: string;
+	setSid: Dispatch<SetStateAction<string>>;
+}
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -13,5 +25,15 @@ export const useAuth = () => {
 };
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-	return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
+	const [sid, setSid] = useState<string>(getSid() || "");
+
+	return (
+		<AuthContext.Provider
+			value={{
+				sid,
+				setSid,
+			}}>
+			{children}
+		</AuthContext.Provider>
+	);
 }

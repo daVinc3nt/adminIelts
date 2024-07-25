@@ -1,5 +1,5 @@
 "use client";
-import { AuthOperation } from "@/app/interface/main";
+import { AuthOperation } from "@/app/lib/main";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -12,39 +12,39 @@ export function CredentialsForm(props: CredentialsFormProps) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const data = new FormData(e.currentTarget);
-		// const username = data.get("username").toString();
-		// const password = data.get("password").toString();
+		const username = data.get("username").toString();
+		const password = data.get("password").toString();
 
-		// const newAuthOptions = new AuthOperation();
-		// newAuthOptions
-		// 	.login({
-		// 		identifier: username,
-		// 		password: password,
-		// 	})
-		// 	.then((response) => {
-		// 		if (response.success) {
-		// 			console.log("data", response.data);
-		// 			router.push("/");
-		// 		} else {
-		// 			setError("Your username/password is wrong");
-		// 		}
-		// 	});
+		const newAuthOptions = new AuthOperation();
+		newAuthOptions
+			.login({
+				identifier: username,
+				password: password,
+			})
+			.then((response) => {
+				if (response.success) {
+					console.log("data", response.data);
+					router.push("/");
+				} else {
+					setError("Your username/password is wrong");
+				}
+			});
 
-		console.log(data.get("password"));
-		const signInResponse = await signIn("credentials", {
-			username: data.get("username"),
-			password: data.get("password"),
-			redirect: false,
-		}).then((respronse) => {
-			console.log("respronse", respronse);
-			return respronse;
-		});
-		if (signInResponse && !signInResponse.error) {
-			router.push("/");
-		} else {
-			console.log("Error: ", signInResponse);
-			setError("Your username/password is wrong");
-		}
+		// console.log(data.get("password"));
+		// const signInResponse = await signIn("credentials", {
+		// 	username: data.get("username"),
+		// 	password: data.get("password"),
+		// 	redirect: false,
+		// }).then((respronse) => {
+		// 	console.log("respronse", respronse);
+		// 	return respronse;
+		// });
+		// if (signInResponse && !signInResponse.error) {
+		// 	router.push("/");
+		// } else {
+		// 	console.log("Error: ", signInResponse);
+		// 	setError("Your username/password is wrong");
+		// }
 	};
 	return (
 		<form

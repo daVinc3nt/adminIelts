@@ -9,7 +9,7 @@ import {
 import { BsThreeDots } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef } from "react";
-import { Skill } from "@/app/interface/interfaces";
+import { Skill } from "@/app/lib/interfaces";
 import { RemoveStyleRegex } from "@/regex/IeltsRegex";
 
 interface FillingQuizGroupProps {

@@ -1,6 +1,6 @@
 import { setStartNumber, TestDataRecieve2Test } from "@/app/interface/quiz";
 import { useTestData } from "../../provider/TestDataProvider";
-import { QuizOperation, TestOperation } from "@/app/interface/main";
+import { QuizOperation, TestOperation } from "@/app/lib/main";
 
 export default function ReadingMenuBar() {
 	const { quizList, setQuizList, currentTest } = useTestData();

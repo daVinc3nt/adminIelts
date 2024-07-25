@@ -8,7 +8,7 @@ import {
 	useEffect, // Import useContext
 } from "react";
 import { Quiz, Test, TestDataRecieve } from "@/app/interface/quiz";
-import { Category, Skill } from "@/app/interface/interfaces";
+import { Category, Skill } from "@/app/lib/interfaces";
 
 interface TestContextType {
 	quizList: Quiz[];

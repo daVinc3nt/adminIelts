@@ -1,0 +1,8 @@
+POST https://engo.tiendungcorp.com/v1/auth/login
+Content-Type: application/json
+
+{
+    "identifier": "tranthenhan",
+    "password": "12345"
+}
+

@@ -15,8 +15,8 @@ import {
 	QuizType,
 	Skill,
 	UpdateTest,
-} from "@/app/interface/interfaces";
-import { QuizOperation, TestOperation } from "@/app/interface/main";
+} from "@/app/lib/interfaces";
+import { QuizOperation, TestOperation } from "@/app/lib/main";
 
 export default function QuizList() {
 	const Tabref =

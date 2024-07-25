@@ -1,34 +1,56 @@
 import { UUID } from 'crypto';
 
+
+export enum UserRole {
+	ADMIN = "Quản trị viên",
+	SYS_ADMIN = "Quản trị viên hệ thống",
+	EXAM_ADMIN = "Quản trị viên đề thi",
+	STUDENT = "Học viên",
+	PAID_USER = "Người dùng có trả phí",
+	NONPAID_USER = "Người dùng không trả phí",
+}
 export interface SignUpPayload {
-    firstName: string;
-    lastName: string;
-    username: string;
-    email: string;
-    password: string;
+	firstName: string;
+	lastName: string;
+	phoneNumber: string;
+	dateOfBirth: Date;
+	username: string;
+	email: string;
+	password: string;
+	roles: UserRole[];
 }
 
 export interface LoginPayload {
-    identifier: string;
-    password: string;
+	identifier: string;
+	password: string;
 }
 
 export interface VerifyOtpPayload {
-    id: UUID;
-    otp: string; // 6 numeric digits
+	id: UUID;
+	otp: string; // 6 numeric digits
 }
 
 export interface SearchCriteria {
-    field: string;
-    operator: '~' | '!~' | '=' | '!=' | 'isSet' | 'isNotSet' | '<' | '<=' | '>' | '>=';
-    value?: any;
+	field: string;
+	operator:
+		| "~"
+		| "!~"
+		| "="
+		| "!="
+		| "isSet"
+		| "isNotSet"
+		| "<"
+		| "<="
+		| ">"
+		| ">=";
+	value?: any;
 }
 
 export interface SearchAddition {
-    sort?: [string, 'ASC' | 'DESC'][],
-    page?: number,
-    size?: number,
-    group?: string[]
+	sort?: [string, "ASC" | "DESC"][];
+	page?: number;
+	size?: number;
+	group?: string[];
 }
 
 export interface SearchPayload {
@@ -41,7 +63,9 @@ export interface UpdateAccountPayload {
 	password?: string;
 	firstName?: string;
 	lastName?: string;
-	roles?: string; // Just ADMIN, SYS_ADMIN allowed
+	phoneNumber?: string;
+	dateOfBirth?: Date;
+	roles?: UserRole[]; // Just ADMIN, SYS_ADMIN allowed
 }
 
 export interface UpdateAvatarPayload {
@@ -145,12 +169,13 @@ export interface UpdateQuiz {
 	content?: string;
 	skill?: Skill;
 	category?: Category;
+	tagIds?: UUID[];
 	tag?: string;
 	groups?: (UpdateMultipleChoiceGroup | UpdateFillingGroup)[];
 	order?: UUID[];
 }
 
-export interface UpdateQuizStatisticsDto {
+export interface UpdateQuizStatistics {
 	readingCount: number;
 	listeningCount: number;
 	writingCount: number;
@@ -159,9 +184,15 @@ export interface UpdateQuizStatisticsDto {
 	fillingCount: number;
 }
 
+export interface CreateFullQuiz {
+	file: File;
+	data: CreateQuiz;
+}
+
 export interface CreateQuiz {
 	content: string;
 	category: Category;
+	tagIds: UUID[];
 	tag: string;
 	skill: Skill;
 	groups: (CreateMultipleChoiceGroup | CreateFillingGroup)[];
@@ -296,4 +327,13 @@ export interface InitRecord {
 	listeningAmount: number;
 	speakingAmount: number;
 	writingAmount: number;
+}
+
+// Tag interface
+export interface CreateTag {
+	value: string;
+}
+
+export interface UpdateTag {
+	value: string;
 }

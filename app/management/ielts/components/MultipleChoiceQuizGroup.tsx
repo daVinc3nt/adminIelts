@@ -18,7 +18,7 @@ import {
 } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { MdDone } from "react-icons/md";
-import { Skill } from "@/app/interface/interfaces";
+import { Skill } from "@/app/lib/interfaces";
 
 interface MultipleChoiceQuizGroupProps {
 	quizIndex: number;

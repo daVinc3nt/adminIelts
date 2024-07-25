@@ -33,7 +33,6 @@ function UserManagement() {
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
 					<SelectRoleButton />
-					<SelectStatusButton />
 					<SelectSearchFieldButton />
 					<SearchButton />
 				</div>

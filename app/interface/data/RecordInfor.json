@@ -1,0 +1,42 @@
+[
+	{
+		"id": "8e3edbd9-69e6-412b-9d9f-81e187aea898",
+		"accountId": "ebfed39a-4433-4cfa-b724-e90168f55e23",
+		"testId": "6806e1d2-69eb-424f-9ef1-d12dbd09e720",
+		"readingDuration": 0,
+		"listeningDuration": 0,
+		"writingDuration": 0,
+		"speakingDuration": 0,
+		"readingAmount": 57,
+		"listeningAmount": 27,
+		"writingAmount": 27,
+		"speakingAmount": 14,
+		"completeReading": false,
+		"completeListening": false,
+		"completeWriting": false,
+		"completeSpeaking": false,
+		"score": 0,
+		"createdAt": "2024-07-24T15:17:38.000Z",
+		"updatedAt": "2024-07-24T15:17:38.000Z"
+	},
+	{
+		"id": "8e3edbd9-69e6-412b-9d9f-81e187aea898",
+		"accountId": "ebfed39a-4433-4cfa-b724-e90168f55e23",
+		"testId": "6806e1d2-69eb-424f-9ef1-d12dbd09e720",
+		"readingDuration": 0,
+		"listeningDuration": 0,
+		"writingDuration": 0,
+		"speakingDuration": 0,
+		"readingAmount": 57,
+		"listeningAmount": 27,
+		"writingAmount": 27,
+		"speakingAmount": 14,
+		"completeReading": false,
+		"completeListening": false,
+		"completeWriting": false,
+		"completeSpeaking": false,
+		"score": 0,
+		"createdAt": "2024-07-24T15:17:38.000Z",
+		"updatedAt": "2024-07-24T15:17:38.000Z"
+	}
+]

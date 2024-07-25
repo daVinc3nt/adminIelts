@@ -1,6 +1,6 @@
 import { FillingGroup, MultipleChoiceGroup } from "@/app/interface/quiz";
 import { useTestData } from "../provider/TestDataProvider";
-import { QuizType } from "@/app/interface/interfaces";
+import { QuizType } from "@/app/lib/interfaces";
 import React, { Fragment } from "react";
 import FillingQuizGroup from "./FillingQuizGroup";
 import MultipleChoiceQuizGroup from "./MultipleChoiceQuizGroup";

@@ -1,5 +1,5 @@
 "use client";
-import { QuizOperation, TestOperation } from "@/app/interface/main";
+import { QuizOperation, TestOperation } from "@/app/lib/main";
 import { TestInfor, QuizInfor } from "@/app/interface/quiz";
 import { useRouter } from "next/navigation";
 import {
@@ -39,6 +39,8 @@ interface TestContextType {
 	search: () => void;
 	deleteTestOrQuiz: (id: string) => void;
 	createTest: () => void;
+	currentTest: TestInfor;
+	setCurrentTest: Dispatch<SetStateAction<TestInfor>>;
 }
 
 const TestContext = createContext<TestContextType | null>(null);
@@ -63,6 +65,8 @@ export default function TestManagementProvider({
 
 	const [fetchType, setFetchType] = useState<string>("fulltest");
 	const [skillType, setSkillType] = useState<string>("");
+
+	const [currentTest, setCurrentTest] = useState<TestInfor>(null);
 
 	const [searchPayload, setSearchPayload] = useState({
 		searchValue: "",
@@ -120,25 +124,47 @@ export default function TestManagementProvider({
 	const createTest = () => {
 		const newTestOperation = new TestOperation();
 		newTestOperation
-			.create(
+			.createFullTest(
 				{
-					name: "New test",
-					reading: [],
-					listening: [],
-					writing: [],
-					speaking: [],
+					files: [] as any,
+					data: {
+						name: "New test",
+						reading: [],
+						listening: [],
+						writing: [],
+						speaking: [],
+					},
 				},
 				testToken
 			)
-			.then((response) => {
-				if (response.success) {
-					router.push(
-						`/management/ielts/fulltest/${response.data.id}`
-					);
+			.then((res) => {
+				console.log(res);
+				if (res.success) {
+					console.log(res.data);
+					// router.push(`/management/ielts/fulltest/${res.data.id}`);
 				} else {
 					alert("Create failed");
 				}
 			});
+		// .create(
+		// 	{
+		// 		name: "New test",
+		// 		reading: [],
+		// 		listening: [],
+		// 		writing: [],
+		// 		speaking: [],
+		// 	},
+		// 	testToken
+		// )
+		// .then((response) => {
+		// 	if (response.success) {
+		// 		router.push(
+		// 			`/management/ielts/fulltest/${response.data.id}`
+		// 		);
+		// 	} else {
+		// 		alert("Create failed");
+		// 	}
+		// });
 	};
 
 	return (
@@ -160,6 +186,8 @@ export default function TestManagementProvider({
 				search,
 				deleteTestOrQuiz,
 				createTest,
+				currentTest,
+				setCurrentTest,
 			}}>
 			{children}
 		</TestContext.Provider>
