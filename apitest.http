@@ -6,3 +6,23 @@ Content-Type: application/json
     "password": "12345"
 }
 
+###
+
+GET https://engo.tiendungcorp.com/v1/tags/search
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIxODk4MDIwLCJleHAiOjE3NTM0MzQwMjB9.9Ut8K9PDmQt8hBgWYgxHbtvbwO6TICtqmMvhOTdkSac
+
+{
+    
+}
+
+###
+
+POST https://engo.tiendungcorp.com/v1/tags/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIxODk4MDIwLCJleHAiOjE3NTM0MzQwMjB9.9Ut8K9PDmQt8hBgWYgxHbtvbwO6TICtqmMvhOTdkSac
+
+{
+    "value": "LISTENING PASSAGE 3",
+    "splitType": "0"
+}

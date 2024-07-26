@@ -1,6 +1,6 @@
 import { BsPlus, BsThreeDots } from "react-icons/bs";
 import { useTestData } from "../../provider/TestDataProvider";
-import { useEffect, useMemo, useRef } from "react";
+import { use, useEffect, useMemo, useRef } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 import {
 	FillingGroup,
@@ -17,6 +17,7 @@ import {
 	UpdateTest,
 } from "@/app/lib/interfaces";
 import { QuizOperation, TestOperation } from "@/app/lib/main";
+import { useAuth } from "@/app/provider/AuthProvider";
 
 export default function QuizList() {
 	const Tabref =
@@ -57,6 +58,8 @@ export default function QuizList() {
 		};
 	}, []);
 
+	const { sid } = useAuth();
+
 	const {
 		quizList,
 		setQuizList,
@@ -69,7 +72,7 @@ export default function QuizList() {
 		const newQuiz: Quiz = {
 			content: "",
 			category: category,
-			tag: "",
+			tags: [],
 			skill: skill,
 			groups: [],
 		};
@@ -107,8 +110,16 @@ export default function QuizList() {
 			currentTest,
 			newQuizList
 		);
+		console.log(updateTestPayLoad);
 		testOperation
-			.update(currentTest.id as any, updateTestPayLoad, testToken)
+			.update(
+				currentTest.id as any,
+				{
+					files: [] as any,
+					data: updateTestPayLoad as any,
+				},
+				sid
+			)
 			.then((response) => {
 				console.log(response);
 				if (response.success == true) {
@@ -128,7 +139,14 @@ export default function QuizList() {
 				newQuizList
 			);
 			testOperation
-				.update(currentTest.id as any, newUpdateTest, testToken)
+				.update(
+					currentTest.id as any,
+					{
+						files: [] as any,
+						data: newUpdateTest as any,
+					},
+					sid
+				)
 				.then((response) => {
 					console.log(response);
 					if (response.success == true) {
@@ -143,7 +161,7 @@ export default function QuizList() {
 		} else {
 			const quizOperation = new QuizOperation();
 			quizOperation
-				.delete(quizList[quizIndex].id as any, testToken)
+				.delete(quizList[quizIndex].id as any, sid)
 				.then((response) => {
 					console.log(response);
 
@@ -186,29 +204,29 @@ export default function QuizList() {
 				<div className="top-8 -left-10 absolute w-44 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
 					<button
 						onClick={() => addQuiz(Category.IELTS, Skill.READING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+						className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
 						Add Reading Part
 					</button>
 					<button
 						onClick={() => addQuiz(Category.IELTS, Skill.LISTENING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+						className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
 						Add Listening Part
 					</button>
 					<button
 						onClick={() => addQuiz(Category.IELTS, Skill.WRITING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+						className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
 						Add Writing Part
 					</button>
 					<button
 						onClick={() => addQuiz(Category.IELTS, Skill.SPEAKING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+						className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
 						Add Speaking Part
 					</button>
 				</div>
 			</details>
 
 			<div
-				className="w-full overflow-x-scroll h-40 -mb-32 overflow-y-visible scrollbar-hide flex flex-row gap-2 cursor-pointer"
+				className="flex flex-row w-full h-40 gap-2 -mb-32 overflow-x-scroll overflow-y-visible cursor-pointer scrollbar-hide"
 				{...events}
 				ref={Tabref}>
 				{sortQuizList.map((quiz, index) => {
@@ -274,6 +292,3 @@ const partLabel = (skill: Skill, index: number) => {
 			return `Speaking Part ${index + 1}`;
 	}
 };
-
-const testToken =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIwOTgxMTE1LCJleHAiOjE3NTI1MTcxMTV9.VHdXs5y2Vey-YjmqLN7Uxn1kF1dC-TXZF0ro9_u5mJQ";

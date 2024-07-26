@@ -1,5 +1,5 @@
 "use client";
-import { useTestData } from "../provider/TestDataProvider";
+import { useTestData } from "../../provider/TestDataProvider";
 import TextArea from "@/components/TextArea/TextArea";
 import {
 	getQuestionGroupNumber,

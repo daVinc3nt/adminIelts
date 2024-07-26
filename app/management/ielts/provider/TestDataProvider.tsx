@@ -34,9 +34,7 @@ export const TestDataProvider = ({ children }: { children: ReactNode }) => {
 
 	const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
 
-	const [currentTest, setCurrentTest] = useState<TestDataRecieve | null>(
-		null
-	);
+	const [currentTest, setCurrentTest] = useState<TestDataRecieve>(null);
 
 	return (
 		<TestContext.Provider

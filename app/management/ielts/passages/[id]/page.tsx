@@ -1,7 +1,7 @@
 "use client";
 import { TestDataProvider, useTestData } from "../../provider/TestDataProvider";
-import QuizContent from "../../components/QuizContent";
-import QuizGroup from "../../components/QuizGroup";
+import QuizContent from "../../fulltest/components/QuizContent";
+import QuizGroup from "../../fulltest/components/QuizGroup";
 import { Fragment, useEffect } from "react";
 import { QuizDataRecieve, quizDataRecieve2Quiz } from "@/app/interface/quiz";
 import MenuBar from "../components/MenuBar";
@@ -9,8 +9,8 @@ import { QuizOperation, TestOperation } from "@/app/lib/main";
 import { Quiz } from "@/app/interface/quiz";
 import QuizList from "../components/QuizList";
 import { Skill } from "@/app/lib/interfaces";
-import WritingQuizGroup from "../../components/WritingQuizGroup";
-import SpeakingQuizGroup from "../../components/SpeakingQuizGroup";
+import WritingQuizGroup from "../../fulltest/components/WritingQuizGroup";
+import SpeakingQuizGroup from "../../fulltest/components/SpeakingQuizGroup";
 
 export default function Page({ params }: { params: { id: string } }) {
 	return (

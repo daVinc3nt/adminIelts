@@ -1,6 +1,6 @@
 "use client";
 import { FillingGroup } from "@/app/interface/quiz";
-import { useTestData } from "../provider/TestDataProvider";
+import { useTestData } from "../../provider/TestDataProvider";
 import dynamic from "next/dynamic";
 import { useEffect, useMemo, useRef } from "react";
 import { QuizType } from "@/app/lib/interfaces";

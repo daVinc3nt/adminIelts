@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 
 interface Props {
@@ -24,6 +24,23 @@ export default function Select({
 	const [currentOption, setCurrentOption] = useState<number>(0);
 
 	const inputRef = useRef<HTMLInputElement>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				containerRef.current &&
+				!containerRef.current.contains(event.target as Node)
+			) {
+				setOpen(false);
+				setSearchValue("");
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
 
 	const defaultPlaceholder = placeholder ? placeholder : "Select...";
 
@@ -42,31 +59,20 @@ export default function Select({
 		return value.toLowerCase().includes(searchValue.toLowerCase());
 	};
 
-	const onBlur = () => {
-		setTimeout(() => {
-			setOpen(false);
-			setSearchValue("");
-		}, 150);
-	};
-
-	const resetValue = () => {
-		onChangeInput("");
-		setCurrentOption(-1);
-	};
-
 	const selectValue = (value: string, index: number) => {
 		onChangeInput(value);
 		setCurrentOption(index);
+		setOpen(false);
 	};
 
 	return (
 		<div
+			ref={containerRef}
 			className={`relative border-2 rounded-md min-w-fit w-full cursor-pointer bg-white dark:bg-pot-black shadow-md
 			${open ? "border-foreground-blue dark:border-foreground-red" : "border-transparent"}
 			`}>
 			<div
 				onClick={openDropdown}
-				onBlur={onBlur}
 				className="flex flex-row items-center justify-start gap-2 px-2 py-1 control">
 				<input
 					ref={inputRef}

@@ -9,6 +9,43 @@ export enum UserRole {
 	PAID_USER = "Người dùng có trả phí",
 	NONPAID_USER = "Người dùng không trả phí",
 }
+
+export enum InvitationStatus {
+	PENDING = "Chưa phản hồi",
+	ACCEPT = "Chấp nhận",
+	DECLINE = "Từ chối",
+}
+
+// Quiz Interface
+
+export enum QuizType {
+	MULTIPLE_CHOICE = "MULTIPLE CHOICE",
+	FILLING = "FILLING",
+}
+
+export enum Skill {
+	READING = "READING",
+	LISTENING = "LISTENING",
+	WRITING = "WRITING",
+	SPEAKING = "SPEAKING",
+}
+
+export enum Category {
+	THPTQG = "THPTQG",
+	IELTS = "IELTS",
+	HSK = "HSK",
+}
+
+export enum FetchingType {
+	FULL = "full",
+	AUTO = "auto",
+}
+
+export enum SplitType {
+	QUIZ_LEVEL = "QUIZ_LEVEL",
+	GROUP_LEVEL = "GROUP_LEVEL",
+}
+
 export interface SignUpPayload {
 	firstName: string;
 	lastName: string;
@@ -72,40 +109,9 @@ export interface UpdateAvatarPayload {
 	avatar: File;
 }
 
-export enum InvitationStatus {
-	PENDING = "Chưa phản hồi",
-	ACCEPT = "Chấp nhận",
-	DECLINE = "Từ chối",
-}
-
-// Quiz Interface
-
-export enum QuizType {
-	MULTIPLE_CHOICE = "MULTIPLE CHOICE",
-	FILLING = "FILLING",
-}
-
-export enum Skill {
-	READING = "READING",
-	LISTENING = "LISTENING",
-	WRITING = "WRITING",
-	SPEAKING = "SPEAKING",
-}
-
-export enum Category {
-	THPTQG = "THPTQG",
-	IELTS = "IELTS",
-	HSK = "HSK",
-}
-
-export enum FetchingType {
-	FULL = "full",
-	AUTO = "auto",
-}
-
 export interface CreateFillingQuiz {
 	description: string;
-	answer: string;
+	answer: string[];
 	explaination: string;
 }
 
@@ -189,6 +195,11 @@ export interface CreateFullQuiz {
 	data: CreateQuiz;
 }
 
+export interface UpdateFullQuiz {
+	file: File;
+	data: UpdateQuiz;
+}
+
 export interface CreateQuiz {
 	content: string;
 	category: Category;
@@ -220,8 +231,13 @@ export interface CreateTest {
 }
 
 export interface CreateFullTest {
-	files: FileList; //listening file in order
+	files: File[]; //listening file in order
 	data: CreateTest;
+}
+
+export interface UpdateFullTest {
+	files: File[];
+	data: UpdateTest;
 }
 
 export interface UpdateTest {
@@ -292,8 +308,15 @@ export interface CreateAnswer {
 
 export interface CreateRecord {
 	testId: UUID;
-	accountId: UUID;
 
+	readingDuration: number;
+	listeningDuration: number;
+	writingDuration: number;
+	speakingDuration: number;
+	completeReading: boolean;
+	completeListening: boolean;
+	completeWriting: boolean;
+	completeSpeaking: boolean;
 	reading: AnswerGroup[];
 	listening: AnswerGroup[];
 	writing: AnswerGroup[];
@@ -321,6 +344,13 @@ export interface UpdateRecord {
 	speaking?: AnswerGroup[];
 }
 
+export interface UpdateRecordConfig {
+	readingAmount: number;
+	listeningAmount: number;
+	speakingAmount: number;
+	writingAmount: number;
+}
+
 export interface InitRecord {
 	testId: UUID;
 	readingAmount: number;
@@ -332,8 +362,27 @@ export interface InitRecord {
 // Tag interface
 export interface CreateTag {
 	value: string;
+	splitType: SplitType;
 }
 
 export interface UpdateTag {
 	value: string;
+	splitType: SplitType;
+}
+
+//Flash card
+
+export interface CreateFlashCard {
+	word: string;
+	definition: string;
+}
+
+export interface GetFlashCard {
+	word?: string;
+	definition?: string;
+}
+
+export interface UpdateFlashCard {
+	word?: string;
+	definition?: string;
 }

@@ -8,8 +8,11 @@ import {
 	ReactNode,
 	SetStateAction,
 	useContext,
+	useEffect,
 	useState,
 } from "react";
+import { useAuth } from "@/app/provider/AuthProvider";
+import { FetchingType } from "@/app/lib/interfaces";
 
 interface TestContextType {
 	testList: TestInfor[];
@@ -58,6 +61,8 @@ export default function TestManagementProvider({
 }: {
 	children: ReactNode;
 }) {
+	const { sid } = useAuth();
+
 	const [testList, setTestList] = useState<TestInfor[]>([]);
 	const [quizList, setQuizList] = useState<QuizInfor[]>([]);
 
@@ -73,6 +78,29 @@ export default function TestManagementProvider({
 		searchField: "name",
 	});
 
+	useEffect(() => {
+		const newTestOperation = new TestOperation();
+		newTestOperation
+			.search(
+				FetchingType.FULL,
+				null,
+				{
+					criteria: [],
+					addition: {
+						sort: [],
+						page: currentPage,
+						size: 8,
+						group: null,
+					},
+				},
+				sid
+			)
+			.then((response) => {
+				console.log(response);
+				setTestList(response.data as TestInfor[]);
+			});
+	}, [currentPage]);
+
 	const router = useRouter();
 
 	const search = () => {};
@@ -82,7 +110,7 @@ export default function TestManagementProvider({
 		const newQuizOperation = new QuizOperation();
 
 		if (fetchType == "fulltest") {
-			newTestOperation.delete(id as any, testToken).then((response) => {
+			newTestOperation.delete(id as any, sid).then((response) => {
 				if (response.success) {
 					alert("Delete successfully");
 					const newTestList = [];
@@ -97,7 +125,7 @@ export default function TestManagementProvider({
 				}
 			});
 		} else {
-			newQuizOperation.delete(id as any, testToken).then((response) => {
+			newQuizOperation.delete(id as any, sid).then((response) => {
 				if (response.success) {
 					alert("Delete successfully");
 					const newQuizList = [];
@@ -135,13 +163,13 @@ export default function TestManagementProvider({
 						speaking: [],
 					},
 				},
-				testToken
+				sid
 			)
 			.then((res) => {
 				console.log(res);
 				if (res.success) {
 					console.log(res.data);
-					// router.push(`/management/ielts/fulltest/${res.data.id}`);
+					router.push(`/management/ielts/fulltest/${res.data.id}`);
 				} else {
 					alert("Create failed");
 				}
@@ -193,6 +221,3 @@ export default function TestManagementProvider({
 		</TestContext.Provider>
 	);
 }
-
-const testToken =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIwOTgxMTE1LCJleHAiOjE3NTI1MTcxMTV9.VHdXs5y2Vey-YjmqLN7Uxn1kF1dC-TXZF0ro9_u5mJQ";

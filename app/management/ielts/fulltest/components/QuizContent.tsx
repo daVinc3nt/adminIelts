@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { useTestData } from "../provider/TestDataProvider";
+import { useTestData } from "../../provider/TestDataProvider";
 import { useEffect, useMemo, useRef } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { QuizOperation } from "@/app/lib/main";

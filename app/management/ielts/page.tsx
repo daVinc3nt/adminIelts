@@ -27,33 +27,10 @@ function IELTSManagement() {
 
 	const { currentPage, handleChangePage, setTestList } = useTestManagement();
 
-	useEffect(() => {
-		const newTestOperation = new TestOperation();
-		newTestOperation
-			.search(
-				FetchingType.FULL,
-				null,
-				{
-					criteria: [],
-					addition: {
-						sort: [],
-						page: currentPage,
-						size: 6,
-						group: null,
-					},
-				} as SearchPayload,
-				sid
-			)
-			.then((response) => {
-				console.log(response);
-				setTestList(response.data as TestInfor[]);
-			});
-	}, []);
-
 	return (
-		<main className="main flex justify-center flex-1">
-			<div className="flex flex-col items-center w-10/12 h-full py-4 gap-6">
-				<div className="w-full h-fit flex flex-row justify-between items-center">
+		<main className="flex justify-center flex-1 main">
+			<div className="flex flex-col items-center w-10/12 h-full gap-6 py-4">
+				<div className="flex flex-row items-center justify-between w-full h-fit">
 					<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
 						IELTS MANAGEMENT
 					</span>

@@ -36,7 +36,7 @@ export interface Quiz {
 	id?: string;
 	content: string;
 	category: Category;
-	tag: string;
+	tags: Tag[];
 	skill: Skill;
 	groups: (MultipleChoiceGroup | FillingGroup)[];
 }
@@ -190,7 +190,7 @@ const FillingQuizDataRecieve2FillingGroup = (
 export interface QuizDataRecieve {
 	id: string;
 	category: string;
-	tag: string;
+	tags: Tag[];
 	content: string;
 	skill: string;
 	order: string[];
@@ -205,7 +205,7 @@ export const quizDataRecieve2Quiz = (data: QuizDataRecieve): Quiz => {
 		id: data.id,
 		content: data.content,
 		category: data.category,
-		tag: data.tag,
+		tagIds: data.tags,
 		skill: data.skill,
 		groups: [],
 	} as Quiz;

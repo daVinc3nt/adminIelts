@@ -1,11 +1,7 @@
 import { RiFilePaper2Fill } from "react-icons/ri";
-import { FaBook } from "react-icons/fa";
-import { BsClipboard2PlusFill } from "react-icons/bs";
 
-import { FaUserGraduate } from "react-icons/fa";
-import { FaUserTie } from "react-icons/fa6";
+import { FaUserGraduate, FaTag } from "react-icons/fa";
 import { Link } from "@nextui-org/react";
-import { useEffect, useRef } from "react";
 interface Props {
 	isOpenSidebar: boolean;
 	setIsOpenSidebar: (isOpenSidebar: boolean) => void;
@@ -55,8 +51,21 @@ export default function SideBar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 					<Link
 						href="/management/ielts/records"
 						className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-400 dark:hover:text-pot-black">
-						<FaUserGraduate size={30} className="inline-block" />
+						<RiFilePaper2Fill size={30} className="inline-block" />
 						IELTS Record
+					</Link>
+				</div>
+			</div>
+			<div className="flex flex-col w-full gap-2 h-fit">
+				<span className="font-bold text-pot-black dark:text-gray-200">
+					Tag Management
+				</span>
+				<div className="flex flex-col w-full gap-1 text-sm text-gray-600 dark:text-gray-400 h-fit">
+					<Link
+						href="/management/tags"
+						className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-400 dark:hover:text-pot-black">
+						<FaTag size={30} className="inline-block" />
+						Tag
 					</Link>
 				</div>
 			</div>

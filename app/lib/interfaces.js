@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FetchingType =
+exports.SplitType =
+	exports.FetchingType =
 	exports.Category =
 	exports.Skill =
 	exports.QuizType =
@@ -48,3 +49,8 @@ var FetchingType;
 	FetchingType["FULL"] = "full";
 	FetchingType["AUTO"] = "auto";
 })(FetchingType || (exports.FetchingType = FetchingType = {}));
+var SplitType;
+(function (SplitType) {
+	SplitType["QUIZ_LEVEL"] = "QUIZ_LEVEL";
+	SplitType["GROUP_LEVEL"] = "GROUP_LEVEL";
+})(SplitType || (exports.SplitType = SplitType = {}));

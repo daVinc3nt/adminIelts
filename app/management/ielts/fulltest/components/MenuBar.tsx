@@ -1,8 +1,10 @@
 import { setStartNumber, TestDataRecieve2Test } from "@/app/interface/quiz";
 import { useTestData } from "../../provider/TestDataProvider";
-import { QuizOperation, TestOperation } from "@/app/lib/main";
+import { TestOperation } from "@/app/lib/main";
+import { useAuth } from "@/app/provider/AuthProvider";
 
 export default function ReadingMenuBar() {
+	const { sid } = useAuth();
 	const { quizList, setQuizList, currentTest } = useTestData();
 
 	const onSave = () => {
@@ -14,11 +16,20 @@ export default function ReadingMenuBar() {
 
 		console.log(newUpdateTest);
 		testOperation
-			.update(currentTest.id as any, newUpdateTest, testToken)
+			.update(
+				currentTest.id as any,
+				{
+					files: [] as any,
+					data: newUpdateTest as any,
+				},
+				sid
+			)
 			.then((response) => {
 				console.log(response);
 				if (response.success == true) {
 					alert("Save successfully");
+				} else {
+					alert("Save failed");
 				}
 			});
 	};
@@ -50,12 +61,9 @@ export default function ReadingMenuBar() {
 			</span>
 			<span
 				onClick={() => print()}
-				className="ml-auto px-1 rounded-md hover:text-white dark:hover:bg-foreground-red hover:bg-foreground-blue">
+				className="px-1 ml-auto rounded-md hover:text-white dark:hover:bg-foreground-red hover:bg-foreground-blue">
 				print test
 			</span>
 		</div>
 	);
 }
-
-const testToken =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIwOTgxMTE1LCJleHAiOjE3NTI1MTcxMTV9.VHdXs5y2Vey-YjmqLN7Uxn1kF1dC-TXZF0ro9_u5mJQ";

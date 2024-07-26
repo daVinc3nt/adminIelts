@@ -36,7 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PracticeOperation =
+exports.FlashCardOperation =
+	exports.PracticeOperation =
 	exports.TagOperation =
 	exports.RecordOperation =
 	exports.TestOperation =
@@ -846,7 +847,7 @@ var QuizOperation = /** @class */ (function () {
 						formData.append("data", JSON.stringify(payload.data));
 						return [
 							4 /*yield*/,
-							axios_1.default.post(
+							axios_1.default.put(
 								"".concat(this.baseUrl, "/update/").concat(id),
 								formData,
 								{
@@ -1333,7 +1334,7 @@ var TestOperation = /** @class */ (function () {
 						formData.append("data", JSON.stringify(payload.data));
 						return [
 							4 /*yield*/,
-							axios_1.default.post(
+							axios_1.default.put(
 								"".concat(this.baseUrl, "/update/").concat(id),
 								formData,
 								{
@@ -1726,7 +1727,7 @@ var RecordOperation = /** @class */ (function () {
 			});
 		});
 	};
-	RecordOperation.prototype.delete = function (id, token) {
+	RecordOperation.prototype.updateConfig = function (id, payload, token) {
 		var _a, _b;
 		return __awaiter(this, void 0, void 0, function () {
 			var response, error_22;
@@ -1736,8 +1737,11 @@ var RecordOperation = /** @class */ (function () {
 						_c.trys.push([0, 2, , 3]);
 						return [
 							4 /*yield*/,
-							axios_1.default.delete(
-								"".concat(this.baseUrl, "/").concat(id),
+							axios_1.default.put(
+								""
+									.concat(this.baseUrl, "/config/update/")
+									.concat(id),
+								payload,
 								{
 									withCredentials: true,
 									validateStatus: function (status) {
@@ -1803,14 +1807,7 @@ var RecordOperation = /** @class */ (function () {
 			});
 		});
 	};
-	return RecordOperation;
-})();
-exports.RecordOperation = RecordOperation;
-var TagOperation = /** @class */ (function () {
-	function TagOperation() {
-		this.baseUrl = "https://engo.tiendungcorp.com/v1/tags";
-	}
-	TagOperation.prototype.create = function (payload, token) {
+	RecordOperation.prototype.delete = function (id, token) {
 		var _a, _b;
 		return __awaiter(this, void 0, void 0, function () {
 			var response, error_23;
@@ -1820,9 +1817,8 @@ var TagOperation = /** @class */ (function () {
 						_c.trys.push([0, 2, , 3]);
 						return [
 							4 /*yield*/,
-							axios_1.default.post(
-								"".concat(this.baseUrl, "/create"),
-								payload,
+							axios_1.default.delete(
+								"".concat(this.baseUrl, "/").concat(id),
 								{
 									withCredentials: true,
 									validateStatus: function (status) {
@@ -1847,7 +1843,7 @@ var TagOperation = /** @class */ (function () {
 					case 2:
 						error_23 = _c.sent();
 						console.log(
-							"Error searching accounts: ",
+							"Error updating account: ",
 							(_a =
 								error_23 === null || error_23 === void 0
 									? void 0
@@ -1888,8 +1884,14 @@ var TagOperation = /** @class */ (function () {
 			});
 		});
 	};
-	//get all tags
-	TagOperation.prototype.search = function (token) {
+	return RecordOperation;
+})();
+exports.RecordOperation = RecordOperation;
+var TagOperation = /** @class */ (function () {
+	function TagOperation() {
+		this.baseUrl = "https://engo.tiendungcorp.com/v1/tags";
+	}
+	TagOperation.prototype.create = function (payload, token) {
 		var _a, _b;
 		return __awaiter(this, void 0, void 0, function () {
 			var response, error_24;
@@ -1899,8 +1901,9 @@ var TagOperation = /** @class */ (function () {
 						_c.trys.push([0, 2, , 3]);
 						return [
 							4 /*yield*/,
-							axios_1.default.get(
-								"".concat(this.baseUrl, "/search"),
+							axios_1.default.post(
+								"".concat(this.baseUrl, "/create"),
+								payload,
 								{
 									withCredentials: true,
 									validateStatus: function (status) {
@@ -1966,7 +1969,8 @@ var TagOperation = /** @class */ (function () {
 			});
 		});
 	};
-	TagOperation.prototype.update = function (id, payload, token) {
+	//get all tags
+	TagOperation.prototype.search = function (token) {
 		var _a, _b;
 		return __awaiter(this, void 0, void 0, function () {
 			var response, error_25;
@@ -1976,9 +1980,8 @@ var TagOperation = /** @class */ (function () {
 						_c.trys.push([0, 2, , 3]);
 						return [
 							4 /*yield*/,
-							axios_1.default.put(
-								"".concat(this.baseUrl, "/update/").concat(id),
-								payload,
+							axios_1.default.get(
+								"".concat(this.baseUrl, "/search"),
 								{
 									withCredentials: true,
 									validateStatus: function (status) {
@@ -2003,7 +2006,7 @@ var TagOperation = /** @class */ (function () {
 					case 2:
 						error_25 = _c.sent();
 						console.log(
-							"Error updating account: ",
+							"Error searching accounts: ",
 							(_a =
 								error_25 === null || error_25 === void 0
 									? void 0
@@ -2044,7 +2047,7 @@ var TagOperation = /** @class */ (function () {
 			});
 		});
 	};
-	TagOperation.prototype.delete = function (id, token) {
+	TagOperation.prototype.update = function (id, payload, token) {
 		var _a, _b;
 		return __awaiter(this, void 0, void 0, function () {
 			var response, error_26;
@@ -2054,8 +2057,9 @@ var TagOperation = /** @class */ (function () {
 						_c.trys.push([0, 2, , 3]);
 						return [
 							4 /*yield*/,
-							axios_1.default.delete(
-								"".concat(this.baseUrl, "/delete/").concat(id),
+							axios_1.default.put(
+								"".concat(this.baseUrl, "/update/").concat(id),
+								payload,
 								{
 									withCredentials: true,
 									validateStatus: function (status) {
@@ -2121,15 +2125,7 @@ var TagOperation = /** @class */ (function () {
 			});
 		});
 	};
-	return TagOperation;
-})();
-exports.TagOperation = TagOperation;
-var PracticeOperation = /** @class */ (function () {
-	function PracticeOperation() {
-		this.baseUrl = "https://engo.tiendungcorp.com/v1/practices";
-	}
-	//get search by tag id
-	PracticeOperation.prototype.search = function (tagId, page, size, token) {
+	TagOperation.prototype.delete = function (id, token) {
 		var _a, _b;
 		return __awaiter(this, void 0, void 0, function () {
 			var response, error_27;
@@ -2139,12 +2135,8 @@ var PracticeOperation = /** @class */ (function () {
 						_c.trys.push([0, 2, , 3]);
 						return [
 							4 /*yield*/,
-							axios_1.default.get(
-								""
-									.concat(this.baseUrl, "/search?tagId=")
-									.concat(tagId, "&page=")
-									.concat(page, "&size=")
-									.concat(size),
+							axios_1.default.delete(
+								"".concat(this.baseUrl, "/delete/").concat(id),
 								{
 									withCredentials: true,
 									validateStatus: function (status) {
@@ -2169,7 +2161,7 @@ var PracticeOperation = /** @class */ (function () {
 					case 2:
 						error_27 = _c.sent();
 						console.log(
-							"Error searching accounts: ",
+							"Error updating account: ",
 							(_a =
 								error_27 === null || error_27 === void 0
 									? void 0
@@ -2210,6 +2202,414 @@ var PracticeOperation = /** @class */ (function () {
 			});
 		});
 	};
+	return TagOperation;
+})();
+exports.TagOperation = TagOperation;
+var PracticeOperation = /** @class */ (function () {
+	function PracticeOperation() {
+		this.baseUrl = "https://engo.tiendungcorp.com/v1/practices";
+	}
+	//get search by tag id
+	PracticeOperation.prototype.search = function (tagId, page, size, token) {
+		var _a, _b;
+		return __awaiter(this, void 0, void 0, function () {
+			var response, error_28;
+			return __generator(this, function (_c) {
+				switch (_c.label) {
+					case 0:
+						_c.trys.push([0, 2, , 3]);
+						return [
+							4 /*yield*/,
+							axios_1.default.get(
+								""
+									.concat(this.baseUrl, "/search?tagId=")
+									.concat(tagId, "&page=")
+									.concat(page, "&size=")
+									.concat(size),
+								{
+									withCredentials: true,
+									validateStatus: function (status) {
+										return status >= 200 && status <= 500;
+									},
+									headers: {
+										Authorization: "Bearer ".concat(token),
+									},
+								}
+							),
+						];
+					case 1:
+						response = _c.sent();
+						return [
+							2 /*return*/,
+							{
+								success: response.data.success,
+								message: response.data.message,
+								data: response.data.data,
+							},
+						];
+					case 2:
+						error_28 = _c.sent();
+						console.log(
+							"Error searching accounts: ",
+							(_a =
+								error_28 === null || error_28 === void 0
+									? void 0
+									: error_28.response) === null ||
+								_a === void 0
+								? void 0
+								: _a.data
+						);
+						console.error(
+							"Request that caused the error: ",
+							error_28 === null || error_28 === void 0
+								? void 0
+								: error_28.request
+						);
+						return [
+							2 /*return*/,
+							{
+								success:
+									(_b =
+										error_28 === null || error_28 === void 0
+											? void 0
+											: error_28.response) === null ||
+									_b === void 0
+										? void 0
+										: _b.data,
+								request:
+									error_28 === null || error_28 === void 0
+										? void 0
+										: error_28.request,
+								status: error_28.response
+									? error_28.response.status
+									: null,
+							},
+						];
+					case 3:
+						return [2 /*return*/];
+				}
+			});
+		});
+	};
 	return PracticeOperation;
 })();
 exports.PracticeOperation = PracticeOperation;
+// flash card
+var FlashCardOperation = /** @class */ (function () {
+	function FlashCardOperation() {
+		this.baseUrl = "https://engo.tiendungcorp.com/v1/flashcards";
+	}
+	FlashCardOperation.prototype.create = function (payload, token) {
+		var _a, _b;
+		return __awaiter(this, void 0, void 0, function () {
+			var response, error_29;
+			return __generator(this, function (_c) {
+				switch (_c.label) {
+					case 0:
+						_c.trys.push([0, 2, , 3]);
+						return [
+							4 /*yield*/,
+							axios_1.default.post(
+								"".concat(this.baseUrl, "/create"),
+								payload,
+								{
+									withCredentials: true,
+									validateStatus: function (status) {
+										return status >= 200 && status <= 500;
+									},
+									headers: {
+										Authorization: "Bearer ".concat(token),
+									},
+								}
+							),
+						];
+					case 1:
+						response = _c.sent();
+						return [
+							2 /*return*/,
+							{
+								success: response.data.success,
+								message: response.data.message,
+								data: response.data.data,
+							},
+						];
+					case 2:
+						error_29 = _c.sent();
+						console.log(
+							"Error searching accounts: ",
+							(_a =
+								error_29 === null || error_29 === void 0
+									? void 0
+									: error_29.response) === null ||
+								_a === void 0
+								? void 0
+								: _a.data
+						);
+						console.error(
+							"Request that caused the error: ",
+							error_29 === null || error_29 === void 0
+								? void 0
+								: error_29.request
+						);
+						return [
+							2 /*return*/,
+							{
+								success:
+									(_b =
+										error_29 === null || error_29 === void 0
+											? void 0
+											: error_29.response) === null ||
+									_b === void 0
+										? void 0
+										: _b.data,
+								request:
+									error_29 === null || error_29 === void 0
+										? void 0
+										: error_29.request,
+								status: error_29.response
+									? error_29.response.status
+									: null,
+							},
+						];
+					case 3:
+						return [2 /*return*/];
+				}
+			});
+		});
+	};
+	FlashCardOperation.prototype.search = function (payload, token) {
+		var _a, _b;
+		return __awaiter(this, void 0, void 0, function () {
+			var response, error_30;
+			return __generator(this, function (_c) {
+				switch (_c.label) {
+					case 0:
+						_c.trys.push([0, 2, , 3]);
+						return [
+							4 /*yield*/,
+							axios_1.default.post(
+								"".concat(this.baseUrl, "/search"),
+								payload,
+								{
+									withCredentials: true,
+									validateStatus: function (status) {
+										return status >= 200 && status <= 500;
+									},
+									headers: {
+										Authorization: "Bearer ".concat(token),
+									},
+								}
+							),
+						];
+					case 1:
+						response = _c.sent();
+						return [
+							2 /*return*/,
+							{
+								success: response.data.success,
+								message: response.data.message,
+								data: response.data.data,
+							},
+						];
+					case 2:
+						error_30 = _c.sent();
+						console.log(
+							"Error searching accounts: ",
+							(_a =
+								error_30 === null || error_30 === void 0
+									? void 0
+									: error_30.response) === null ||
+								_a === void 0
+								? void 0
+								: _a.data
+						);
+						console.error(
+							"Request that caused the error: ",
+							error_30 === null || error_30 === void 0
+								? void 0
+								: error_30.request
+						);
+						return [
+							2 /*return*/,
+							{
+								success:
+									(_b =
+										error_30 === null || error_30 === void 0
+											? void 0
+											: error_30.response) === null ||
+									_b === void 0
+										? void 0
+										: _b.data,
+								request:
+									error_30 === null || error_30 === void 0
+										? void 0
+										: error_30.request,
+								status: error_30.response
+									? error_30.response.status
+									: null,
+							},
+						];
+					case 3:
+						return [2 /*return*/];
+				}
+			});
+		});
+	};
+	FlashCardOperation.prototype.update = function (id, payload, token) {
+		var _a, _b;
+		return __awaiter(this, void 0, void 0, function () {
+			var response, error_31;
+			return __generator(this, function (_c) {
+				switch (_c.label) {
+					case 0:
+						_c.trys.push([0, 2, , 3]);
+						return [
+							4 /*yield*/,
+							axios_1.default.put(
+								"".concat(this.baseUrl, "/update/").concat(id),
+								payload,
+								{
+									withCredentials: true,
+									validateStatus: function (status) {
+										return status >= 200 && status <= 500;
+									},
+									headers: {
+										Authorization: "Bearer ".concat(token),
+									},
+								}
+							),
+						];
+					case 1:
+						response = _c.sent();
+						return [
+							2 /*return*/,
+							{
+								success: response.data.success,
+								message: response.data.message,
+								data: response.data.data,
+							},
+						];
+					case 2:
+						error_31 = _c.sent();
+						console.log(
+							"Error updating account: ",
+							(_a =
+								error_31 === null || error_31 === void 0
+									? void 0
+									: error_31.response) === null ||
+								_a === void 0
+								? void 0
+								: _a.data
+						);
+						console.error(
+							"Request that caused the error: ",
+							error_31 === null || error_31 === void 0
+								? void 0
+								: error_31.request
+						);
+						return [
+							2 /*return*/,
+							{
+								success:
+									(_b =
+										error_31 === null || error_31 === void 0
+											? void 0
+											: error_31.response) === null ||
+									_b === void 0
+										? void 0
+										: _b.data,
+								request:
+									error_31 === null || error_31 === void 0
+										? void 0
+										: error_31.request,
+								status: error_31.response
+									? error_31.response.status
+									: null,
+							},
+						];
+					case 3:
+						return [2 /*return*/];
+				}
+			});
+		});
+	};
+	FlashCardOperation.prototype.delete = function (id, token) {
+		var _a, _b;
+		return __awaiter(this, void 0, void 0, function () {
+			var response, error_32;
+			return __generator(this, function (_c) {
+				switch (_c.label) {
+					case 0:
+						_c.trys.push([0, 2, , 3]);
+						return [
+							4 /*yield*/,
+							axios_1.default.delete(
+								"".concat(this.baseUrl, "/delete/").concat(id),
+								{
+									withCredentials: true,
+									validateStatus: function (status) {
+										return status >= 200 && status <= 500;
+									},
+									headers: {
+										Authorization: "Bearer ".concat(token),
+									},
+								}
+							),
+						];
+					case 1:
+						response = _c.sent();
+						return [
+							2 /*return*/,
+							{
+								success: response.data.success,
+								message: response.data.message,
+								data: response.data.data,
+							},
+						];
+					case 2:
+						error_32 = _c.sent();
+						console.log(
+							"Error updating account: ",
+							(_a =
+								error_32 === null || error_32 === void 0
+									? void 0
+									: error_32.response) === null ||
+								_a === void 0
+								? void 0
+								: _a.data
+						);
+						console.error(
+							"Request that caused the error: ",
+							error_32 === null || error_32 === void 0
+								? void 0
+								: error_32.request
+						);
+						return [
+							2 /*return*/,
+							{
+								success:
+									(_b =
+										error_32 === null || error_32 === void 0
+											? void 0
+											: error_32.response) === null ||
+									_b === void 0
+										? void 0
+										: _b.data,
+								request:
+									error_32 === null || error_32 === void 0
+										? void 0
+										: error_32.request,
+								status: error_32.response
+									? error_32.response.status
+									: null,
+							},
+						];
+					case 3:
+						return [2 /*return*/];
+				}
+			});
+		});
+	};
+	return FlashCardOperation;
+})();
+exports.FlashCardOperation = FlashCardOperation;

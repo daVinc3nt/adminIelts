@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { CreateFullQuiz, CreateFullTest, CreateQuiz, CreateRecord, CreateTag, CreateTest, CreateTestFromQuizIds, FetchingType, GetRecord, InitRecord, LoginPayload, SearchPayload, SignUpPayload, Skill, UpdateAccountPayload, UpdateAvatarPayload, UpdateQuiz, UpdateRecord, UpdateTag, UpdateTest, VerifyOtpPayload } from "./interfaces";
+import { CreateFlashCard, CreateFullQuiz, CreateFullTest, CreateTag, CreateTestFromQuizIds, FetchingType, GetRecord, InitRecord, LoginPayload, SearchPayload, SignUpPayload, Skill, UpdateAccountPayload, UpdateAvatarPayload, UpdateFlashCard, UpdateFullQuiz, UpdateFullTest, UpdateQuiz, UpdateRecord, UpdateRecordConfig, UpdateTag, VerifyOtpPayload } from "./interfaces";
 import { UUID } from "crypto";
 
 export class AuthOperation {
@@ -215,14 +215,14 @@ export class QuizOperation {
 		}
     }
 
-    async update(id: UUID, payload: CreateFullQuiz, token: string) {
+    async update(id: UUID, payload: UpdateFullQuiz, token: string) {
         try {       
 			
 			const formData = new FormData();
             formData.append('file', payload.file);
             formData.append('data', JSON.stringify(payload.data));
 			
-			const response: AxiosResponse = await axios.post(`${this.baseUrl}/update/${id}`, formData, {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/update/${id}`, formData, {
 				withCredentials: true,
                 validateStatus: status => status >= 200 && status <= 500,
                 headers: {
@@ -368,7 +368,7 @@ export class TestOperation {
 		}
     }
 
-    async update(id: UUID, payload: CreateFullTest, token: string) {
+    async update(id: UUID, payload: UpdateFullTest, token: string) {
         try {       
 			
 			const formData = new FormData();
@@ -378,7 +378,7 @@ export class TestOperation {
 
             formData.append('data', JSON.stringify(payload.data));
 			
-			const response: AxiosResponse = await axios.post(`${this.baseUrl}/update/${id}`, formData, {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/update/${id}`, formData, {
 				withCredentials: true,
                 validateStatus: status => status >= 200 && status <= 500,
                 headers: {
@@ -483,6 +483,25 @@ export class RecordOperation {
     async update(id: UUID, payload: UpdateRecord, token: string) {
         try {
 			const response: AxiosResponse = await axios.put(`${this.baseUrl}/update/${id}`, payload, {
+				withCredentials: true,
+                validateStatus: status => status >= 200 && status <= 500,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+			});
+			
+			return { success: response.data.success, message: response.data.message, data: response.data.data };
+		} 
+		catch (error: any) {
+			console.log("Error updating account: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+		}
+    }
+
+    async updateConfig(id: UUID, payload: UpdateRecordConfig, token: string) {
+        try {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/config/update/${id}`, payload, {
 				withCredentials: true,
                 validateStatus: status => status >= 200 && status <= 500,
                 headers: {
@@ -628,6 +647,95 @@ export class PracticeOperation {
 		} 
 		catch (error: any) {
 			console.log("Error searching accounts: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+		}
+    }
+
+}
+
+// flash card
+
+export class FlashCardOperation {
+    private baseUrl: string;
+
+    constructor() {
+        this.baseUrl = 'https://engo.tiendungcorp.com/v1/flashcards';
+    }
+
+    async create(payload: CreateFlashCard, token: string) {
+        try {
+			const response: AxiosResponse = await axios.post(`${this.baseUrl}/create`, payload, {
+				withCredentials: true,
+                validateStatus: status => status >= 200 && status <= 500,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+			});
+			
+			return { success: response.data.success, message: response.data.message, data: response.data.data };
+		} 
+		catch (error: any) {
+			console.log("Error searching accounts: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+		}
+    }
+
+    
+    async search(payload: SearchPayload, token: string) {
+        try {
+			const response: AxiosResponse = await axios.post(`${this.baseUrl}/search`, payload, {
+				withCredentials: true,
+                validateStatus: status => status >= 200 && status <= 500,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+			});
+			
+			return { success: response.data.success, message: response.data.message, data: response.data.data };
+		} 
+		catch (error: any) {
+			console.log("Error searching accounts: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+		}
+    }
+
+
+    async update(id: UUID, payload: UpdateFlashCard, token: string) {
+        try {
+			const response: AxiosResponse = await axios.put(`${this.baseUrl}/update/${id}`, payload, {
+				withCredentials: true,
+                validateStatus: status => status >= 200 && status <= 500,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+			});
+			
+			return { success: response.data.success, message: response.data.message, data: response.data.data };
+		} 
+		catch (error: any) {
+			console.log("Error updating account: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+		}
+    }
+
+    async delete(id: UUID, token: string) {
+        try {
+			const response: AxiosResponse = await axios.delete(`${this.baseUrl}/delete/${id}`, {
+				withCredentials: true,
+                validateStatus: status => status >= 200 && status <= 500,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+			});
+			
+			return { success: response.data.success, message: response.data.message, data: response.data.data };
+		} 
+		catch (error: any) {
+			console.log("Error updating account: ", error?.response?.data);
             console.error("Request that caused the error: ", error?.request);
             return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
 		}

@@ -7,3 +7,6 @@ export const getSid = () => {
 	);
 	return Cookies.get("testsid");
 };
+export const printSid = () => {
+	console.log(document.cookie);
+};
