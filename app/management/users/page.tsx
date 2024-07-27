@@ -4,12 +4,12 @@ import {
 	useUserManagement,
 } from "./provider/UserManagementProvider";
 import UserList from "./components/UserList";
-import SearchButton from "./components/SearchButton";
-import UserInfor from "./components/UserInfor";
+import SearchBar from "./components/SearchBar";
 import SelectRoleButton from "./components/SelectRoleButton";
-import SelectStatusButton from "./components/SelectStatusButton";
 import SelectSearchFieldButton from "./components/SelectSearchFieldButton";
 import Pagination from "@/components/Pagnitation/Pagnitation";
+import PopupUpdateUser from "./components/PopupUpdateUser";
+import PopupUserInfor from "./components/PopupUserInfor";
 
 export default function Page() {
 	return (
@@ -20,12 +20,18 @@ export default function Page() {
 }
 
 function UserManagement() {
-	const { currentPage, handleChangePage } = useUserManagement();
+	const {
+		currentPage,
+		handleChangePage,
+		isOpenUpdateInfor,
+		isOpenUserInfor,
+	} = useUserManagement();
 
 	return (
 		<main className="flex justify-center flex-1">
-			<UserInfor />
-			<div className="flex flex-col items-center w-11/12 h-full py-4 gap-6">
+			{isOpenUserInfor && <PopupUserInfor />}
+			{isOpenUpdateInfor && <PopupUpdateUser />}
+			<div className="flex flex-col items-center w-10/12 h-full gap-6 py-4">
 				<div className="w-full h-fit">
 					<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
 						USER MANAGEMENT
@@ -34,7 +40,7 @@ function UserManagement() {
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
 					<SelectRoleButton />
 					<SelectSearchFieldButton />
-					<SearchButton />
+					<SearchBar />
 				</div>
 
 				<UserList />

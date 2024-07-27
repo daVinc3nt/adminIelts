@@ -1,11 +1,13 @@
-export enum UserRole {
-	ADMIN = "Quản trị viên",
-	SYS_ADMIN = "Quản trị viên hệ thống",
-	EXAM_ADMIN = "Quản trị viên đề thi",
-	STUDENT = "Học viên",
-	PAID_USER = "Người dùng có trả phí",
-	NONPAID_USER = "Người dùng không trả phí",
-}
+import { UserRole } from "../lib/interfaces";
+
+export const roleLabel = [
+	{ value: UserRole.NONPAID_USER, label: "Non-paid user" },
+	{ value: UserRole.PAID_USER, label: "Paid user" },
+	{ value: UserRole.STUDENT, label: "Student" },
+	{ value: UserRole.ADMIN, label: "Admin" },
+	{ value: UserRole.EXAM_ADMIN, label: "Exam admin" },
+	{ value: UserRole.SYS_ADMIN, label: "System admin" },
+];
 
 export interface UserInformation {
 	id: string;
@@ -15,16 +17,18 @@ export interface UserInformation {
 	lastName: string;
 	avatar: File;
 	active: boolean;
+	dateOfBirth: string;
+	phoneNumber: string;
 	roles: RoleInfor[];
 	createdAt: Date;
 	updatedAt: Date;
 }
 
 export interface RoleInfor {
-	accountId: string;
-	createdAt: string;
-	updateAt: string;
-	id: number;
+	accountId?: string;
+	createdAt?: string;
+	updateAt?: string;
+	id?: number;
 	role: UserRole;
 }
 

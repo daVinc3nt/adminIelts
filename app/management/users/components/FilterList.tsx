@@ -1,5 +1,8 @@
+"use client";
 import { FaXmark } from "react-icons/fa6";
 import { useUserManagement } from "../provider/UserManagementProvider";
+import { useState } from "react";
+import { SearchCriteria } from "@/app/lib/interfaces";
 
 const fieldLabels = [
 	{ label: "First name", value: "firstName" },
@@ -23,7 +26,9 @@ const operatorLabels = [
 ];
 
 export default function FilterList() {
-	const { searchCiterias, setSearchCiterias } = useUserManagement();
+	// const { searchCiterias, setSearchCiterias } = useUserManagement();
+	//temporary
+	const [searchCiterias, setSearchCiterias] = useState<SearchCriteria[]>([]);
 
 	const removeSearchCriteria = (index: number) => {
 		const newSearchCiterias = searchCiterias.filter((_, i) => i !== index);

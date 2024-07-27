@@ -26,3 +26,39 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkL
     "value": "LISTENING PASSAGE 3",
     "splitType": "0"
 }
+
+###
+
+POST https://engo.tiendungcorp.com/v1/accounts/search
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIxODk4MDIwLCJleHAiOjE3NTM0MzQwMjB9.9Ut8K9PDmQt8hBgWYgxHbtvbwO6TICtqmMvhOTdkSac
+
+{
+    "criteria": [
+        {
+            "field": "role",
+            "operator": "~",
+            "value": "Quản trị viên"
+        }
+    ],
+    "addition": {
+        "sort": [],
+        "page": 1,
+        "size": 6,
+        "group": null
+    }
+}
+
+###
+PUT https://engo.tiendungcorp.com/v1/accounts/update/2882db41-9bc0-415d-832a-f440f0012471
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMDE3MDc2LCJleHAiOjE3NTM1NTMwNzZ9.aFJGMTMEFTWm7XBi1-IYIeGJJ7u-rXMipd6S92DuJmY
+
+{
+    "username": "admin123",
+    "firstName": "Quang",
+    "lastName": "Trần Vĩ",
+    "roles": [],
+    "phoneNumber": "13413545",
+    "dateOfBirth": "2024-07-18T00:00:00.000Z"
+}

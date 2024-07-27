@@ -1,6 +1,6 @@
 import Select from "@/components/Select/Select";
 import { useUserManagement } from "../provider/UserManagementProvider";
-import { UserRole } from "@/app/interface/user";
+import { UserRole } from "@/app/lib/interfaces";
 
 const option = [
 	{ value: "", label: "All Role" },
@@ -13,11 +13,7 @@ const option = [
 ];
 
 export default function SelectRoleButton() {
-	const { role, setRole } = useUserManagement();
-
-	const onChangeRole = (value: string) => {
-		setRole(value);
-	};
+	const { role, onChangeRole } = useUserManagement();
 
 	return (
 		<div className="z-10 w-40">

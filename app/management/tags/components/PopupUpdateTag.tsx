@@ -34,7 +34,12 @@ export default function PopupUpdateTag() {
 			<motion.form
 				initial={{ y: -100, opacity: 0 }}
 				animate={{ y: 0, opacity: 1 }}
-				transition={{ duration: 0.2, type: "tween" }}
+				transition={{
+					duration: 0.1,
+					type: "spring",
+					damping: 30,
+					stiffness: 500,
+				}}
 				onSubmit={update}
 				className="flex flex-col gap-2 overflow-hidden bg-white rounded-md w-96 dark:bg-pot-black h-fit">
 				<div className="flex flex-row items-center justify-between w-full p-2 h-fit bg-foreground-blue dark:bg-foreground-red">
@@ -64,7 +69,7 @@ export default function PopupUpdateTag() {
 						required
 						autoComplete="off"
 						placeholder="Enter tag name"
-						className="flex-1 px-2 py-1 bg-gray-100 rounded-md focus:outline-none focus:ring-0 "></input>
+						className="flex-1 px-2 py-1 bg-gray-100 rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 "></input>
 				</div>
 
 				<div className="flex flex-row flex-wrap w-full gap-2 p-2">
@@ -80,7 +85,7 @@ export default function PopupUpdateTag() {
 							})
 						}
 						required
-						className="flex-1 px-2 py-1 bg-gray-100 border-0 rounded-md">
+						className="flex-1 px-2 py-1 bg-gray-100 border-0 rounded-md dark:bg-gray-22">
 						<option value={SplitType.QUIZ_LEVEL}>Quiz tag</option>
 						<option value={SplitType.GROUP_LEVEL}>Group tag</option>
 					</select>
@@ -88,6 +93,7 @@ export default function PopupUpdateTag() {
 
 				<div className="flex flex-row items-center justify-between w-full p-2 pt-4">
 					<button
+						onClick={() => close()}
 						type="button"
 						className="flex flex-row items-center justify-between gap-1 px-2 py-1 font-bold text-black rounded-md w-fit h-fit bg-mecury-gray dark:bg-gray-22 dark:text-gray-200">
 						Cancel

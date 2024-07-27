@@ -1,38 +1,36 @@
-import { SearchCriteria, SearchPayload } from "@/app/lib/interfaces";
+import {
+	SearchCriteria,
+	SearchPayload,
+	UpdateAccountPayload,
+} from "@/app/lib/interfaces";
 import { AccountOperation } from "@/app/lib/main";
 import { UserInformation } from "@/app/interface/user";
 import {
 	createContext,
 	useState,
 	ReactNode,
-	Dispatch,
-	SetStateAction,
 	useContext,
 	useEffect, // Import useContext
 } from "react";
+import { useAuth } from "@/app/provider/AuthProvider";
 
 interface UserContextType {
 	userInforList: UserInformation[];
-	setUserInforList: Dispatch<SetStateAction<UserInformation[]>>;
 	currentUser: UserInformation;
-	setCurrentUser: Dispatch<SetStateAction<UserInformation>>;
-	searchCiterias: SearchCriteria[];
-	setSearchCiterias: Dispatch<SetStateAction<SearchCriteria[]>>;
-	search: () => Promise<void>;
 	role: string;
-	setRole: Dispatch<SetStateAction<string>>;
-	status: string | boolean;
-	setStatus: Dispatch<SetStateAction<string | boolean>>;
-	searchField: string;
-	setSearchField: Dispatch<SetStateAction<string>>;
-	searchValue: string;
-	setSearchValue: Dispatch<SetStateAction<string>>;
+	searchCriteria: SearchCriteria;
 	currentPage: number;
-	setCurrentPage: Dispatch<SetStateAction<number>>;
-	handleChangePage: (
-		event: React.ChangeEvent<unknown>,
-		value: number
-	) => void;
+	isOpenUserInfor: boolean;
+	isOpenUpdateInfor: boolean;
+
+	onChangeCurrentUser: (user: UserInformation) => void;
+	search: () => void;
+	onChangeRole: (value: string) => void;
+	onChangeSearchCriteria: (newSearchCriteria: SearchCriteria) => void;
+	handleChangePage: (_: any, value: number) => void;
+	onChangeIsOpenUserInfor: (value: boolean) => void;
+	onChangeIsOpenUpdateInfor: (value: boolean) => void;
+	updateUserInformation: (newInfor: UpdateAccountPayload) => void;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -50,21 +48,21 @@ export const UserManagementProvider = ({
 }: {
 	children: ReactNode;
 }) => {
+	const { sid } = useAuth();
+
 	const [userInforList, setUserInforList] = useState<UserInformation[]>([]);
-
 	const [currentUser, setCurrentUser] = useState<UserInformation>(null);
-
-	const [searchCiterias, setSearchCiterias] = useState<SearchCriteria[]>([]);
-
 	const [role, setRole] = useState<string>("");
-	const [status, setStatus] = useState<boolean | string>("");
-
-	const [searchField, setSearchField] = useState<string>("firstName");
-	const [searchValue, setSearchValue] = useState<string>("");
-
 	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [isOpenUserInfor, setIsOpenUserInfor] = useState<boolean>(false);
+	const [isOpenUpdateInfor, setIsOpenUpdateInfor] = useState<boolean>(false);
+	const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>({
+		field: "firstName",
+		operator: "~",
+		value: "",
+	});
 
-	const search = async () => {
+	const search = () => {
 		const accoutOperation = new AccountOperation();
 		const newSearchCriteria: SearchCriteria[] = [];
 		if (role !== "") {
@@ -74,23 +72,11 @@ export const UserManagementProvider = ({
 				value: role,
 			});
 		}
-		if (status !== "") {
-			newSearchCriteria.push({
-				field: "active",
-				operator: "=",
-				value: status,
-			});
+		if (searchCriteria.value !== "") {
+			newSearchCriteria.push(searchCriteria);
 		}
 
-		if (searchField !== "" && searchValue !== "") {
-			newSearchCriteria.push({
-				field: searchField,
-				operator: "~",
-				value: searchValue,
-			});
-		}
-
-		await accoutOperation
+		accoutOperation
 			.search(
 				{
 					criteria: newSearchCriteria,
@@ -101,11 +87,15 @@ export const UserManagementProvider = ({
 						group: null,
 					},
 				} as SearchPayload,
-				testToken
+				sid
 			)
 			.then((response) => {
-				console.log(response);
-				setUserInforList(response.data as UserInformation[]);
+				if (response.success) {
+					console.log(response.data);
+					setUserInforList(response.data as UserInformation[]);
+				} else {
+					alert(response.message);
+				}
 			});
 	};
 
@@ -113,39 +103,75 @@ export const UserManagementProvider = ({
 		search();
 	}, [currentPage]);
 
-	const handleChangePage = (
-		event: React.ChangeEvent<unknown>,
-		value: number
-	) => {
+	const handleChangePage = (_: any, value: number) => {
 		setCurrentPage(value);
+	};
+
+	const onChangeCurrentUser = (user: UserInformation) => {
+		setCurrentUser(user);
+	};
+
+	const onChangeRole = (value: string) => {
+		setRole(value);
+	};
+
+	const onChangeSearchCriteria = (newSearchCriteria: SearchCriteria) => {
+		setSearchCriteria(newSearchCriteria);
+	};
+
+	const onChangeIsOpenUserInfor = (value: boolean) => {
+		setIsOpenUserInfor(value);
+	};
+
+	const onChangeIsOpenUpdateInfor = (value: boolean) => {
+		setIsOpenUpdateInfor(value);
+	};
+
+	const updateUserInformation = (newInfor: UpdateAccountPayload) => {
+		const newAccountOperation = new AccountOperation();
+		newAccountOperation
+			.update(currentUser.id as any, newInfor, sid)
+			.then((res) => {
+				console.log(res);
+				if (res.success) {
+					const userId = res.data.id;
+					setUserInforList(
+						userInforList.map((user) => {
+							if (user.id === userId) {
+								return res.data;
+							}
+							return user;
+						})
+					);
+					onChangeCurrentUser(res.data);
+					alert("Update account successfully");
+				} else {
+					alert(res.message);
+				}
+			});
 	};
 
 	return (
 		<UserContext.Provider
 			value={{
 				userInforList,
-				setUserInforList,
 				currentUser,
-				setCurrentUser,
-				searchCiterias,
-				setSearchCiterias,
-				search,
 				role,
-				setRole,
-				status,
-				setStatus,
-				searchField,
-				setSearchField,
-				searchValue,
-				setSearchValue,
+				searchCriteria,
 				currentPage,
-				setCurrentPage,
+				isOpenUserInfor,
+				isOpenUpdateInfor,
+
+				onChangeCurrentUser,
+				search,
+				onChangeRole,
+				onChangeSearchCriteria,
 				handleChangePage,
+				onChangeIsOpenUserInfor,
+				onChangeIsOpenUpdateInfor,
+				updateUserInformation,
 			}}>
 			{children}
 		</UserContext.Provider>
 	);
 };
-
-const testToken =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIxODk4MDIwLCJleHAiOjE3NTM0MzQwMjB9.9Ut8K9PDmQt8hBgWYgxHbtvbwO6TICtqmMvhOTdkSac";

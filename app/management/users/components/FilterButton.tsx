@@ -12,7 +12,9 @@ export default function FilterButton() {
 		useState<SearchCriteria | null>();
 	const [step, setStep] = useState<number>(0);
 
-	const { searchCiterias, setSearchCiterias } = useUserManagement();
+	// const { searchCiterias, setSearchCiterias } = useUserManagement();
+	//temporary
+	const [searchCiterias, setSearchCiterias] = useState<SearchCriteria[]>([]);
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {

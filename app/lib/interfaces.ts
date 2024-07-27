@@ -45,7 +45,6 @@ export enum SplitType {
 	QUIZ_LEVEL = "QUIZ_LEVEL",
 	GROUP_LEVEL = "GROUP_LEVEL",
 }
-
 export interface SignUpPayload {
 	firstName: string;
 	lastName: string;
@@ -363,11 +362,21 @@ export interface InitRecord {
 export interface CreateTag {
 	value: string;
 	splitType: SplitType;
+	tagIds: UUID[];
 }
 
 export interface UpdateTag {
 	value: string;
 	splitType: SplitType;
+	tagIds: UUID[];
+}
+
+export interface CreateFTag {
+	value: string;
+}
+
+export interface UpdateFTag {
+	value?: string;
 }
 
 //Flash card

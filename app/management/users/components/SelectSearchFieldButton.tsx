@@ -8,16 +8,16 @@ const option = [
 ];
 
 export default function SelectSearchFieldButton() {
-	const { searchField, setSearchField } = useUserManagement();
+	const { searchCriteria, onChangeSearchCriteria } = useUserManagement();
 
 	const onChangeField = (value: string) => {
-		setSearchField(value);
+		onChangeSearchCriteria({ ...searchCriteria, field: value });
 	};
 
 	return (
 		<div className="z-10 ml-auto w-36">
 			<Select
-				input={searchField}
+				input={searchCriteria.field}
 				onChangeInput={onChangeField}
 				option={option}
 				placeholder="Select Field"
