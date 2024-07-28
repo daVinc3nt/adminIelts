@@ -5,7 +5,7 @@ import { FiEdit } from "react-icons/fi";
 import { useTagManagement } from "../provider/TagManagementProvide";
 import { BsThreeDots } from "react-icons/bs";
 import { useEffect, useRef } from "react";
-import { Tag } from "@/app/interface/tag";
+import { Tag } from "@/app/interface/tag/tag";
 
 export default function TagList() {
 	const { tagList, searchValue, fetchType } = useTagManagement();

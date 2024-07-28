@@ -221,6 +221,19 @@ export interface CreateTestFromQuizIds {
 /**
  * Mỗi phần tử là 1 quizId
  */
+
+export interface CreateFullPracticeFromTest {
+	files: File[];
+	data: CreatePracticeFromTest;
+}
+
+export interface CreatePracticeFromTest {
+	testId: UUID;
+	quizId: UUID;
+	groupId: UUID;
+	test: CreateTest;
+}
+
 export interface CreateTest {
 	name: string;
 	reading: CreateQuiz[];
@@ -361,14 +374,12 @@ export interface InitRecord {
 // Tag interface
 export interface CreateTag {
 	value: string;
-	splitType: SplitType;
-	tagIds: UUID[];
+	forQuiz: boolean;
 }
 
 export interface UpdateTag {
-	value: string;
-	splitType: SplitType;
-	tagIds: UUID[];
+	value?: string;
+	forQuiz?: boolean;
 }
 
 export interface CreateFTag {

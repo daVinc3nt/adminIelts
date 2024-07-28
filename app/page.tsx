@@ -1,6 +1,6 @@
 "use client";
 
-import { printSid } from "./interface/cookies";
+import { printSid } from "./interface/cookies/cookies";
 
 export default function Home() {
 	return (

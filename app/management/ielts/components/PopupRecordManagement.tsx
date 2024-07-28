@@ -1,4 +1,4 @@
-import RecordManagementProvider from "@/app/management/ielts/provider/RecordManagementProvider";
+import RecordManagementProvider from "@/app/management/ielts/records/provider/RecordManagementProvider";
 
 export default function PopupRecordManagement() {
 	return (

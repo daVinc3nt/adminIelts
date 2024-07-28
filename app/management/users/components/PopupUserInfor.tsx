@@ -4,24 +4,24 @@ import { useUserManagement } from "../provider/UserManagementProvider";
 import { CiMail } from "react-icons/ci";
 import { MdAlternateEmail } from "react-icons/md";
 import { motion } from "framer-motion";
-import { roleLabel } from "@/app/interface/user";
+import { roleLabel } from "@/app/interface/user/user";
 
 export default function PopupUserInfor() {
 	const { currentUser, onChangeIsOpenUserInfor, onChangeCurrentUser } =
 		useUserManagement();
 
 	return (
-		<motion.div
-			initial={{ opacity: 0, y: -100 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{
-				duration: 0.1,
-				type: "spring",
-				damping: 30,
-				stiffness: 500,
-			}}
-			className="fixed z-30 flex justify-center w-full h-full bg-black bg-opacity-20 dark:bg-opacity-40">
-			<div className="flex flex-col pb-4 mt-16 overflow-hidden bg-white shadow-md rounded-xl w-144 h-fit dark:bg-pot-black dark:border-gray-22">
+		<div className="fixed z-30 flex justify-center w-full h-full bg-black bg-opacity-20 dark:bg-opacity-40">
+			<motion.div
+				initial={{ opacity: 0, y: -100 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{
+					duration: 0.1,
+					type: "spring",
+					damping: 30,
+					stiffness: 500,
+				}}
+				className="flex flex-col pb-4 mt-16 overflow-hidden bg-white shadow-md rounded-xl w-144 h-fit dark:bg-pot-black dark:border-gray-22">
 				<div className="flex flex-row items-center justify-between w-full px-4 py-3 cursor-default h-fit bg-foreground-blue dark:bg-foreground-red">
 					<span className="text-2xl font-bold text-white dark:text-gray-200">
 						User Information
@@ -118,7 +118,7 @@ export default function PopupUserInfor() {
 						</span>
 					</div>
 				</div>
-			</div>
-		</motion.div>
+			</motion.div>
+		</div>
 	);
 }

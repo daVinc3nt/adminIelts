@@ -4,7 +4,7 @@ import {
 	UpdateAccountPayload,
 } from "@/app/lib/interfaces";
 import { AccountOperation } from "@/app/lib/main";
-import { UserInformation } from "@/app/interface/user";
+import { UserInformation } from "@/app/interface/user/user";
 import {
 	createContext,
 	useState,

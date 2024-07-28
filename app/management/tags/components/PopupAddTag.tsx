@@ -5,7 +5,7 @@ import { FaXmark } from "react-icons/fa6";
 import { FcCancel } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { SplitType } from "@/app/lib/interfaces";
-import { Tag } from "@/app/interface/tag";
+import { Tag } from "@/app/interface/tag/tag";
 import { useTagManagement } from "../provider/TagManagementProvide";
 
 export default function PopupAddTag() {

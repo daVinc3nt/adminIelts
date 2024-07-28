@@ -1,5 +1,5 @@
 "use client";
-import { Tag } from "@/app/interface/tag";
+import { Tag } from "@/app/interface/tag/tag";
 import { TagOperation } from "@/app/lib/main";
 import { useAuth } from "@/app/provider/AuthProvider";
 import { UUID } from "crypto";
@@ -65,7 +65,7 @@ export default function TagManagementProvider({
 
 	const addTag = async (tag: Tag) => {
 		const newTagOperation = new TagOperation();
-		const res = await newTagOperation.create(tag, sid);
+		const res = await newTagOperation.create(tag as any, sid);
 		if (res.success) {
 			setTagList([...tagList, res.data]);
 			alert("Add tag successfully");
@@ -78,7 +78,11 @@ export default function TagManagementProvider({
 	const updateTag = async (tag: Tag) => {
 		const newTagOperation = new TagOperation();
 		if (tag.id) {
-			const res = await newTagOperation.update(tag.id as UUID, tag, sid);
+			const res = await newTagOperation.update(
+				tag.id as UUID,
+				tag as any,
+				sid
+			);
 			if (res.success) {
 				const newTagList = tagList.map((item) =>
 					item.id === tag.id ? tag : item

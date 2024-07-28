@@ -1,18 +1,11 @@
 "use client";
 import Pagination from "@/components/Pagnitation/Pagnitation";
-import SelectFetchTypeButton from "./components/SelectFetchTypeButton";
-import SelectSkillButton from "./components/SelectSkillButton";
-import SearchButton from "./components/SearchButton";
-import { useEffect } from "react";
-import { TestOperation } from "@/app/lib/main";
-import { FetchingType, SearchPayload, Skill } from "@/app/lib/interfaces";
+import SearchBar from "./components/SearchBar";
 import TestList from "./components/TestList";
-import { TestInfor } from "@/app/interface/quiz";
 import AddButton from "./components/AddButton";
 import TestManagementProvider, {
 	useTestManagement,
 } from "./provider/TestManagementProvider";
-import { useAuth } from "@/app/provider/AuthProvider";
 
 export default function Page() {
 	return (
@@ -23,9 +16,7 @@ export default function Page() {
 }
 
 function IELTSManagement() {
-	const { sid } = useAuth();
-
-	const { currentPage, handleChangePage, setTestList } = useTestManagement();
+	const { currentPage, handleChangePage } = useTestManagement();
 
 	return (
 		<main className="flex justify-center flex-1 main">
@@ -37,10 +28,7 @@ function IELTSManagement() {
 					<AddButton />
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
-					<SelectFetchTypeButton />
-					<SelectSkillButton />
-
-					<SearchButton />
+					<SearchBar />
 				</div>
 				<div className="w-full">
 					<TestList />

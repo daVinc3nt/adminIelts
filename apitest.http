@@ -62,3 +62,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkL
     "phoneNumber": "13413545",
     "dateOfBirth": "2024-07-18T00:00:00.000Z"
 }
+
+###
+
+GET 

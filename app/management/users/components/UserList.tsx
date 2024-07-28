@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { FaCircleUser, FaRegTrashCan } from "react-icons/fa6";
 import { useUserManagement } from "../provider/UserManagementProvider";
-import { roleLabel, UserInformation } from "@/app/interface/user";
+import { roleLabel, UserInformation } from "@/app/interface/user/user";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { FiEdit, FiXCircle } from "react-icons/fi";
@@ -9,7 +9,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 
 export default function UserList() {
 	return (
-		<div className="flex flex-col items-center w-full px-4 py-2 duration-200 bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black h-[434px] dark:bg-pot-black">
+		<div className="flex flex-col items-center w-full px-4 py-2 duration-200 bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[434px] dark:bg-pot-black">
 			<div className="flex flex-row items-center w-full gap-2 py-2 font-medium text-gray-400 h-fit">
 				<div className="w-[7%] flex justify-center items-center"></div>
 				<div className="w-[23%]">Name</div>

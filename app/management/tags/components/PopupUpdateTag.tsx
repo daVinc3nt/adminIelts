@@ -5,7 +5,7 @@ import { FcCancel } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { useTagManagement } from "../provider/TagManagementProvide";
 import { SplitType } from "@/app/lib/interfaces";
-import { Tag } from "@/app/interface/tag";
+import { Tag } from "@/app/interface/tag/tag";
 
 export default function PopupUpdateTag() {
 	const { currentTag, onSelectTag, updateTag } = useTagManagement();

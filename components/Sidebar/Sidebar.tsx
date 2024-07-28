@@ -1,6 +1,6 @@
 import { RiFilePaper2Fill } from "react-icons/ri";
 
-import { FaUserGraduate, FaTag } from "react-icons/fa";
+import { FaTag, FaUser } from "react-icons/fa";
 import { Link } from "@nextui-org/react";
 interface Props {
 	isOpenSidebar: boolean;
@@ -42,20 +42,6 @@ export default function SideBar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 					</span> */}
 				</div>
 			</div>
-
-			<div className="flex flex-col w-full gap-2 h-fit">
-				<span className="font-bold text-pot-black dark:text-gray-200">
-					RECORD MANAGEMENT
-				</span>
-				<div className="flex flex-col w-full gap-1 text-sm text-gray-600 dark:text-gray-400 h-fit">
-					<Link
-						href="/management/ielts/records"
-						className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-400 dark:hover:text-pot-black">
-						<RiFilePaper2Fill size={30} className="inline-block" />
-						IELTS Record
-					</Link>
-				</div>
-			</div>
 			<div className="flex flex-col w-full gap-2 h-fit">
 				<span className="font-bold text-pot-black dark:text-gray-200">
 					Tag Management
@@ -77,7 +63,7 @@ export default function SideBar({ isOpenSidebar, setIsOpenSidebar }: Props) {
 					<Link
 						href="/management/users"
 						className="flex items-center gap-2 p-2 duration-100 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-400 dark:hover:text-pot-black">
-						<FaUserGraduate size={30} className="inline-block" />
+						<FaUser size={30} className="inline-block" />
 						User Management
 					</Link>
 				</div>

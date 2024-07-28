@@ -7,7 +7,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { getSid } from "../interface/cookies";
+import { getSid } from "../interface/cookies/cookies";
 
 interface AuthContextType {
 	sid: string;

@@ -1,13 +1,14 @@
 import { FaSearch } from "react-icons/fa";
 import { useTestManagement } from "../provider/TestManagementProvider";
 
-export default function SearchButton() {
-	const { searchPayload, setSearchPayload, search } = useTestManagement();
+export default function SearchBar() {
+	const { search, searchCriteria, onChangeSearchCriteria } =
+		useTestManagement();
 
 	const onChangeSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchPayload({
-			...searchPayload,
-			searchValue: e.target.value ? e.target.value : "",
+		onChangeSearchCriteria({
+			...searchCriteria,
+			value: e.target.value,
 		});
 	};
 
@@ -15,7 +16,7 @@ export default function SearchButton() {
 		<div className="flex flex-row items-center justify-center overflow-hidden border-2 rounded-md border-foreground-blue dark:border-foreground-red has-[:focus]:border-foreground-blue has-[:focus]:ring-1 has-[:focus]:ring-foreground-blue dark:has-[:focus]:ring-foreground-red ml-auto">
 			<input
 				type="search"
-				value={searchPayload.searchValue}
+				value={searchCriteria.value}
 				onChange={onChangeSearchValue}
 				placeholder="Search using test name"
 				className="w-80 text-base px-2 py-[4px] focus:outline-none bg-white dark:bg-black-night rounded-md"

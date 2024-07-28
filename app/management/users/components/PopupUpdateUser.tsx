@@ -4,7 +4,7 @@ import { useUserManagement } from "../provider/UserManagementProvider";
 import { motion } from "framer-motion";
 import { UpdateAccountPayload, UserRole } from "@/app/lib/interfaces";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { roleLabel } from "@/app/interface/user";
+import { roleLabel } from "@/app/interface/user/user";
 
 export default function PopupUpdateUser() {
 	const {
@@ -89,17 +89,16 @@ export default function PopupUpdateUser() {
 	};
 
 	return (
-		<motion.div
-			initial={{ opacity: 0, y: -100 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{
-				duration: 0.1,
-				type: "spring",
-				damping: 30,
-				stiffness: 500,
-			}}
-			className="fixed z-30 flex justify-center w-full h-full bg-black bg-opacity-20 dark:bg-opacity-40">
-			<form
+		<div className="fixed z-30 flex justify-center w-full h-full bg-black bg-opacity-20 dark:bg-opacity-40">
+			<motion.form
+				initial={{ opacity: 0, y: -100 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{
+					duration: 0.1,
+					type: "spring",
+					damping: 30,
+					stiffness: 500,
+				}}
 				onSubmit={(e) => {
 					updateAccount(e);
 				}}
@@ -300,7 +299,7 @@ export default function PopupUpdateUser() {
 						Update
 					</button>
 				</div>
-			</form>
-		</motion.div>
+			</motion.form>
+		</div>
 	);
 }

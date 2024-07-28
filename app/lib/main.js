@@ -673,7 +673,7 @@ var RecordOperation = /** @class */ (function () {
             });
         });
     };
-    RecordOperation.prototype.update = function (id, payload, token) {
+    RecordOperation.prototype.findOne = function (id, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_21;
@@ -681,7 +681,7 @@ var RecordOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), payload, {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/search/").concat(id), {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -693,7 +693,7 @@ var RecordOperation = /** @class */ (function () {
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_21 = _c.sent();
-                        console.log("Error updating account: ", (_a = error_21 === null || error_21 === void 0 ? void 0 : error_21.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.log("Error searching accounts: ", (_a = error_21 === null || error_21 === void 0 ? void 0 : error_21.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_21 === null || error_21 === void 0 ? void 0 : error_21.request);
                         return [2 /*return*/, { success: (_b = error_21 === null || error_21 === void 0 ? void 0 : error_21.response) === null || _b === void 0 ? void 0 : _b.data, request: error_21 === null || error_21 === void 0 ? void 0 : error_21.request, status: error_21.response ? error_21.response.status : null }];
                     case 3: return [2 /*return*/];
@@ -701,7 +701,7 @@ var RecordOperation = /** @class */ (function () {
             });
         });
     };
-    RecordOperation.prototype.updateConfig = function (id, payload, token) {
+    RecordOperation.prototype.update = function (id, payload, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_22;
@@ -709,7 +709,7 @@ var RecordOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/config/update/").concat(id), payload, {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), payload, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -729,7 +729,7 @@ var RecordOperation = /** @class */ (function () {
             });
         });
     };
-    RecordOperation.prototype.delete = function (id, token) {
+    RecordOperation.prototype.updateConfig = function (id, payload, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_23;
@@ -737,7 +737,7 @@ var RecordOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.delete("".concat(this.baseUrl, "/").concat(id), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/config/update/").concat(id), payload, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -757,14 +757,7 @@ var RecordOperation = /** @class */ (function () {
             });
         });
     };
-    return RecordOperation;
-}());
-exports.RecordOperation = RecordOperation;
-var TagOperation = /** @class */ (function () {
-    function TagOperation() {
-        this.baseUrl = 'https://engo.tiendungcorp.com/v1/tags';
-    }
-    TagOperation.prototype.create = function (payload, token) {
+    RecordOperation.prototype.delete = function (id, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_24;
@@ -772,7 +765,7 @@ var TagOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), payload, {
+                        return [4 /*yield*/, axios_1.default.delete("".concat(this.baseUrl, "/").concat(id), {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -784,7 +777,7 @@ var TagOperation = /** @class */ (function () {
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_24 = _c.sent();
-                        console.log("Error searching accounts: ", (_a = error_24 === null || error_24 === void 0 ? void 0 : error_24.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.log("Error updating account: ", (_a = error_24 === null || error_24 === void 0 ? void 0 : error_24.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_24 === null || error_24 === void 0 ? void 0 : error_24.request);
                         return [2 /*return*/, { success: (_b = error_24 === null || error_24 === void 0 ? void 0 : error_24.response) === null || _b === void 0 ? void 0 : _b.data, request: error_24 === null || error_24 === void 0 ? void 0 : error_24.request, status: error_24.response ? error_24.response.status : null }];
                     case 3: return [2 /*return*/];
@@ -792,8 +785,14 @@ var TagOperation = /** @class */ (function () {
             });
         });
     };
-    //get all tags
-    TagOperation.prototype.search = function (token) {
+    return RecordOperation;
+}());
+exports.RecordOperation = RecordOperation;
+var TagOperation = /** @class */ (function () {
+    function TagOperation() {
+        this.baseUrl = 'https://engo.tiendungcorp.com/v1/tags';
+    }
+    TagOperation.prototype.create = function (payload, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_25;
@@ -801,7 +800,7 @@ var TagOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/search"), {
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), payload, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -821,7 +820,8 @@ var TagOperation = /** @class */ (function () {
             });
         });
     };
-    TagOperation.prototype.update = function (id, payload, token) {
+    //get all tags
+    TagOperation.prototype.search = function (token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_26;
@@ -829,7 +829,7 @@ var TagOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), payload, {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/search"), {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -841,7 +841,7 @@ var TagOperation = /** @class */ (function () {
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_26 = _c.sent();
-                        console.log("Error updating account: ", (_a = error_26 === null || error_26 === void 0 ? void 0 : error_26.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.log("Error searching accounts: ", (_a = error_26 === null || error_26 === void 0 ? void 0 : error_26.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_26 === null || error_26 === void 0 ? void 0 : error_26.request);
                         return [2 /*return*/, { success: (_b = error_26 === null || error_26 === void 0 ? void 0 : error_26.response) === null || _b === void 0 ? void 0 : _b.data, request: error_26 === null || error_26 === void 0 ? void 0 : error_26.request, status: error_26.response ? error_26.response.status : null }];
                     case 3: return [2 /*return*/];
@@ -849,7 +849,7 @@ var TagOperation = /** @class */ (function () {
             });
         });
     };
-    TagOperation.prototype.delete = function (id, token) {
+    TagOperation.prototype.update = function (id, payload, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_27;
@@ -857,7 +857,7 @@ var TagOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.delete("".concat(this.baseUrl, "/delete/").concat(id), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), payload, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -877,14 +877,7 @@ var TagOperation = /** @class */ (function () {
             });
         });
     };
-    return TagOperation;
-}());
-exports.TagOperation = TagOperation;
-var FTagOperation = /** @class */ (function () {
-    function FTagOperation() {
-        this.baseUrl = 'https://engo.tiendungcorp.com/v1/ftags';
-    }
-    FTagOperation.prototype.create = function (payload, token) {
+    TagOperation.prototype.delete = function (id, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_28;
@@ -892,7 +885,7 @@ var FTagOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), payload, {
+                        return [4 /*yield*/, axios_1.default.delete("".concat(this.baseUrl, "/delete/").concat(id), {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -904,7 +897,7 @@ var FTagOperation = /** @class */ (function () {
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_28 = _c.sent();
-                        console.log("Error searching accounts: ", (_a = error_28 === null || error_28 === void 0 ? void 0 : error_28.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.log("Error updating account: ", (_a = error_28 === null || error_28 === void 0 ? void 0 : error_28.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_28 === null || error_28 === void 0 ? void 0 : error_28.request);
                         return [2 /*return*/, { success: (_b = error_28 === null || error_28 === void 0 ? void 0 : error_28.response) === null || _b === void 0 ? void 0 : _b.data, request: error_28 === null || error_28 === void 0 ? void 0 : error_28.request, status: error_28.response ? error_28.response.status : null }];
                     case 3: return [2 /*return*/];
@@ -912,8 +905,14 @@ var FTagOperation = /** @class */ (function () {
             });
         });
     };
-    //get all ftags
-    FTagOperation.prototype.search = function (token) {
+    return TagOperation;
+}());
+exports.TagOperation = TagOperation;
+var FTagOperation = /** @class */ (function () {
+    function FTagOperation() {
+        this.baseUrl = 'https://engo.tiendungcorp.com/v1/ftags';
+    }
+    FTagOperation.prototype.create = function (payload, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_29;
@@ -921,7 +920,7 @@ var FTagOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/search"), {
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), payload, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -941,7 +940,8 @@ var FTagOperation = /** @class */ (function () {
             });
         });
     };
-    FTagOperation.prototype.update = function (id, payload, token) {
+    //get all ftags
+    FTagOperation.prototype.search = function (token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_30;
@@ -949,7 +949,7 @@ var FTagOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), payload, {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/search"), {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -961,7 +961,7 @@ var FTagOperation = /** @class */ (function () {
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_30 = _c.sent();
-                        console.log("Error updating account: ", (_a = error_30 === null || error_30 === void 0 ? void 0 : error_30.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.log("Error searching accounts: ", (_a = error_30 === null || error_30 === void 0 ? void 0 : error_30.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_30 === null || error_30 === void 0 ? void 0 : error_30.request);
                         return [2 /*return*/, { success: (_b = error_30 === null || error_30 === void 0 ? void 0 : error_30.response) === null || _b === void 0 ? void 0 : _b.data, request: error_30 === null || error_30 === void 0 ? void 0 : error_30.request, status: error_30.response ? error_30.response.status : null }];
                     case 3: return [2 /*return*/];
@@ -969,7 +969,7 @@ var FTagOperation = /** @class */ (function () {
             });
         });
     };
-    FTagOperation.prototype.delete = function (id, token) {
+    FTagOperation.prototype.update = function (id, payload, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_31;
@@ -977,7 +977,7 @@ var FTagOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.delete("".concat(this.baseUrl, "/delete/").concat(id), {
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), payload, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -997,15 +997,7 @@ var FTagOperation = /** @class */ (function () {
             });
         });
     };
-    return FTagOperation;
-}());
-exports.FTagOperation = FTagOperation;
-var PracticeOperation = /** @class */ (function () {
-    function PracticeOperation() {
-        this.baseUrl = 'https://engo.tiendungcorp.com/v1/practices';
-    }
-    //get search by tag id
-    PracticeOperation.prototype.search = function (tagId, page, size, token) {
+    FTagOperation.prototype.delete = function (id, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_32;
@@ -1013,7 +1005,7 @@ var PracticeOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/search?tagId=").concat(tagId, "&page=").concat(page, "&size=").concat(size), {
+                        return [4 /*yield*/, axios_1.default.delete("".concat(this.baseUrl, "/delete/").concat(id), {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -1025,7 +1017,7 @@ var PracticeOperation = /** @class */ (function () {
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
                         error_32 = _c.sent();
-                        console.log("Error searching accounts: ", (_a = error_32 === null || error_32 === void 0 ? void 0 : error_32.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.log("Error updating account: ", (_a = error_32 === null || error_32 === void 0 ? void 0 : error_32.response) === null || _a === void 0 ? void 0 : _a.data);
                         console.error("Request that caused the error: ", error_32 === null || error_32 === void 0 ? void 0 : error_32.request);
                         return [2 /*return*/, { success: (_b = error_32 === null || error_32 === void 0 ? void 0 : error_32.response) === null || _b === void 0 ? void 0 : _b.data, request: error_32 === null || error_32 === void 0 ? void 0 : error_32.request, status: error_32.response ? error_32.response.status : null }];
                     case 3: return [2 /*return*/];
@@ -1033,23 +1025,27 @@ var PracticeOperation = /** @class */ (function () {
             });
         });
     };
-    return PracticeOperation;
+    return FTagOperation;
 }());
-exports.PracticeOperation = PracticeOperation;
-// flash card
-var FlashCardOperation = /** @class */ (function () {
-    function FlashCardOperation() {
-        this.baseUrl = 'https://engo.tiendungcorp.com/v1/flashcards';
+exports.FTagOperation = FTagOperation;
+var PracticeOperation = /** @class */ (function () {
+    function PracticeOperation() {
+        this.baseUrl = 'https://engo.tiendungcorp.com/v1/practices';
     }
-    FlashCardOperation.prototype.create = function (payload, token) {
-        var _a, _b;
+    PracticeOperation.prototype.create = function (payload, token) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var response, error_33;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var formData, i, response, error_33;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), payload, {
+                        _b.trys.push([0, 2, , 3]);
+                        formData = new FormData();
+                        for (i = 0; i < payload.files.length; i++) {
+                            formData.append('file', payload.files[i]);
+                        }
+                        formData.append('data', JSON.stringify(payload.data));
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), formData, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -1057,19 +1053,19 @@ var FlashCardOperation = /** @class */ (function () {
                                 },
                             })];
                     case 1:
-                        response = _c.sent();
+                        response = _b.sent();
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
-                        error_33 = _c.sent();
-                        console.log("Error searching accounts: ", (_a = error_33 === null || error_33 === void 0 ? void 0 : error_33.response) === null || _a === void 0 ? void 0 : _a.data);
+                        error_33 = _b.sent();
                         console.error("Request that caused the error: ", error_33 === null || error_33 === void 0 ? void 0 : error_33.request);
-                        return [2 /*return*/, { success: (_b = error_33 === null || error_33 === void 0 ? void 0 : error_33.response) === null || _b === void 0 ? void 0 : _b.data, request: error_33 === null || error_33 === void 0 ? void 0 : error_33.request, status: error_33.response ? error_33.response.status : null }];
+                        return [2 /*return*/, { success: (_a = error_33 === null || error_33 === void 0 ? void 0 : error_33.response) === null || _a === void 0 ? void 0 : _a.data, request: error_33 === null || error_33 === void 0 ? void 0 : error_33.request, status: error_33.response ? error_33.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    FlashCardOperation.prototype.search = function (payload, token) {
+    //get search by tag id
+    PracticeOperation.prototype.search = function (tagId, page, size, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_34;
@@ -1077,7 +1073,7 @@ var FlashCardOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/search"), payload, {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/search?tagId=").concat(tagId, "&page=").concat(page, "&size=").concat(size), {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -1097,10 +1093,74 @@ var FlashCardOperation = /** @class */ (function () {
             });
         });
     };
-    FlashCardOperation.prototype.update = function (id, payload, token) {
+    return PracticeOperation;
+}());
+exports.PracticeOperation = PracticeOperation;
+// flash card
+var FlashCardOperation = /** @class */ (function () {
+    function FlashCardOperation() {
+        this.baseUrl = 'https://engo.tiendungcorp.com/v1/flashcards';
+    }
+    FlashCardOperation.prototype.create = function (payload, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_35;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _c.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), payload, {
+                                withCredentials: true,
+                                validateStatus: function (status) { return status >= 200 && status <= 500; },
+                                headers: {
+                                    Authorization: "Bearer ".concat(token)
+                                },
+                            })];
+                    case 1:
+                        response = _c.sent();
+                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                    case 2:
+                        error_35 = _c.sent();
+                        console.log("Error searching accounts: ", (_a = error_35 === null || error_35 === void 0 ? void 0 : error_35.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.error("Request that caused the error: ", error_35 === null || error_35 === void 0 ? void 0 : error_35.request);
+                        return [2 /*return*/, { success: (_b = error_35 === null || error_35 === void 0 ? void 0 : error_35.response) === null || _b === void 0 ? void 0 : _b.data, request: error_35 === null || error_35 === void 0 ? void 0 : error_35.request, status: error_35.response ? error_35.response.status : null }];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    FlashCardOperation.prototype.search = function (payload, token) {
+        var _a, _b;
+        return __awaiter(this, void 0, void 0, function () {
+            var response, error_36;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _c.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/search"), payload, {
+                                withCredentials: true,
+                                validateStatus: function (status) { return status >= 200 && status <= 500; },
+                                headers: {
+                                    Authorization: "Bearer ".concat(token)
+                                },
+                            })];
+                    case 1:
+                        response = _c.sent();
+                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                    case 2:
+                        error_36 = _c.sent();
+                        console.log("Error searching accounts: ", (_a = error_36 === null || error_36 === void 0 ? void 0 : error_36.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.error("Request that caused the error: ", error_36 === null || error_36 === void 0 ? void 0 : error_36.request);
+                        return [2 /*return*/, { success: (_b = error_36 === null || error_36 === void 0 ? void 0 : error_36.response) === null || _b === void 0 ? void 0 : _b.data, request: error_36 === null || error_36 === void 0 ? void 0 : error_36.request, status: error_36.response ? error_36.response.status : null }];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    FlashCardOperation.prototype.update = function (id, payload, token) {
+        var _a, _b;
+        return __awaiter(this, void 0, void 0, function () {
+            var response, error_37;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -1116,10 +1176,10 @@ var FlashCardOperation = /** @class */ (function () {
                         response = _c.sent();
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
-                        error_35 = _c.sent();
-                        console.log("Error updating account: ", (_a = error_35 === null || error_35 === void 0 ? void 0 : error_35.response) === null || _a === void 0 ? void 0 : _a.data);
-                        console.error("Request that caused the error: ", error_35 === null || error_35 === void 0 ? void 0 : error_35.request);
-                        return [2 /*return*/, { success: (_b = error_35 === null || error_35 === void 0 ? void 0 : error_35.response) === null || _b === void 0 ? void 0 : _b.data, request: error_35 === null || error_35 === void 0 ? void 0 : error_35.request, status: error_35.response ? error_35.response.status : null }];
+                        error_37 = _c.sent();
+                        console.log("Error updating account: ", (_a = error_37 === null || error_37 === void 0 ? void 0 : error_37.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.error("Request that caused the error: ", error_37 === null || error_37 === void 0 ? void 0 : error_37.request);
+                        return [2 /*return*/, { success: (_b = error_37 === null || error_37 === void 0 ? void 0 : error_37.response) === null || _b === void 0 ? void 0 : _b.data, request: error_37 === null || error_37 === void 0 ? void 0 : error_37.request, status: error_37.response ? error_37.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1128,7 +1188,7 @@ var FlashCardOperation = /** @class */ (function () {
     FlashCardOperation.prototype.delete = function (id, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var response, error_36;
+            var response, error_38;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -1144,10 +1204,10 @@ var FlashCardOperation = /** @class */ (function () {
                         response = _c.sent();
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
-                        error_36 = _c.sent();
-                        console.log("Error updating account: ", (_a = error_36 === null || error_36 === void 0 ? void 0 : error_36.response) === null || _a === void 0 ? void 0 : _a.data);
-                        console.error("Request that caused the error: ", error_36 === null || error_36 === void 0 ? void 0 : error_36.request);
-                        return [2 /*return*/, { success: (_b = error_36 === null || error_36 === void 0 ? void 0 : error_36.response) === null || _b === void 0 ? void 0 : _b.data, request: error_36 === null || error_36 === void 0 ? void 0 : error_36.request, status: error_36.response ? error_36.response.status : null }];
+                        error_38 = _c.sent();
+                        console.log("Error updating account: ", (_a = error_38 === null || error_38 === void 0 ? void 0 : error_38.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.error("Request that caused the error: ", error_38 === null || error_38 === void 0 ? void 0 : error_38.request);
+                        return [2 /*return*/, { success: (_b = error_38 === null || error_38 === void 0 ? void 0 : error_38.response) === null || _b === void 0 ? void 0 : _b.data, request: error_38 === null || error_38 === void 0 ? void 0 : error_38.request, status: error_38.response ? error_38.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1164,7 +1224,7 @@ var UploadOperation = /** @class */ (function () {
     UploadOperation.prototype.search = function (filepath, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var response, error_37;
+            var response, error_39;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -1180,10 +1240,10 @@ var UploadOperation = /** @class */ (function () {
                         response = _c.sent();
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
-                        error_37 = _c.sent();
-                        console.log("Error searching accounts: ", (_a = error_37 === null || error_37 === void 0 ? void 0 : error_37.response) === null || _a === void 0 ? void 0 : _a.data);
-                        console.error("Request that caused the error: ", error_37 === null || error_37 === void 0 ? void 0 : error_37.request);
-                        return [2 /*return*/, { success: (_b = error_37 === null || error_37 === void 0 ? void 0 : error_37.response) === null || _b === void 0 ? void 0 : _b.data, request: error_37 === null || error_37 === void 0 ? void 0 : error_37.request, status: error_37.response ? error_37.response.status : null }];
+                        error_39 = _c.sent();
+                        console.log("Error searching accounts: ", (_a = error_39 === null || error_39 === void 0 ? void 0 : error_39.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.error("Request that caused the error: ", error_39 === null || error_39 === void 0 ? void 0 : error_39.request);
+                        return [2 /*return*/, { success: (_b = error_39 === null || error_39 === void 0 ? void 0 : error_39.response) === null || _b === void 0 ? void 0 : _b.data, request: error_39 === null || error_39 === void 0 ? void 0 : error_39.request, status: error_39.response ? error_39.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });

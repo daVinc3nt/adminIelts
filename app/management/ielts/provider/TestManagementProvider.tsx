@@ -1,49 +1,29 @@
 "use client";
-import { QuizOperation, TestOperation } from "@/app/lib/main";
-import { TestInfor, QuizInfor } from "@/app/interface/quiz";
+import { TestOperation } from "@/app/lib/main";
+import { TestInfor } from "@/app/interface/quiz";
 import { useRouter } from "next/navigation";
 import {
 	createContext,
-	Dispatch,
 	ReactNode,
-	SetStateAction,
 	useContext,
 	useEffect,
 	useState,
 } from "react";
 import { useAuth } from "@/app/provider/AuthProvider";
-import { FetchingType } from "@/app/lib/interfaces";
+import { FetchingType, SearchCriteria } from "@/app/lib/interfaces";
 
 interface TestContextType {
 	testList: TestInfor[];
-	setTestList: Dispatch<SetStateAction<TestInfor[]>>;
-	quizList: QuizInfor[];
-	setQuizList: Dispatch<SetStateAction<QuizInfor[]>>;
 	currentPage: number;
-	setCurrentPage: Dispatch<SetStateAction<number>>;
-	handleChangePage: (
-		event: React.ChangeEvent<unknown>,
-		value: number
-	) => void;
-	fetchType: string;
-	setFetchType: Dispatch<SetStateAction<string>>;
-	searchPayload: {
-		searchValue: string;
-		searchField: string;
-	};
-	setSearchPayload: Dispatch<
-		SetStateAction<{
-			searchValue: string;
-			searchField: string;
-		}>
-	>;
-	skillType: string;
-	setSkillType: Dispatch<SetStateAction<string>>;
-	search: () => void;
-	deleteTestOrQuiz: (id: string) => void;
-	createTest: () => void;
+	searchCriteria: SearchCriteria;
 	currentTest: TestInfor;
-	setCurrentTest: Dispatch<SetStateAction<TestInfor>>;
+
+	search: () => void;
+	deleteTest: (id: string) => void;
+	createTest: () => void;
+	handleChangePage: (_: any, value: number) => void;
+	onSelectTest: (test: TestInfor) => void;
+	onChangeSearchCriteria: (criteria: SearchCriteria) => void;
 }
 
 const TestContext = createContext<TestContextType | null>(null);
@@ -62,30 +42,31 @@ export default function TestManagementProvider({
 	children: ReactNode;
 }) {
 	const { sid } = useAuth();
+	const router = useRouter();
 
 	const [testList, setTestList] = useState<TestInfor[]>([]);
-	const [quizList, setQuizList] = useState<QuizInfor[]>([]);
-
 	const [currentPage, setCurrentPage] = useState<number>(1);
-
-	const [fetchType, setFetchType] = useState<string>("fulltest");
-	const [skillType, setSkillType] = useState<string>("");
-
 	const [currentTest, setCurrentTest] = useState<TestInfor>(null);
-
-	const [searchPayload, setSearchPayload] = useState({
-		searchValue: "",
-		searchField: "name",
+	const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>({
+		field: "name",
+		operator: "~",
+		value: "",
 	});
 
-	useEffect(() => {
+	const search = () => {
 		const newTestOperation = new TestOperation();
+
+		let newSearchCriteria = [];
+		if (searchCriteria.value != "") {
+			newSearchCriteria.push(searchCriteria);
+		}
+
 		newTestOperation
 			.search(
 				FetchingType.FULL,
 				null,
 				{
-					criteria: [],
+					criteria: newSearchCriteria,
 					addition: {
 						sort: [],
 						page: currentPage,
@@ -99,54 +80,28 @@ export default function TestManagementProvider({
 				console.log(response);
 				setTestList(response.data as TestInfor[]);
 			});
-	}, [currentPage]);
-
-	const router = useRouter();
-
-	const search = () => {};
-
-	const deleteTestOrQuiz = (id: string) => {
-		const newTestOperation = new TestOperation();
-		const newQuizOperation = new QuizOperation();
-
-		if (fetchType == "fulltest") {
-			newTestOperation.delete(id as any, sid).then((response) => {
-				if (response.success) {
-					alert("Delete successfully");
-					const newTestList = [];
-					testList.forEach((test) => {
-						if (test.id != id) {
-							newTestList.push(test);
-						}
-					});
-					setTestList(newTestList);
-				} else {
-					alert("Delete failed");
-				}
-			});
-		} else {
-			newQuizOperation.delete(id as any, sid).then((response) => {
-				if (response.success) {
-					alert("Delete successfully");
-					const newQuizList = [];
-					quizList.forEach((quiz) => {
-						if (quiz.id != id) {
-							newQuizList.push(quiz);
-						}
-					});
-					setQuizList(newQuizList);
-				} else {
-					alert("Delete failed");
-				}
-			});
-		}
 	};
 
-	const handleChangePage = (
-		event: React.ChangeEvent<unknown>,
-		value: number
-	) => {
-		setCurrentPage(value);
+	useEffect(() => {
+		search();
+	}, [currentPage]);
+
+	const deleteTest = (id: string) => {
+		const newTestOperation = new TestOperation();
+		newTestOperation.delete(id as any, sid).then((res) => {
+			if (res.success) {
+				alert("Delete successfully");
+				const newTestList = [];
+				testList.forEach((test) => {
+					if (test.id != id) {
+						newTestList.push(test);
+					}
+				});
+				setTestList(newTestList);
+			} else {
+				alert(res.message);
+			}
+		});
 	};
 
 	const createTest = () => {
@@ -171,51 +126,37 @@ export default function TestManagementProvider({
 					console.log(res.data);
 					router.push(`/management/ielts/fulltest/${res.data.id}`);
 				} else {
-					alert("Create failed");
+					alert(res.message);
 				}
 			});
-		// .create(
-		// 	{
-		// 		name: "New test",
-		// 		reading: [],
-		// 		listening: [],
-		// 		writing: [],
-		// 		speaking: [],
-		// 	},
-		// 	testToken
-		// )
-		// .then((response) => {
-		// 	if (response.success) {
-		// 		router.push(
-		// 			`/management/ielts/fulltest/${response.data.id}`
-		// 		);
-		// 	} else {
-		// 		alert("Create failed");
-		// 	}
-		// });
+	};
+
+	const handleChangePage = (_: any, value: number) => {
+		setCurrentPage(value);
+	};
+
+	const onSelectTest = (test: TestInfor) => {
+		setCurrentTest(test);
+	};
+
+	const onChangeSearchCriteria = (criteria: SearchCriteria) => {
+		setSearchCriteria(criteria);
 	};
 
 	return (
 		<TestContext.Provider
 			value={{
 				testList,
-				setTestList,
-				quizList,
-				setQuizList,
 				currentPage,
-				setCurrentPage,
-				handleChangePage,
-				fetchType,
-				setFetchType,
-				searchPayload,
-				setSearchPayload,
-				skillType,
-				setSkillType,
-				search,
-				deleteTestOrQuiz,
-				createTest,
+				searchCriteria,
 				currentTest,
-				setCurrentTest,
+
+				handleChangePage,
+				search,
+				deleteTest,
+				createTest,
+				onSelectTest,
+				onChangeSearchCriteria,
 			}}>
 			{children}
 		</TestContext.Provider>

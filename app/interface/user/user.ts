@@ -1,4 +1,4 @@
-import { UserRole } from "../lib/interfaces";
+import { UserRole } from "@/app/lib/interfaces";
 
 export const roleLabel = [
 	{ value: UserRole.NONPAID_USER, label: "Non-paid user" },
