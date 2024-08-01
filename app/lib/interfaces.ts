@@ -125,7 +125,7 @@ export interface CreateFillingGroup {
 export interface UpdateFillingQuiz {
 	id?: UUID;
 	description?: string;
-	answer?: string;
+	answer?: string[];
 	explaination?: string;
 }
 
@@ -175,9 +175,9 @@ export interface UpdateQuiz {
 	skill?: Skill;
 	category?: Category;
 	tagIds?: UUID[];
-	tag?: string;
 	groups?: (UpdateMultipleChoiceGroup | UpdateFillingGroup)[];
 	order?: UUID[];
+	isFileUpdated?: boolean;
 }
 
 export interface UpdateQuizStatistics {
@@ -203,7 +203,6 @@ export interface CreateQuiz {
 	content: string;
 	category: Category;
 	tagIds: UUID[];
-	tag: string;
 	skill: Skill;
 	groups: (CreateMultipleChoiceGroup | CreateFillingGroup)[];
 }
@@ -318,6 +317,38 @@ export interface CreateAnswer {
 	content: string[] | string;
 }
 
+export interface WritingFiles {
+	files: File[]; // only .txt and msword
+}
+
+export interface SpeakingFiles {
+	files: File[]; // havenot implemented yet
+}
+
+export interface UpdateWritingAnswer {
+	id: UUID;
+	content: string;
+}
+
+export interface CreateRemarkRequest {
+	writingAnswerId: UUID;
+	accountId: UUID;
+}
+
+export interface RemarkWriting {
+	remark: string;
+	firstCriterion: string;
+	secondCriterion: string;
+	thirdCriterion: string;
+	fourthCriterion: string;
+	score: number;
+}
+
+export interface SearchRemarkRequest {
+	id: UUID;
+	writingAnswerId: UUID;
+	accountId: UUID;
+}
 export interface CreateRecord {
 	testId: UUID;
 
@@ -331,7 +362,7 @@ export interface CreateRecord {
 	completeSpeaking: boolean;
 	reading: AnswerGroup[];
 	listening: AnswerGroup[];
-	writing: AnswerGroup[];
+	writing: UpdateWritingAnswer;
 	speaking: AnswerGroup[];
 }
 
@@ -352,8 +383,14 @@ export interface UpdateRecord {
 	completeSpeaking?: boolean;
 	reading?: AnswerGroup[];
 	listening?: AnswerGroup[];
-	writing?: AnswerGroup[];
+	writing?: UpdateWritingAnswer;
 	speaking?: AnswerGroup[];
+}
+
+export interface UpdateFullRecord {
+	writingFiles: File[]; // .txt or .doc
+	speakingFiles: File[]; // no implement
+	data: UpdateRecord;
 }
 
 export interface UpdateRecordConfig {
@@ -384,6 +421,7 @@ export interface UpdateTag {
 
 export interface CreateFTag {
 	value: string;
+	isPublic: boolean;
 }
 
 export interface UpdateFTag {
@@ -395,14 +433,25 @@ export interface UpdateFTag {
 export interface CreateFlashCard {
 	word: string;
 	definition: string;
+	tagIds: UUID[];
+	isPublic: boolean;
 }
 
-export interface GetFlashCard {
-	word?: string;
-	definition?: string;
+export interface CreateFullFlashCard {
+	file: File; // illustration pic 'image/png', 'image/jpg', 'image/jpeg'
+	data: CreateFlashCard;
 }
+
+// export interface GetFlashCard {
+//     word?: string;
+//     definition?: string;
+//     tagIds?: UUID[];
+//     isPublic?: boolean;
+// }
 
 export interface UpdateFlashCard {
 	word?: string;
 	definition?: string;
+	tagIds?: UUID[];
+	isPublic?: boolean;
 }

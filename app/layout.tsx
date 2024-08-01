@@ -1,12 +1,10 @@
 "use client";
-import { useState } from "react";
-import Navbar from "@/components/Navbar/Navbar";
-import SideBar from "@/components/Sidebar/Sidebar";
 import ThemeProvider from "./provider/ThemeProvider";
 import { Roboto } from "next/font/google";
 
 import "./globals.css";
 import AuthProvider from "./provider/AuthProvider";
+import UtilityProvider, { useUtility } from "./provider/UtilityProvider";
 
 const roboto = Roboto({
 	weight: "400",
@@ -18,7 +16,6 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
 
 	return (
 		<html
@@ -28,24 +25,26 @@ export default function RootLayout({
 			<body className="flex flex-col w-full min-h-screen overflow-x-hidden overflow-y-scroll">
 				<AuthProvider>
 					<ThemeProvider>
-						<SideBar
-							isOpenSidebar={isOpenSidebar}
-							setIsOpenSidebar={setIsOpenSidebar}
-						/>
-						<Navbar
-							isOpenSidebar={isOpenSidebar}
-							setIsOpenSidebar={setIsOpenSidebar}
-						/>
-						<div
-							style={{
-								paddingLeft: isOpenSidebar ? "240px" : "0px",
-							}}
-							className="flex flex-col min-h-screen pt-16 duration-200 bg-gray-50 dark:bg-black-night">
-							{children}
-						</div>
+						<UtilityProvider>
+							<Layout>{children}</Layout>
+						</UtilityProvider>
 					</ThemeProvider>
 				</AuthProvider>
 			</body>
 		</html>
+	);
+}
+
+function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
+	const { isOpenSidebar } = useUtility();
+
+	return (
+		<div
+			style={{
+				paddingLeft: isOpenSidebar ? "240px" : "0px",
+			}}
+			className="flex flex-col min-h-screen pt-16 duration-200 bg-gray-50 dark:bg-black-night">
+			{children}
+		</div>
 	);
 }

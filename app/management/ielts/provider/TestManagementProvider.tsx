@@ -1,6 +1,5 @@
 "use client";
 import { TestOperation } from "@/app/lib/main";
-import { TestInfor } from "@/app/interface/quiz";
 import { useRouter } from "next/navigation";
 import {
 	createContext,
@@ -11,18 +10,20 @@ import {
 } from "react";
 import { useAuth } from "@/app/provider/AuthProvider";
 import { FetchingType, SearchCriteria } from "@/app/lib/interfaces";
+import { ReciveTest, ReciveTestToTest, Test } from "@/app/interface/test/test";
+import { useUtility } from "@/app/provider/UtilityProvider";
 
 interface TestContextType {
-	testList: TestInfor[];
+	testList: Test[];
 	currentPage: number;
 	searchCriteria: SearchCriteria;
-	currentTest: TestInfor;
+	currentTest: Test;
 
 	search: () => void;
 	deleteTest: (id: string) => void;
-	createTest: () => void;
+	createTest: () => Promise<boolean>;
 	handleChangePage: (_: any, value: number) => void;
-	onSelectTest: (test: TestInfor) => void;
+	onSelectTest: (test: Test) => void;
 	onChangeSearchCriteria: (criteria: SearchCriteria) => void;
 }
 
@@ -42,11 +43,12 @@ export default function TestManagementProvider({
 	children: ReactNode;
 }) {
 	const { sid } = useAuth();
+	const { setSuccess, setError } = useUtility();
 	const router = useRouter();
 
-	const [testList, setTestList] = useState<TestInfor[]>([]);
+	const [testList, setTestList] = useState<Test[]>([]);
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [currentTest, setCurrentTest] = useState<TestInfor>(null);
+	const [currentTest, setCurrentTest] = useState<Test>(null);
 	const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>({
 		field: "name",
 		operator: "~",
@@ -76,9 +78,17 @@ export default function TestManagementProvider({
 				},
 				sid
 			)
-			.then((response) => {
-				console.log(response);
-				setTestList(response.data as TestInfor[]);
+			.then((res) => {
+				if (res.success) {
+					const newTestList = res.data.map(
+						(receiveTest: ReciveTest) =>
+							ReciveTestToTest(receiveTest)
+					);
+					setTestList(newTestList);
+				} else {
+					setError(res.message);
+					console.error(res.message);
+				}
 			});
 	};
 
@@ -90,52 +100,45 @@ export default function TestManagementProvider({
 		const newTestOperation = new TestOperation();
 		newTestOperation.delete(id as any, sid).then((res) => {
 			if (res.success) {
-				alert("Delete successfully");
-				const newTestList = [];
-				testList.forEach((test) => {
-					if (test.id != id) {
-						newTestList.push(test);
-					}
-				});
-				setTestList(newTestList);
+				setSuccess("Delete successfully");
+				search();
 			} else {
-				alert(res.message);
+				setError(res.message);
+				console.error(res.message);
 			}
 		});
 	};
 
-	const createTest = () => {
+	const createTest = async () => {
 		const newTestOperation = new TestOperation();
-		newTestOperation
-			.createFullTest(
-				{
-					files: [] as any,
-					data: {
-						name: "New test",
-						reading: [],
-						listening: [],
-						writing: [],
-						speaking: [],
-					},
+		const res = await newTestOperation.createFullTest(
+			{
+				files: [] as any,
+				data: {
+					name: "New test",
+					reading: [],
+					listening: [],
+					writing: [],
+					speaking: [],
 				},
-				sid
-			)
-			.then((res) => {
-				console.log(res);
-				if (res.success) {
-					console.log(res.data);
-					router.push(`/management/ielts/fulltest/${res.data.id}`);
-				} else {
-					alert(res.message);
-				}
-			});
+			},
+			sid
+		);
+		if (res.success) {
+			console.log(res.data);
+			router.push(`/management/ielts/fulltest/${res.data.id}`);
+			return true;
+		}
+		setError(res.message);
+		console.error(res.message);
+		return false;
 	};
 
 	const handleChangePage = (_: any, value: number) => {
 		setCurrentPage(value);
 	};
 
-	const onSelectTest = (test: TestInfor) => {
+	const onSelectTest = (test: Test) => {
 		setCurrentTest(test);
 	};
 

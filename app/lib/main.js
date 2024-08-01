@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UploadOperation = exports.FlashCardOperation = exports.PracticeOperation = exports.FTagOperation = exports.TagOperation = exports.RecordOperation = exports.TestOperation = exports.QuizOperation = exports.AccountOperation = exports.AuthOperation = void 0;
+exports.RemarkRequestOperation = exports.UploadOperation = exports.FlashCardOperation = exports.PracticeOperation = exports.FTagOperation = exports.TagOperation = exports.RecordOperation = exports.TestOperation = exports.QuizOperation = exports.AccountOperation = exports.AuthOperation = void 0;
 var axios_1 = require("axios");
 var FormData = require("form-data");
 var AuthOperation = /** @class */ (function () {
@@ -600,23 +600,6 @@ var RecordOperation = /** @class */ (function () {
     function RecordOperation() {
         this.baseUrl = 'https://engo.tiendungcorp.com/v1/records';
     }
-    // async create(payload: CreateRecord, token: string) {
-    //     try {
-    // 		const response: AxiosResponse = await axios.post(`${this.baseUrl}/create`, payload, {
-    // 			withCredentials: true,
-    //             validateStatus: status => status >= 200 && status <= 500,
-    //             headers: {
-    //                 Authorization: `Bearer ${token}`
-    //             },
-    // 		});
-    // 		return { success: response.data.success, message: response.data.message, data: response.data.data };
-    // 	} 
-    // 	catch (error: any) {
-    // 		console.log("Error searching accounts: ", error?.response?.data);
-    //         console.error("Request that caused the error: ", error?.request);
-    //         return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
-    // 	}
-    // }
     RecordOperation.prototype.init = function (payload, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
@@ -702,14 +685,22 @@ var RecordOperation = /** @class */ (function () {
         });
     };
     RecordOperation.prototype.update = function (id, payload, token) {
-        var _a, _b;
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var response, error_22;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var formData, i, i, response, error_22;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), payload, {
+                        _b.trys.push([0, 2, , 3]);
+                        formData = new FormData();
+                        for (i = 0; i < payload.writingFiles.length; i++) {
+                            formData.append('writingFile', payload.writingFiles[i]);
+                        }
+                        for (i = 0; i < payload.speakingFiles.length; i++) {
+                            formData.append('speakingFile', payload.speakingFiles[i]);
+                        }
+                        formData.append('data', JSON.stringify(payload.data));
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), formData, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -717,13 +708,12 @@ var RecordOperation = /** @class */ (function () {
                                 },
                             })];
                     case 1:
-                        response = _c.sent();
+                        response = _b.sent();
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
-                        error_22 = _c.sent();
-                        console.log("Error updating account: ", (_a = error_22 === null || error_22 === void 0 ? void 0 : error_22.response) === null || _a === void 0 ? void 0 : _a.data);
+                        error_22 = _b.sent();
                         console.error("Request that caused the error: ", error_22 === null || error_22 === void 0 ? void 0 : error_22.request);
-                        return [2 /*return*/, { success: (_b = error_22 === null || error_22 === void 0 ? void 0 : error_22.response) === null || _b === void 0 ? void 0 : _b.data, request: error_22 === null || error_22 === void 0 ? void 0 : error_22.request, status: error_22.response ? error_22.response.status : null }];
+                        return [2 /*return*/, { success: (_a = error_22 === null || error_22 === void 0 ? void 0 : error_22.response) === null || _a === void 0 ? void 0 : _a.data, request: error_22 === null || error_22 === void 0 ? void 0 : error_22.request, status: error_22.response ? error_22.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -941,7 +931,7 @@ var FTagOperation = /** @class */ (function () {
         });
     };
     //get all ftags
-    FTagOperation.prototype.search = function (token) {
+    FTagOperation.prototype.search = function (payload, token) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
             var response, error_30;
@@ -949,7 +939,7 @@ var FTagOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/search"), {
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/search"), payload, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -1102,14 +1092,17 @@ var FlashCardOperation = /** @class */ (function () {
         this.baseUrl = 'https://engo.tiendungcorp.com/v1/flashcards';
     }
     FlashCardOperation.prototype.create = function (payload, token) {
-        var _a, _b;
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var response, error_35;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var formData, response, error_35;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), payload, {
+                        _b.trys.push([0, 2, , 3]);
+                        formData = new FormData();
+                        formData.append("file", payload.file);
+                        formData.append('data', JSON.stringify(payload.data));
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/create"), formData, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -1117,13 +1110,12 @@ var FlashCardOperation = /** @class */ (function () {
                                 },
                             })];
                     case 1:
-                        response = _c.sent();
+                        response = _b.sent();
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
-                        error_35 = _c.sent();
-                        console.log("Error searching accounts: ", (_a = error_35 === null || error_35 === void 0 ? void 0 : error_35.response) === null || _a === void 0 ? void 0 : _a.data);
+                        error_35 = _b.sent();
                         console.error("Request that caused the error: ", error_35 === null || error_35 === void 0 ? void 0 : error_35.request);
-                        return [2 /*return*/, { success: (_b = error_35 === null || error_35 === void 0 ? void 0 : error_35.response) === null || _b === void 0 ? void 0 : _b.data, request: error_35 === null || error_35 === void 0 ? void 0 : error_35.request, status: error_35.response ? error_35.response.status : null }];
+                        return [2 /*return*/, { success: (_a = error_35 === null || error_35 === void 0 ? void 0 : error_35.response) === null || _a === void 0 ? void 0 : _a.data, request: error_35 === null || error_35 === void 0 ? void 0 : error_35.request, status: error_35.response ? error_35.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1158,14 +1150,17 @@ var FlashCardOperation = /** @class */ (function () {
         });
     };
     FlashCardOperation.prototype.update = function (id, payload, token) {
-        var _a, _b;
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var response, error_37;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var formData, response, error_37;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), payload, {
+                        _b.trys.push([0, 2, , 3]);
+                        formData = new FormData();
+                        formData.append("file", payload.file);
+                        formData.append('data', JSON.stringify(payload.data));
+                        return [4 /*yield*/, axios_1.default.put("".concat(this.baseUrl, "/update/").concat(id), formData, {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -1173,13 +1168,12 @@ var FlashCardOperation = /** @class */ (function () {
                                 },
                             })];
                     case 1:
-                        response = _c.sent();
+                        response = _b.sent();
                         return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
                     case 2:
-                        error_37 = _c.sent();
-                        console.log("Error updating account: ", (_a = error_37 === null || error_37 === void 0 ? void 0 : error_37.response) === null || _a === void 0 ? void 0 : _a.data);
+                        error_37 = _b.sent();
                         console.error("Request that caused the error: ", error_37 === null || error_37 === void 0 ? void 0 : error_37.request);
-                        return [2 /*return*/, { success: (_b = error_37 === null || error_37 === void 0 ? void 0 : error_37.response) === null || _b === void 0 ? void 0 : _b.data, request: error_37 === null || error_37 === void 0 ? void 0 : error_37.request, status: error_37.response ? error_37.response.status : null }];
+                        return [2 /*return*/, { success: (_a = error_37 === null || error_37 === void 0 ? void 0 : error_37.response) === null || _a === void 0 ? void 0 : _a.data, request: error_37 === null || error_37 === void 0 ? void 0 : error_37.request, status: error_37.response ? error_37.response.status : null }];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1229,7 +1223,7 @@ var UploadOperation = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "/path=").concat(filepath), {
+                        return [4 /*yield*/, axios_1.default.get("".concat(this.baseUrl, "?path=").concat(filepath), {
                                 withCredentials: true,
                                 validateStatus: function (status) { return status >= 200 && status <= 500; },
                                 headers: {
@@ -1252,3 +1246,67 @@ var UploadOperation = /** @class */ (function () {
     return UploadOperation;
 }());
 exports.UploadOperation = UploadOperation;
+// remark request
+var RemarkRequestOperation = /** @class */ (function () {
+    function RemarkRequestOperation() {
+        this.baseUrl = 'https://engo.tiendungcorp.com/v1/remark_requests';
+    }
+    RemarkRequestOperation.prototype.search = function (payload, token) {
+        var _a, _b;
+        return __awaiter(this, void 0, void 0, function () {
+            var response, error_40;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _c.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.post("".concat(this.baseUrl, "/search"), payload, {
+                                withCredentials: true,
+                                validateStatus: function (status) { return status >= 200 && status <= 500; },
+                                headers: {
+                                    Authorization: "Bearer ".concat(token)
+                                },
+                            })];
+                    case 1:
+                        response = _c.sent();
+                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                    case 2:
+                        error_40 = _c.sent();
+                        console.log("Error searching accounts: ", (_a = error_40 === null || error_40 === void 0 ? void 0 : error_40.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.error("Request that caused the error: ", error_40 === null || error_40 === void 0 ? void 0 : error_40.request);
+                        return [2 /*return*/, { success: (_b = error_40 === null || error_40 === void 0 ? void 0 : error_40.response) === null || _b === void 0 ? void 0 : _b.data, request: error_40 === null || error_40 === void 0 ? void 0 : error_40.request, status: error_40.response ? error_40.response.status : null }];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    RemarkRequestOperation.prototype.delete = function (id, token) {
+        var _a, _b;
+        return __awaiter(this, void 0, void 0, function () {
+            var response, error_41;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _c.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, axios_1.default.delete("".concat(this.baseUrl, "/delete/").concat(id), {
+                                withCredentials: true,
+                                validateStatus: function (status) { return status >= 200 && status <= 500; },
+                                headers: {
+                                    Authorization: "Bearer ".concat(token)
+                                },
+                            })];
+                    case 1:
+                        response = _c.sent();
+                        return [2 /*return*/, { success: response.data.success, message: response.data.message, data: response.data.data }];
+                    case 2:
+                        error_41 = _c.sent();
+                        console.log("Error updating account: ", (_a = error_41 === null || error_41 === void 0 ? void 0 : error_41.response) === null || _a === void 0 ? void 0 : _a.data);
+                        console.error("Request that caused the error: ", error_41 === null || error_41 === void 0 ? void 0 : error_41.request);
+                        return [2 /*return*/, { success: (_b = error_41 === null || error_41 === void 0 ? void 0 : error_41.response) === null || _b === void 0 ? void 0 : _b.data, request: error_41 === null || error_41 === void 0 ? void 0 : error_41.request, status: error_41.response ? error_41.response.status : null }];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return RemarkRequestOperation;
+}());
+exports.RemarkRequestOperation = RemarkRequestOperation;

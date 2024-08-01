@@ -6,6 +6,7 @@ import { FiXCircle } from "react-icons/fi";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { FaRegTrashCan } from "react-icons/fa6";
 import Link from "next/link";
+import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 
 export default function RecordList() {
 	return (
@@ -93,22 +94,7 @@ interface OptionButtonProps {
 }
 
 function OptionButton({ id }: OptionButtonProps) {
-	const inforRef = useRef<HTMLDetailsElement>(null);
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				inforRef.current &&
-				!inforRef.current.contains(event.target as Node)
-			) {
-				inforRef.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+	const inforRef = useClickOutsideDetails();
 
 	return (
 		<details

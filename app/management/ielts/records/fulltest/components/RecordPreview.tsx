@@ -1,5 +1,10 @@
 import { Skill } from "@/app/lib/interfaces";
 import { useRecord } from "../provider/RecordProvider";
+import {
+	RecordFGroup,
+	RecordMCGroup,
+	RecordQuiz,
+} from "@/app/interface/record/fulltestRecord";
 
 interface RecordProps {
 	quizIndex: number;
@@ -11,7 +16,20 @@ export default function RecordPreview({ quizIndex, quizskill }: RecordProps) {
 
 	if (currentSkill != quizskill || currentQuizIndex != quizIndex) return null;
 
-	const currentQuiz = record.reading[quizIndex];
+	let currentQuiz: RecordQuiz;
+	switch (quizskill) {
+		case Skill.LISTENING:
+			currentQuiz = record.listening[quizIndex];
+			break;
+		case Skill.WRITING:
+			currentQuiz = record.writing[quizIndex];
+			break;
+		case Skill.SPEAKING:
+			currentQuiz = record.speaking[quizIndex];
+			break;
+		default:
+			currentQuiz = record.reading[quizIndex];
+	}
 
 	return (
 		<div className="flex flex-col w-full gap-4 py-4 h-fit">
@@ -35,6 +53,7 @@ export default function RecordPreview({ quizIndex, quizskill }: RecordProps) {
 							key={id}
 							quizIndex={quizIndex}
 							groupIndex={groupIndex}
+							quizSkill={quizskill}
 						/>
 					);
 				}
@@ -49,6 +68,7 @@ export default function RecordPreview({ quizIndex, quizskill }: RecordProps) {
 							key={id}
 							quizIndex={quizIndex}
 							groupIndex={groupIndex}
+							quizSkill={quizskill}
 						/>
 					);
 				}
@@ -62,12 +82,26 @@ export default function RecordPreview({ quizIndex, quizskill }: RecordProps) {
 interface FillingGroupprops {
 	quizIndex: number;
 	groupIndex: number;
+	quizSkill: Skill;
 }
 
-function FillingGroup({ quizIndex, groupIndex }: FillingGroupprops) {
+function FillingGroup({ quizIndex, groupIndex, quizSkill }: FillingGroupprops) {
 	const { record } = useRecord();
 
-	const currentGroup = record.reading[quizIndex].fillingQuiz[groupIndex];
+	let currentGroup: RecordFGroup;
+	switch (quizSkill) {
+		case Skill.LISTENING:
+			currentGroup = record.listening[quizIndex].fillingQuiz[groupIndex];
+			break;
+		case Skill.WRITING:
+			currentGroup = record.writing[quizIndex].fillingQuiz[groupIndex];
+			break;
+		case Skill.SPEAKING:
+			currentGroup = record.speaking[quizIndex].fillingQuiz[groupIndex];
+			break;
+		default:
+			currentGroup = record.reading[quizIndex].fillingQuiz[groupIndex];
+	}
 
 	return (
 		<div className="flex flex-col w-full gap-4 p-4 text-black bg-white rounded-md shadow-md dark:text-gray-200 dark:bg-pot-black h-fit">
@@ -137,16 +171,34 @@ function FillingGroup({ quizIndex, groupIndex }: FillingGroupprops) {
 interface MultipleChoiceGroupprops {
 	quizIndex: number;
 	groupIndex: number;
+	quizSkill: Skill;
 }
 
 function MultipleChoiceGroup({
 	quizIndex,
 	groupIndex,
+	quizSkill,
 }: MultipleChoiceGroupprops) {
 	const { record } = useRecord();
 
-	const currentGroup =
-		record.reading[quizIndex].multipleChoiceQuiz[groupIndex];
+	let currentGroup: RecordMCGroup;
+	switch (quizSkill) {
+		case Skill.LISTENING:
+			currentGroup =
+				record.listening[quizIndex].multipleChoiceQuiz[groupIndex];
+			break;
+		case Skill.WRITING:
+			currentGroup =
+				record.writing[quizIndex].multipleChoiceQuiz[groupIndex];
+			break;
+		case Skill.SPEAKING:
+			currentGroup =
+				record.speaking[quizIndex].multipleChoiceQuiz[groupIndex];
+			break;
+		default:
+			currentGroup =
+				record.reading[quizIndex].multipleChoiceQuiz[groupIndex];
+	}
 
 	const getAlpha = (index: number) => {
 		return String.fromCharCode(65 + index);

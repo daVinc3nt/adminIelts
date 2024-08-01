@@ -13,6 +13,7 @@ import {
 	useEffect, // Import useContext
 } from "react";
 import { useAuth } from "@/app/provider/AuthProvider";
+import { useUtility } from "@/app/provider/UtilityProvider";
 
 interface UserContextType {
 	userInforList: UserInformation[];
@@ -49,6 +50,7 @@ export const UserManagementProvider = ({
 	children: ReactNode;
 }) => {
 	const { sid } = useAuth();
+	const { setError, setSuccess } = useUtility();
 
 	const [userInforList, setUserInforList] = useState<UserInformation[]>([]);
 	const [currentUser, setCurrentUser] = useState<UserInformation>(null);
@@ -89,12 +91,13 @@ export const UserManagementProvider = ({
 				} as SearchPayload,
 				sid
 			)
-			.then((response) => {
-				if (response.success) {
-					console.log(response.data);
-					setUserInforList(response.data as UserInformation[]);
+			.then((res) => {
+				if (res.success) {
+					console.log(res.data);
+					setUserInforList(res.data as UserInformation[]);
 				} else {
-					alert(response.message);
+					setError(res.message);
+					console.error(res.message);
 				}
 			});
 	};
@@ -144,9 +147,10 @@ export const UserManagementProvider = ({
 						})
 					);
 					onChangeCurrentUser(res.data);
-					alert("Update account successfully");
+					setSuccess("Update account successfully");
 				} else {
-					alert(res.message);
+					setError(res.message);
+					console.error(res.message);
 				}
 			});
 	};

@@ -44,7 +44,6 @@ import {
 
 import "ckeditor5/ckeditor5.css";
 import { useTheme } from "next-themes";
-import dynamic from "next/dynamic";
 
 const themes = {
 	light: "/light-theme.css",

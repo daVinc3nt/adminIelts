@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { UpdateAccountPayload, UserRole } from "@/app/lib/interfaces";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { roleLabel } from "@/app/interface/user/user";
+import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 
 export default function PopupUpdateUser() {
 	const {
@@ -16,22 +17,7 @@ export default function PopupUpdateUser() {
 
 	const [password, setPassword] = useState<string>("");
 
-	const addRoleRef = useRef<HTMLDetailsElement>(null);
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				addRoleRef.current &&
-				!addRoleRef.current.contains(event.target as Node)
-			) {
-				addRoleRef.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+	const addRoleRef = useClickOutsideDetails();
 
 	const onSelectRole = (role: string) => {
 		const newRole = {
@@ -65,8 +51,21 @@ export default function PopupUpdateUser() {
 			firstName: currentUser.firstName,
 			lastName: currentUser.lastName,
 			roles: currentUser.roles.map((role) => {
-				return role.role;
-			}),
+				switch (role.role) {
+					case UserRole.ADMIN:
+						return "ADMIN";
+					case UserRole.SYS_ADMIN:
+						return "SYS_ADMIN";
+					case UserRole.EXAM_ADMIN:
+						return "EXAM_ADMIN";
+					case UserRole.STUDENT:
+						return "STUDENT";
+					case UserRole.PAID_USER:
+						return "PAID_USER";
+					default:
+						return "NONPAID_USER";
+				}
+			}) as any,
 		};
 
 		if (password && password != "") {
@@ -82,9 +81,6 @@ export default function PopupUpdateUser() {
 				currentUser.dateOfBirth
 			);
 		}
-
-		//console.log(newUpdateAccountPayload);
-
 		updateUserInformation(newUpdateAccountPayload);
 	};
 

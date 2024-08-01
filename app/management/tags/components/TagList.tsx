@@ -4,8 +4,10 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { FiEdit } from "react-icons/fi";
 import { useTagManagement } from "../provider/TagManagementProvide";
 import { BsThreeDots } from "react-icons/bs";
-import { useEffect, useRef } from "react";
 import { Tag } from "@/app/interface/tag/tag";
+import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
+import { on } from "events";
+import { useUtility } from "@/app/provider/UtilityProvider";
 
 export default function TagList() {
 	const { tagList, searchValue, fetchType } = useTagManagement();
@@ -17,24 +19,33 @@ export default function TagList() {
 					if (
 						searchValue &&
 						searchValue != "" &&
-						!tag.value.includes(searchValue.toUpperCase())
+						!tag.value
+							.toUpperCase()
+							.includes(searchValue.toUpperCase())
 					)
 						return null;
 
 					if (
 						fetchType &&
 						fetchType != "" &&
-						tag.splitType != fetchType
+						new Boolean(tag.forQuiz).toString() != fetchType
 					)
 						return null;
 
 					return (
 						<div
 							key={index + tag.id}
-							className="flex items-center justify-between gap-2 px-3 py-2 text-xs text-black bg-gray-100 rounded-md cursor-default w-fit h-fit dark:bg-gray-22 group dark:text-gray-200">
-							<FaTag className="size-3" />
-							<span className="font-bold">{tag.value}</span>
-							<OptionButton tag={tag} />
+							className="flex items-center justify-between gap-3 px-3 py-2 text-black bg-gray-100 rounded-md cursor-default w-fit h-fit dark:bg-gray-22 group dark:text-gray-200">
+							<FaTag className="size-5" />
+							<div className="flex flex-col">
+								<span className="font-bold text-xs">
+									{tag.value}
+								</span>
+								<span className="text-xs">
+									{tag.forQuiz ? "Quiz tag" : "Group tag"}
+								</span>
+							</div>
+							<OptionButton tag={tag} tagIndex={index} />
 						</div>
 					);
 				})}
@@ -45,27 +56,40 @@ export default function TagList() {
 
 interface OptionButtonProps {
 	tag: Tag;
+	tagIndex: number;
 }
 
-function OptionButton({ tag }: OptionButtonProps) {
-	const { onSelectTag, deleteTag } = useTagManagement();
+function OptionButton({ tag, tagIndex }: OptionButtonProps) {
+	const { onSetConfirmation } = useUtility();
 
-	const inforRef = useRef<HTMLDetailsElement>(null);
+	const {
+		onSelectTag,
+		deleteTag,
+		onChangeTagIndex,
+		onChangeIsOpenUpdateTag,
+	} = useTagManagement();
 
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				inforRef.current &&
-				!inforRef.current.contains(event.target as Node)
-			) {
-				inforRef.current.open = false;
-			}
+	const inforRef = useClickOutsideDetails();
+
+	const onSelect = () => {
+		onChangeTagIndex(tagIndex);
+		onSelectTag(tag);
+		onChangeIsOpenUpdateTag(true);
+		inforRef.current.open = false;
+	};
+
+	const onDeleteTag = () => {
+		const del = () => {
+			deleteTag(tag.id);
+			inforRef.current.open = false;
 		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+
+		onSetConfirmation(
+			`Do you want to delete "${tag.value}" tag?`,
+			del,
+			"delete"
+		);
+	};
 
 	return (
 		<details
@@ -77,23 +101,19 @@ function OptionButton({ tag }: OptionButtonProps) {
 					<BsThreeDots className="size-4" />
 				</div>
 			</summary>
-			<div className="absolute top-0 flex flex-col w-32 gap-1 p-2 bg-white rounded-md shadow-lg h-fit dark:bg-gray-22 left-7">
+			<div className="absolute -top-2 flex flex-col w-32 gap-1 p-2 bg-white rounded-md shadow-lg h-fit dark:bg-gray-22 left-7">
 				<div
-					onClick={() => {
-						onSelectTag(tag);
-						inforRef.current.open = false;
-					}}
+					onClick={() => onSelect()}
 					className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
-					<span>Update</span>
+					<span className="text-xs text-black dark:text-gray-200">
+						Update
+					</span>
 					<FiEdit className="size-4" />
 				</div>
 				<div
-					onClick={() => {
-						deleteTag(tag.id);
-						inforRef.current.open = false;
-					}}
+					onClick={() => onDeleteTag()}
 					className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
-					<span className="text-red-500">Delete</span>
+					<span className="text-red-500 text-xs">Delete</span>
 					<FaRegTrashCan className="text-red-500 size-4" />
 				</div>
 			</div>

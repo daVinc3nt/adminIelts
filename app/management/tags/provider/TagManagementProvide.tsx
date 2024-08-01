@@ -2,6 +2,7 @@
 import { Tag } from "@/app/interface/tag/tag";
 import { TagOperation } from "@/app/lib/main";
 import { useAuth } from "@/app/provider/AuthProvider";
+import { useUtility } from "@/app/provider/UtilityProvider";
 import { UUID } from "crypto";
 import {
 	createContext,
@@ -17,13 +18,18 @@ interface TagContextType {
 	fetchType: string;
 	searchValue: string;
 	isOpenAddTag: boolean;
+	tagIndex: number;
+	isOpenUpdateTag: boolean;
+
 	addTag: (tag: Tag) => Promise<boolean>;
-	updateTag: (tag: Tag) => Promise<boolean>;
+	updateTag: (tag: Tag, noNotificate?: boolean) => Promise<boolean>;
 	deleteTag: (id: string) => void;
 	onSelectTag: (tag: Tag) => void;
 	onChangeFetchType: (value: string) => void;
 	onChangeSearchValue: (value: string) => void;
 	onChangeIsOpenAddTag: (value: boolean) => void;
+	onChangeTagIndex: (index: number) => void;
+	onChangeIsOpenUpdateTag: (value: boolean) => void;
 }
 
 const TagContext = createContext<TagContextType | null>(null);
@@ -42,11 +48,15 @@ export default function TagManagementProvider({
 	children: ReactNode;
 }) {
 	const { sid } = useAuth();
+	const { setError, setSuccess } = useUtility();
+
 	const [tagList, setTagList] = useState<Tag[]>([]);
 	const [currentTag, setCurrentTag] = useState<Tag>(null);
 	const [fetchType, setFetchType] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [isOpenAddTag, setIsOpenAddTag] = useState<boolean>(false);
+	const [isOpenUpdateTag, setIsOpenUpdateTag] = useState<boolean>(false);
+	const [tagIndex, setTagIndex] = useState<number>(0);
 
 	useEffect(() => {
 		const fetchTagList = () => {
@@ -55,7 +65,8 @@ export default function TagManagementProvider({
 				if (res.success) {
 					setTagList(res.data);
 				} else {
-					alert(res.message);
+					setError(res.message);
+					console.error(res.message);
 				}
 			});
 		};
@@ -68,14 +79,17 @@ export default function TagManagementProvider({
 		const res = await newTagOperation.create(tag as any, sid);
 		if (res.success) {
 			setTagList([...tagList, res.data]);
-			alert("Add tag successfully");
+			setSuccess("Add tag successfully");
 			return true;
 		}
-		alert(res.message);
+		setError(res.message);
+		console.error(res.message);
 		return false;
 	};
 
-	const updateTag = async (tag: Tag) => {
+	const updateTag = async (tag: Tag, noNotificate?: boolean) => {
+		console.log(tag);
+
 		const newTagOperation = new TagOperation();
 		if (tag.id) {
 			const res = await newTagOperation.update(
@@ -88,10 +102,13 @@ export default function TagManagementProvider({
 					item.id === tag.id ? tag : item
 				);
 				setTagList(newTagList);
-				alert("Update tag successfully");
+				if (!noNotificate) {
+					setSuccess("Update tag successfully");
+				}
 				return true;
 			}
-			alert(res.message);
+			setError(res.message);
+			console.error(res.message);
 			return false;
 		}
 	};
@@ -102,15 +119,20 @@ export default function TagManagementProvider({
 			if (res.success) {
 				const newTagList = tagList.filter((item) => item.id !== id);
 				setTagList(newTagList);
-				alert("Delete tag successfully");
+				setSuccess("Delete tag successfully");
 			} else {
-				alert(res.message);
+				setError(res.message);
+				console.error(res.message);
 			}
 		});
 	};
 
 	const onSelectTag = (tag: Tag) => {
 		setCurrentTag(tag);
+	};
+
+	const onChangeTagIndex = (index: number) => {
+		setTagIndex(index);
 	};
 
 	const onChangeFetchType = (value: string) => {
@@ -125,6 +147,10 @@ export default function TagManagementProvider({
 		setIsOpenAddTag(value);
 	};
 
+	const onChangeIsOpenUpdateTag = (value: boolean) => {
+		setIsOpenUpdateTag(value);
+	};
+
 	return (
 		<TagContext.Provider
 			value={{
@@ -133,6 +159,9 @@ export default function TagManagementProvider({
 				fetchType,
 				searchValue,
 				isOpenAddTag,
+				tagIndex,
+				isOpenUpdateTag,
+
 				addTag,
 				updateTag,
 				deleteTag,
@@ -140,6 +169,8 @@ export default function TagManagementProvider({
 				onChangeFetchType,
 				onChangeSearchValue,
 				onChangeIsOpenAddTag,
+				onChangeTagIndex,
+				onChangeIsOpenUpdateTag,
 			}}>
 			{children}
 		</TagContext.Provider>

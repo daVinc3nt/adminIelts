@@ -1,26 +1,23 @@
 "use client";
-import { FormEvent, Fragment, useState } from "react";
+import { FormEvent, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { FcCancel } from "react-icons/fc";
 import { motion } from "framer-motion";
-import { SplitType } from "@/app/lib/interfaces";
 import { Tag } from "@/app/interface/tag/tag";
 import { useTagManagement } from "../provider/TagManagementProvide";
 
 export default function PopupAddTag() {
-	const { addTag, isOpenAddTag, onChangeIsOpenAddTag } = useTagManagement();
+	const { addTag, onChangeIsOpenAddTag } = useTagManagement();
 	const [tag, setTag] = useState<Tag>({
 		value: "",
-		splitType: SplitType.QUIZ_LEVEL,
+		forQuiz: true,
 	});
-
-	if (!isOpenAddTag) return <Fragment />;
 
 	const close = () => {
 		setTag({
 			value: "",
-			splitType: SplitType.QUIZ_LEVEL,
+			forQuiz: true,
 		});
 		onChangeIsOpenAddTag(false);
 	};
@@ -44,15 +41,15 @@ export default function PopupAddTag() {
 					stiffness: 500,
 				}}
 				onSubmit={addNewTag}
-				className="flex flex-col gap-2 overflow-hidden bg-white rounded-md w-96 dark:bg-pot-black h-fit">
-				<div className="flex flex-row items-center justify-between w-full p-2 h-fit bg-foreground-blue dark:bg-foreground-red">
-					<h1 className="text-2xl font-bold text-white dark:text-gray-200">
+				className="flex flex-col gap-2 overflow-hidden bg-white rounded-md w-112 dark:bg-pot-black h-fit">
+				<div className="flex flex-row items-center justify-between w-full py-2 px-4 h-fit bg-foreground-blue dark:bg-foreground-red">
+					<h1 className="text-3xl font-bold text-white dark:text-gray-200">
 						Add new tag
 					</h1>
 
 					<FaXmark
 						onClick={() => close()}
-						className="text-white size-6 dark:text-gray-200"
+						className="text-white size-8 dark:text-gray-200"
 					/>
 				</div>
 
@@ -77,17 +74,17 @@ export default function PopupAddTag() {
 						Tag type:{" "}
 					</span>
 					<select
-						value={tag.splitType}
+						value={tag.forQuiz ? "Tag for Quiz" : "Tag for Group"}
 						onChange={(e) =>
 							setTag({
 								...tag,
-								splitType: e.target.value as SplitType,
+								forQuiz: e.target.value === "Tag for Quiz",
 							})
 						}
 						required
 						className="flex-1 px-2 py-1 bg-gray-100 border-0 rounded-md dark:bg-gray-22">
-						<option value={SplitType.QUIZ_LEVEL}>Quiz tag</option>
-						<option value={SplitType.GROUP_LEVEL}>Group tag</option>
+						<option value={"Tag for Quiz"}>Quiz tag</option>
+						<option value={"Tag for Group"}>Group tag</option>
 					</select>
 				</div>
 

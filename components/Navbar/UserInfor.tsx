@@ -1,22 +1,9 @@
+import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 import Link from "next/link";
-import { useRef, useEffect } from "react";
 import { CiUser } from "react-icons/ci";
 
-
 export default function UserInfor() {
-	const Ref = useRef<HTMLDetailsElement>(null);
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (Ref.current && !Ref.current.contains(event.target as Node)) {
-				Ref.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+	const Ref = useClickOutsideDetails();
 
 	return (
 		<details className="relative" ref={Ref}>

@@ -25,7 +25,7 @@ export interface RecordInfor {
 	updatedAt: string;
 }
 //Question
-interface RecordMCQuestion {
+export interface RecordMCQuestion {
 	id: string;
 	description: string;
 	options: string[];
@@ -40,7 +40,7 @@ interface RecordMCQuestion {
 	userAnswer: string[];
 }
 
-interface RecordFQuestion {
+export interface RecordFQuestion {
 	id: string;
 	description: string;
 	answer: string[];
@@ -54,7 +54,7 @@ interface RecordFQuestion {
 }
 
 //Group
-interface RecordMCGroup {
+export interface RecordMCGroup {
 	id: string;
 	question: string;
 	startFrom: number;
@@ -66,7 +66,7 @@ interface RecordMCGroup {
 	quizzes: RecordMCQuestion[];
 }
 
-interface RecordFGroup {
+export interface RecordFGroup {
 	id: string;
 	question: string;
 	startFrom: number;
@@ -78,7 +78,7 @@ interface RecordFGroup {
 	quizzes: RecordFQuestion[];
 }
 
-interface RecordQuiz {
+export interface RecordQuiz {
 	id: string;
 	category: Category;
 	linkToTest: boolean;

@@ -6,6 +6,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { FiEdit, FiXCircle } from "react-icons/fi";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 
 export default function UserList() {
 	return (
@@ -91,22 +92,7 @@ function OptionButton({ user }: OptionButtonProps) {
 		onChangeIsOpenUserInfor,
 	} = useUserManagement();
 
-	const inforRef = useRef<HTMLDetailsElement>(null);
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				inforRef.current &&
-				!inforRef.current.contains(event.target as Node)
-			) {
-				inforRef.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+	const inforRef = useClickOutsideDetails();
 
 	return (
 		<details

@@ -5,8 +5,8 @@ import { SplitType } from "@/app/lib/interfaces";
 
 const option = [
 	{ value: "", label: "All tags" },
-	{ value: SplitType.QUIZ_LEVEL, label: "Quizs tags" },
-	{ value: SplitType.GROUP_LEVEL, label: "Groups tags" },
+	{ value: "true", label: "Quizs tags" },
+	{ value: "false", label: "Groups tags" },
 ];
 
 export default function SelectFetchTypeButton() {

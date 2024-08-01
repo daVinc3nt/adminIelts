@@ -1,10 +1,10 @@
 "use client";
 import { RecordTest } from "@/app/interface/record/fulltestRecord";
-import { createContext, useContext, useEffect, useState } from "react";
-import RecordData from "@/app/interface/data/RecordData.json";
+import { createContext, useContext, useState } from "react";
 import { RecordOperation } from "@/app/lib/main";
 import { Skill } from "@/app/lib/interfaces";
 import { useAuth } from "@/app/provider/AuthProvider";
+import { useUtility } from "@/app/provider/UtilityProvider";
 
 interface RecordContextType {
 	record: RecordTest;
@@ -31,6 +31,8 @@ export default function RecordProvider({
 	children: React.ReactNode;
 }) {
 	const { sid } = useAuth();
+	const { setError, setSuccess } = useUtility();
+
 	const [record, setRecord] = useState<RecordTest>();
 	const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
 	const [currentSkill, setCurrentSkill] = useState<Skill>(Skill.READING);
@@ -42,7 +44,8 @@ export default function RecordProvider({
 				console.log(res.data);
 				setRecord(res.data);
 			} else {
-				alert(res.message);
+				setError(res.message);
+				console.error(res.message);
 			}
 		});
 	};

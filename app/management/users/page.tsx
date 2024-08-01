@@ -34,7 +34,7 @@ function UserManagement() {
 			<div className="flex flex-col items-center w-10/12 h-full gap-6 py-4">
 				<div className="w-full h-fit">
 					<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
-						USER MANAGEMENT
+						User Management
 					</span>
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">

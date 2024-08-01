@@ -7,6 +7,8 @@ interface Props {
 	value?: string;
 	onChangeInput?: any;
 	defaultRows?: number;
+	required?: boolean;
+	autoComplete?: "on" | "off";
 }
 
 export default function TextArea({
@@ -16,6 +18,8 @@ export default function TextArea({
 	value,
 	onChangeInput,
 	defaultRows,
+	required,
+	autoComplete,
 }: Props) {
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -25,13 +29,15 @@ export default function TextArea({
 			target.style.height = "inherit";
 			target.style.height = `${target.scrollHeight}px`;
 		}
-	}, []);
+	}, [textAreaRef]);
 
 	return (
 		<textarea
 			ref={textAreaRef}
 			rows={defaultRows ? defaultRows : 1}
 			value={value}
+			required={required}
+			autoComplete={autoComplete}
 			onChange={(e) => {
 				if (onChangeInput) onChangeInput(e.target.value);
 				const target = e.target as HTMLTextAreaElement;
@@ -42,7 +48,7 @@ export default function TextArea({
 			spellCheck={false}
 			disabled={disabled}
 			className={
-				"w-full h-fit px-2 py-1 duration-200 overflow-hidden border border-gray-400 border-solid rounded-md outline-none resize-none focus:border-blue-400 focus:outline focus:ring-1 focus:ring-blue-400 " +
+				"w-full h-fit px-2 py-1 duration-200 overflow-hidden border border-gray-400 border-solid rounded-md outline-none resize-none focus:outline " +
 				className
 			}
 		/>

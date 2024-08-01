@@ -3,38 +3,24 @@ import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import { SearchCriteria } from "@/app/lib/interfaces";
 import { TbFilterPlus } from "react-icons/tb";
 import { FaAngleRight } from "react-icons/fa";
-import { useUserManagement } from "../provider/UserManagementProvider";
 import { BsTrash } from "react-icons/bs";
+import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
+import { useUtility } from "@/app/provider/UtilityProvider";
 
 export default function FilterButton() {
-	const filterRef = useRef<HTMLDetailsElement>(null);
+	const { setError } = useUtility();
+
 	const [searchCiteria, setSearchCriteria] =
 		useState<SearchCriteria | null>();
 	const [step, setStep] = useState<number>(0);
-
-	// const { searchCiterias, setSearchCiterias } = useUserManagement();
-	//temporary
 	const [searchCiterias, setSearchCiterias] = useState<SearchCriteria[]>([]);
 
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				filterRef.current &&
-				!filterRef.current.contains(event.target as Node)
-			) {
-				filterRef.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+	const filterRef = useClickOutsideDetails();
 
 	const addFilter = () => {
 		if (!searchCiteria) return;
 		if (searchCiteria.value === "") {
-			alert("Value cannot be empty");
+			setError("Value cannot be empty");
 			return;
 		}
 		setSearchCiterias([...searchCiterias, searchCiteria as SearchCriteria]);
@@ -111,21 +97,7 @@ function SelectFieldButton({
 	step,
 	setStep,
 }: ComponentProps) {
-	const fieldRef = useRef<HTMLDetailsElement>(null);
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				fieldRef.current &&
-				!fieldRef.current.contains(event.target as Node)
-			) {
-				fieldRef.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+	const fieldRef = useClickOutsideDetails();
 
 	const fields = [
 		{ label: "First Name", value: "firstName" },
@@ -179,22 +151,7 @@ function SelectOperator({
 	step,
 	setStep,
 }: ComponentProps) {
-	const operatorRef = useRef<HTMLDetailsElement>(null);
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				operatorRef.current &&
-				!operatorRef.current.contains(event.target as Node)
-			) {
-				operatorRef.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
+	const operatorRef = useClickOutsideDetails();
 
 	const operators = [
 		{ label: "Contain", value: "~" },

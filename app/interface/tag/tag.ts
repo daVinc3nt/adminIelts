@@ -1,9 +1,16 @@
-import { SplitType } from "../lib/interfaces";
-
 export interface Tag {
 	id?: string;
 	value: string;
-	splitType: SplitType;
+	forQuiz: boolean;
 	createAt?: string;
 	updateAt?: string;
+}
+
+export interface FTag {
+	id?: string;
+	isPublic: boolean;
+	accountId: string;
+	value: string;
+	createdAt?: string;
+	updatedAt?: string;
 }

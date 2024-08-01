@@ -18,13 +18,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkL
 
 ###
 
-POST https://engo.tiendungcorp.com/v1/tags/create
+PUT https://engo.tiendungcorp.com/v1/tags/update/00aa3476-6a72-4893-9410-24f1f7a789c3
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIxODk4MDIwLCJleHAiOjE3NTM0MzQwMjB9.9Ut8K9PDmQt8hBgWYgxHbtvbwO6TICtqmMvhOTdkSac
 
 {
-    "value": "LISTENING PASSAGE 3",
-    "splitType": "0"
+    "value": "True/False/Not given Questions",
+    "forQuiz": "false"
 }
 
 ###
@@ -52,17 +52,52 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkL
 ###
 PUT https://engo.tiendungcorp.com/v1/accounts/update/2882db41-9bc0-415d-832a-f440f0012471
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMDE3MDc2LCJleHAiOjE3NTM1NTMwNzZ9.aFJGMTMEFTWm7XBi1-IYIeGJJ7u-rXMipd6S92DuJmY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
 
 {
-    "username": "admin123",
+    "username": "user123",
     "firstName": "Quang",
     "lastName": "Trần Vĩ",
-    "roles": [],
+    "roles": ["NONPAID_USER"],
     "phoneNumber": "13413545",
     "dateOfBirth": "2024-07-18T00:00:00.000Z"
 }
 
 ###
 
-GET 
+GET https://engo.tiendungcorp.com/v1/tests/f486242a-2d3e-48a2-b1c9-9093013b698e
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+###
+
+DELETE https://engo.tiendungcorp.com/v1/tests/42eff997-7296-40c9-b0c7-045506fb27aa
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+
+}
+
+###
+
+POST https://engo.tiendungcorp.com/v1/flashcards
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+    "question": "What is the capital of Vietnam?",
+    "answer": "Hanoi",
+    "tags": ["00aa3476-6a72-4893-9410-24f1f7a789c3"]
+}
+
+### 
+
+POST https://engo.tiendungcorp.com/v1/ftags/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+    "value": "bla tag",
+	"isPublic": true
+}
