@@ -7,6 +7,7 @@ import RecordList from "../components/RecordList";
 import Pagination from "@/components/Pagnitation/Pagnitation";
 import SearchBar from "../components/SearchBar";
 import SelectSearchFieldButton from "../components/SelectSearchFieldButton";
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 export default function Page({ params }: { params: { testId: string } }) {
 	return (
@@ -21,14 +22,30 @@ interface RecordManagementProps {
 }
 
 function RecordManagement({ testId }: RecordManagementProps) {
-	const { getTestByTestId, currentPage, handleChangePage, test } =
+	const { getTestByTestId, currentPage, handleChangePage, test, isLoading } =
 		useRecordManagement();
 
 	useEffect(() => {
 		getTestByTestId(testId);
 	}, [testId]);
 
-	if (!test) return null;
+	if (isLoading) {
+		return (
+			<main className="flex items-center justify-center flex-1">
+				<LoadingSpinner />
+			</main>
+		);
+	}
+
+	if (!test) {
+		return (
+			<main className="flex items-center justify-center flex-1">
+				<span className="text-4xl font-bold text-black dark:text-gray-200">
+					Record not found
+				</span>
+			</main>
+		);
+	}
 
 	return (
 		<main className="flex justify-center flex-1 main">

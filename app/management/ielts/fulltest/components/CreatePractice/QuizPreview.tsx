@@ -9,14 +9,15 @@ export default function QuizPreview({}: RecordProps) {
 
 	return (
 		<div className="flex flex-col w-10/12 gap-4 h-fit">
-			{currentSkill == Skill.READING && (
-				<div
-					className="flex flex-col w-full p-4 text-black bg-white rounded-md shadow-md dark:bg-pot-black dark:text-gray-200 h-fit preview"
-					dangerouslySetInnerHTML={{
-						__html: currentPractice.content,
-					}}
-				/>
-			)}
+			{currentSkill != Skill.SPEAKING &&
+				currentPractice.content != "" && (
+					<div
+						className="flex flex-col w-full p-4 text-black bg-white rounded-md shadow-md dark:bg-pot-black dark:text-gray-200 h-fit preview"
+						dangerouslySetInnerHTML={{
+							__html: currentPractice.content,
+						}}
+					/>
+				)}
 
 			{currentPractice.groups.map((group, index) => {
 				switch (group.type) {
@@ -54,42 +55,35 @@ function FillingGroup({ groupIndex }: FillingGroupprops) {
 					__html: currentGroup.question,
 				}}
 			/>
-			{currentGroup.order.map((id, index) => {
-				const quizIndex = currentGroup.quizzes.findIndex(
-					(quiz) => quiz.id === id
-				);
-				if (quizIndex != -1) {
-					const currentQuiz = currentGroup.quizzes[quizIndex];
-					return (
-						<div
-							key={id}
-							className="flex flex-col w-full gap-4 p-4 h-fit preview">
-							<div className="flex flex-row items-center w-full gap-2 h-fit">
-								<span className="flex items-center justify-center font-bold text-white rounded-full dark:text-gray-200 bg-foreground-blue dark:bg-foreground-red size-8">
-									{currentGroup.startFrom + index + 1}
+			{currentGroup.quizzes.map((quiz, index) => {
+				return (
+					<div
+						key={index}
+						className="flex flex-col w-full gap-4 p-4 h-fit preview">
+						<div className="flex flex-row items-center w-full gap-2 h-fit">
+							<span className="flex items-center justify-center font-bold text-white rounded-full dark:text-gray-200 bg-foreground-blue dark:bg-foreground-red size-8">
+								{currentGroup.startFrom + index}
+							</span>
+							<span>{quiz.description}</span>
+						</div>
+						<div className="flex flex-col items-center justify-center w-full gap-2 p-2 border-2 rounded-md h-fit">
+							<div className="flex flex-row items-center justify-start w-full gap-4 h-fit">
+								<span className="font-semibold whitespace-nowrap">
+									Answer:
 								</span>
-								<span>{currentQuiz.description}</span>
+								<span>{quiz.answer.join(" / ")}</span>
 							</div>
-							<div className="flex flex-col items-center justify-center w-full gap-2 p-2 border-2 rounded-md h-fit">
-								<div className="flex flex-row items-center justify-start w-full gap-4 h-fit">
-									<span className="font-semibold whitespace-nowrap">
-										Answer:
-									</span>
-									<span>{currentQuiz.answer}</span>
-								</div>
-								<div className="flex flex-row items-start justify-start w-full gap-4 h-fit">
-									<span className="font-semibold whitespace-nowrap">
-										Explanation:
-									</span>
-									<span className="whitespace-pre-wrap">
-										{currentQuiz.explaination}
-									</span>
-								</div>
+							<div className="flex flex-row items-start justify-start w-full gap-4 h-fit">
+								<span className="font-semibold whitespace-nowrap">
+									Explanation:
+								</span>
+								<span className="whitespace-pre-wrap">
+									{quiz.explaination}
+								</span>
 							</div>
 						</div>
-					);
-				}
-				return null;
+					</div>
+				);
 			})}
 		</div>
 	);
@@ -116,57 +110,52 @@ function MultipleChoiceGroup({ groupIndex }: MultipleChoiceGroupprops) {
 					__html: currentGroup.question,
 				}}
 			/>
-			{currentGroup.order.map((id, index) => {
-				const quizIndex = currentGroup.quizzes.findIndex(
-					(quiz) => quiz.id === id
-				);
-				if (quizIndex != -1) {
-					const currentQuiz = currentGroup.quizzes[quizIndex];
-					return (
-						<div
-							key={id + index}
-							className="flex flex-col w-full gap-4 p-4 h-fit preview">
-							<div className="flex flex-row items-center w-full gap-2 h-fit">
-								<span className="flex items-center justify-center font-bold text-white rounded-full dark:text-gray-200 bg-foreground-blue dark:bg-foreground-red size-8">
-									{currentGroup.startFrom + index + 1}
-								</span>
-								<span>{currentQuiz.description}</span>
-							</div>
-							<div className="flex flex-col w-full gap-2 px-2 h-fit">
-								{currentQuiz.options.map((option, index) => {
-									return (
-										<div
-											key={option + index}
-											className="flex flex-row w-full gap-2">
-											<span className="font-bold">
-												{getAlpha(index)}.
-											</span>
-											{option}
-										</div>
-									);
-								})}
-							</div>
+			{currentGroup.quizzes.map((quiz, index) => {
+				return (
+					<div
+						key={index}
+						className="flex flex-col w-full gap-4 p-4 h-fit preview">
+						<div className="flex flex-row items-center w-full gap-2 h-fit">
+							<span className="flex items-center justify-center font-bold text-white rounded-full dark:text-gray-200 bg-foreground-blue dark:bg-foreground-red size-8">
+								{currentGroup.startFrom + index}
+							</span>
+							<span>{quiz.description}</span>
+						</div>
+						<div className="flex flex-col w-full gap-2 px-2 h-fit">
+							{quiz.options.map((option, index) => {
+								return (
+									<div
+										key={option + index}
+										className="flex flex-row w-full gap-2">
+										<span className="font-bold">
+											{getAlpha(index)}.
+										</span>
+										{option}
+									</div>
+								);
+							})}
+						</div>
 
-							<div className="flex flex-col items-center justify-center w-full gap-2 p-2 border-2 rounded-md h-fit">
-								<div className="flex flex-row items-center justify-start w-full gap-4 h-fit">
-									<span className="font-semibold whitespace-nowrap">
-										Answer:
-									</span>
-									<span>{currentQuiz.answer}</span>
-								</div>
-								<div className="flex flex-row items-start justify-start w-full gap-4 h-fit">
-									<span className="font-semibold whitespace-nowrap">
-										Explanation:
-									</span>
-									<span className="whitespace-pre-wrap">
-										{currentQuiz.explaination}
-									</span>
-								</div>
+						<div className="flex flex-col items-center justify-center w-full gap-2 p-2 border-2 rounded-md h-fit">
+							<div className="flex flex-row items-center justify-start w-full gap-4 h-fit">
+								<span className="font-semibold whitespace-nowrap">
+									Answer:
+								</span>
+								<span className="whitespace-pre-line">
+									{quiz.answer.join("\n")}
+								</span>
+							</div>
+							<div className="flex flex-row items-start justify-start w-full gap-4 h-fit">
+								<span className="font-semibold whitespace-nowrap">
+									Explanation:
+								</span>
+								<span className="whitespace-pre-wrap">
+									{quiz.explaination}
+								</span>
 							</div>
 						</div>
-					);
-				}
-				return null;
+					</div>
+				);
 			})}
 		</div>
 	);

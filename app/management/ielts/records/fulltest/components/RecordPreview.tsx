@@ -32,7 +32,7 @@ export default function RecordPreview({ quizIndex, quizskill }: RecordProps) {
 	}
 
 	return (
-		<div className="flex flex-col w-full gap-4 py-4 h-fit">
+		<div className="flex flex-col w-full gap-4 h-fit">
 			{quizskill == Skill.READING && (
 				<div
 					className="flex flex-col w-full p-4 text-black bg-white rounded-md shadow-md dark:bg-pot-black dark:text-gray-200 h-fit preview"
@@ -42,7 +42,7 @@ export default function RecordPreview({ quizIndex, quizskill }: RecordProps) {
 				/>
 			)}
 
-			{currentQuiz.order.map((id) => {
+			{currentQuiz.order.map((id, index) => {
 				const fillingGroup = currentQuiz.fillingQuiz;
 				let groupIndex = fillingGroup.findIndex(
 					(group) => group.id === id
@@ -50,7 +50,7 @@ export default function RecordPreview({ quizIndex, quizskill }: RecordProps) {
 				if (groupIndex != -1) {
 					return (
 						<FillingGroup
-							key={id}
+							key={id + index}
 							quizIndex={quizIndex}
 							groupIndex={groupIndex}
 							quizSkill={quizskill}
@@ -65,7 +65,7 @@ export default function RecordPreview({ quizIndex, quizskill }: RecordProps) {
 				if (groupIndex != -1) {
 					return (
 						<MultipleChoiceGroup
-							key={id}
+							key={id + index}
 							quizIndex={quizIndex}
 							groupIndex={groupIndex}
 							quizSkill={quizskill}
@@ -220,7 +220,7 @@ function MultipleChoiceGroup({
 					const currentQuiz = currentGroup.quizzes[quizIndex];
 					return (
 						<div
-							key={id}
+							key={id + index}
 							className="flex flex-col w-full gap-4 p-4 h-fit preview">
 							<div className="flex flex-row items-center w-full gap-2 h-fit">
 								<span className="flex items-center justify-center font-bold text-white rounded-full dark:text-gray-200 bg-foreground-blue dark:bg-foreground-red size-8">
@@ -231,7 +231,9 @@ function MultipleChoiceGroup({
 							<div className="flex flex-col w-full gap-2 px-2 h-fit">
 								{currentQuiz.options.map((option, index) => {
 									return (
-										<div className="flex flex-row w-full gap-2">
+										<div
+											key={option + index}
+											className="flex flex-row w-full gap-2">
 											<span className="font-bold">
 												{getAlpha(index)}.
 											</span>

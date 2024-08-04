@@ -10,10 +10,11 @@ import { on } from "events";
 import { useUtility } from "@/app/provider/UtilityProvider";
 
 export default function TagList() {
-	const { tagList, searchValue, fetchType } = useTagManagement();
+	const { tagList, searchValue, fetchType, currentSkill } =
+		useTagManagement();
 
 	return (
-		<div className="flex w-full p-4 duration-200 bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[500px] dark:bg-pot-black">
+		<div className="flex w-full p-4  bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[500px] dark:bg-pot-black">
 			<div className="flex flex-row flex-wrap w-full gap-4 h-fit">
 				{tagList.map((tag, index) => {
 					if (
@@ -32,6 +33,10 @@ export default function TagList() {
 					)
 						return null;
 
+					if (currentSkill != "" && tag.skill != currentSkill) {
+						return null;
+					}
+
 					return (
 						<div
 							key={index + tag.id}
@@ -41,9 +46,13 @@ export default function TagList() {
 								<span className="font-bold text-xs">
 									{tag.value}
 								</span>
-								<span className="text-xs">
-									{tag.forQuiz ? "Quiz tag" : "Group tag"}
-								</span>
+								<div className="flex flex-row gap-1 items-center justify-start">
+									<span className="text-xs">{tag.skill}</span>
+									<span className="text-xs">-</span>
+									<span className="text-xs">
+										{tag.forQuiz ? "Quiz tag" : "Group tag"}
+									</span>
+								</div>
 							</div>
 							<OptionButton tag={tag} tagIndex={index} />
 						</div>
@@ -95,9 +104,9 @@ function OptionButton({ tag, tagIndex }: OptionButtonProps) {
 		<details
 			tabIndex={-1}
 			ref={inforRef}
-			className="relative z-20 h-full duration-200 cursor-pointer w-fit">
+			className="relative z-20 h-full  cursor-pointer w-fit">
 			<summary className="h-full list-none">
-				<div className="p-1 duration-200 opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
+				<div className="p-1  opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
 					<BsThreeDots className="size-4" />
 				</div>
 			</summary>

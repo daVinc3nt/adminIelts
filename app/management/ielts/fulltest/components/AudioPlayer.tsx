@@ -44,7 +44,7 @@ export default function AudioPlayer() {
 	const currentFilePath = test.listening[currentQuizIndex].filePath;
 
 	return (
-		<div className="w-full h-fit flex flex-col gap-1 bg-gray-100 dark:bg-[#3b3b3b] rounded-lg">
+		<div className="w-full h-fit flex flex-col bg-gray-100 dark:bg-[#3b3b3b] rounded-lg shadow-md">
 			{!currentFilePath ? (
 				<audio
 					ref={audioRef}

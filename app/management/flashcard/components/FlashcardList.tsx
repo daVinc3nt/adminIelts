@@ -12,7 +12,7 @@ export default function FlashcardList() {
 	const { flashcardList } = useFlashcardManagement();
 
 	return (
-		<div className="flex w-full p-4 duration-200 bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[450px] dark:bg-pot-black">
+		<div className="flex w-full p-4  bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[450px] dark:bg-pot-black">
 			<div className="flex flex-row flex-wrap w-full gap-4 h-fit">
 				{flashcardList.map((flashcard, index) => {
 					return (
@@ -78,9 +78,9 @@ function OptionButton({ flashcard, flashcardIndex }: OptionButtonProps) {
 		<details
 			tabIndex={-1}
 			ref={inforRef}
-			className="relative z-20 h-full duration-200 cursor-pointer w-fit">
+			className="relative z-20 h-full  cursor-pointer w-fit">
 			<summary className="h-full list-none">
-				<div className="p-1 duration-200 opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
+				<div className="p-1  opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
 					<BsThreeDots className="size-4" />
 				</div>
 			</summary>

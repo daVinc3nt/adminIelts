@@ -4,15 +4,24 @@ import { BsThreeDots, BsTrash } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa6";
-import { MdDone } from "react-icons/md";
+import { MdControlPointDuplicate, MdDone } from "react-icons/md";
 import { Skill } from "@/app/lib/interfaces";
 import { useTest } from "../provider/TestProvider";
-import { MCGroup, MCQuestion, Quiz } from "@/app/interface/test/test";
+import {
+	getQuestionGroupIndex,
+	getQuestionIndex,
+	MCGroup,
+	MCQuestion,
+	Quiz,
+} from "@/app/interface/test/test";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 import { RemoveInputRegex, RemoveStyleRegex } from "@/regex/IeltsRegex";
 import { AiOutlineClear } from "react-icons/ai";
 import { GrScan } from "react-icons/gr";
 import { FiFilePlus } from "react-icons/fi";
+import { useUtility } from "@/app/provider/UtilityProvider";
+import Link from "next/link";
+import { FaArrowRight } from "react-icons/fa";
 
 interface MultipleChoiceQuizGroupProps {
 	quizIndex: number;
@@ -25,6 +34,7 @@ export default function MultipleChoiceQuizGroup({
 	quizGroupIndex,
 	skill,
 }: MultipleChoiceQuizGroupProps) {
+	const { onSetConfirmation, setSuccess, setError } = useUtility();
 	const CK5Editor = useMemo(
 		() =>
 			dynamic(() => import("@/components/CK5Editor/CK5Editor"), {
@@ -79,8 +89,16 @@ export default function MultipleChoiceQuizGroup({
 	};
 
 	const removeQuizGroup = () => {
-		currentQuiz.groups.splice(quizGroupIndex, 1);
-		onChangeQuiz(currentQuiz, skill, quizIndex);
+		const remove = () => {
+			currentQuiz.groups.splice(quizGroupIndex, 1);
+			onChangeQuiz(currentQuiz, skill, quizIndex);
+			setSuccess("Question group removed successfully");
+		};
+		onSetConfirmation(
+			"Do you want to remove this question group?",
+			remove,
+			"delete"
+		);
 	};
 
 	const removeStyle = () => {
@@ -99,6 +117,10 @@ export default function MultipleChoiceQuizGroup({
 	const onOpenCreatePractice = () => {
 		const newQuiz = { ...currentQuiz };
 		newQuiz.groups = [currentGroup];
+		if (!currentGroup.id || !currentQuiz.id) {
+			setError("You must save this test before creating a practice");
+			return;
+		}
 		onSelectPractice(newQuiz);
 		onChangeIsOpenCreateQuizPractice(true);
 		onChangePracticeType("group");
@@ -108,13 +130,19 @@ export default function MultipleChoiceQuizGroup({
 		<div className="flex flex-col items-center w-full gap-6 h-fit">
 			<div
 				style={{ display: isLoading ? "none" : "flex" }}
-				className="flex flex-col w-full h-fit">
-				<div className="flex flex-row items-center justify-between w-full p-2 duration-200 h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 rounded-t-md">
+				className="flex flex-col w-full h-fit shadow-md">
+				<div className="flex flex-row items-start justify-between w-full p-2  h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 rounded-t-md">
 					<div className="flex flex-col w-full h-fit">
 						<span className="text-2xl font-bold text-white ">
-							Question Group
+							Question Group{" "}
+							{getQuestionGroupIndex(
+								test,
+								quizIndex,
+								quizGroupIndex,
+								skill
+							)}
 						</span>
-						<span className="text-base font-semibold text-gray-400 ">
+						<span className="text-base text-gray-400 ">
 							Multiple Choice
 						</span>
 					</div>
@@ -130,16 +158,24 @@ export default function MultipleChoiceQuizGroup({
 								Clear style
 								<AiOutlineClear className="size-4" />
 							</button>
-							<button className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Scan question
-								<GrScan className="size-4" />
-							</button>
-							<button
-								onClick={() => onOpenCreatePractice()}
-								className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Create practice
-								<FiFilePlus className="size-4" />
-							</button>
+							{!test.isPractice ? (
+								currentGroup.linkToTest ? (
+									<Link
+										href={`/management/ielts/fulltest/${currentGroup.linkToTest}`}
+										target="_blank"
+										className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+										Go to practice
+										<FaArrowRight className="size-4" />
+									</Link>
+								) : (
+									<button
+										onClick={() => onOpenCreatePractice()}
+										className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+										Create practice
+										<FiFilePlus className="size-4" />
+									</button>
+								)
+							) : null}
 							<button
 								onClick={() => removeQuizGroup()}
 								className="flex items-center justify-between w-full p-2 text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
@@ -156,17 +192,13 @@ export default function MultipleChoiceQuizGroup({
 				/>
 			</div>
 			<div className="flex flex-col w-full gap-8 h-fit">
-				{currentGroup.order?.map((quizId, index) => {
-					const questionIndex = currentGroup.quizzes.findIndex(
-						(quiz) => quiz.id === quizId
-					);
-					if (questionIndex === -1) return null;
+				{currentGroup.quizzes.map((_, index) => {
 					return (
 						<MultipleChoiceQuestion
 							key={index}
 							quizIndex={quizIndex}
 							quizGroupIndex={quizGroupIndex}
-							multipleChoiceIndex={questionIndex}
+							multipleChoiceIndex={index}
 							skill={skill}
 						/>
 					);
@@ -207,6 +239,7 @@ function MultipleChoiceQuestion({
 	multipleChoiceIndex,
 	skill,
 }: MultipleChoiceQuestionProps) {
+	const { onSetConfirmation, setSuccess } = useUtility();
 	const questionSettingRef = useClickOutsideDetails();
 
 	const { test, onChangeQuiz } = useTest();
@@ -263,7 +296,29 @@ function MultipleChoiceQuestion({
 	};
 
 	const removeQuestion = () => {
-		currentGroup.quizzes.splice(multipleChoiceIndex, 1);
+		const remove = () => {
+			currentGroup.quizzes.splice(multipleChoiceIndex, 1);
+			currentQuiz.groups[quizGroupIndex] = currentGroup;
+			onChangeQuiz(currentQuiz, skill, quizIndex);
+			setSuccess("Question removed successfully");
+		};
+
+		onSetConfirmation(
+			"Do you want to remove this question?",
+			remove,
+			"delete"
+		);
+	};
+
+	const duplicateQuestion = () => {
+		const newQuestion: MCQuestion = {
+			description: currentQuestion.description,
+			options: currentQuestion.options,
+			answer: currentQuestion.answer,
+			numOfAnswers: currentQuestion.numOfAnswers,
+			explaination: currentQuestion.explaination,
+		};
+		currentGroup.quizzes.push(newQuestion);
 		currentQuiz.groups[quizGroupIndex] = currentGroup;
 		onChangeQuiz(currentQuiz, skill, quizIndex);
 	};
@@ -273,7 +328,14 @@ function MultipleChoiceQuestion({
 			<div className="flex flex-col w-full p-2 rounded-t-md h-fit ">
 				<div className="flex flex-row items-center justify-between w-full h-fit">
 					<span className="text-xl font-semibold">
-						Multiple Choice question
+						Multiple Choice question{" "}
+						{getQuestionIndex(
+							test,
+							quizIndex,
+							quizGroupIndex,
+							multipleChoiceIndex,
+							skill
+						)}
 					</span>
 
 					<details ref={questionSettingRef} className="relative">
@@ -282,9 +344,15 @@ function MultipleChoiceQuestion({
 						</summary>
 						<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
 							<button
+								onClick={() => duplicateQuestion()}
+								className="flex items-center justify-between w-full p-2 text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black text-xs">
+								Duplicate question
+								<MdControlPointDuplicate className="size-4 text-black dark:text-gray-200" />
+							</button>
+							<button
 								onClick={() => removeQuestion()}
 								className="flex items-center justify-between w-full p-2 text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black text-xs">
-								Delete group
+								Delete question
 								<BsTrash className="size-4 text-red-500" />
 							</button>
 						</div>

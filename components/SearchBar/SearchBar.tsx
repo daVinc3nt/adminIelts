@@ -21,7 +21,7 @@ export default function SearchBar({
 		<div
 			tabIndex={1}
 			onFocus={() => inputRef.current?.focus()}
-			className="flex flex-row items-center w-full px-3 py-2 shadow-sm bg-white dark:bg-pot-black border-gray-500 rounded-md has-[:focus]:border-foreground-blue has-[:focus]:ring-2 has-[:focus]:ring-foreground-blue hover:shadow-sm hover:shadow-zinc-400 dark:hover:shadow-zinc-800 dark:has-[:focus]:border-foreground-red  dark:has-[:focus]:ring-foreground-red gap-2 duration-200">
+			className="flex flex-row items-center w-full px-3 py-2 shadow-sm bg-white dark:bg-pot-black border-gray-500 rounded-md has-[:focus]:border-foreground-blue has-[:focus]:ring-2 has-[:focus]:ring-foreground-blue hover:shadow-sm hover:shadow-zinc-400 dark:hover:shadow-zinc-800 dark:has-[:focus]:border-foreground-red  dark:has-[:focus]:ring-foreground-red gap-2 ">
 			<input
 				ref={inputRef}
 				value={searchValue}

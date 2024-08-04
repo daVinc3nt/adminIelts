@@ -12,6 +12,7 @@ select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #d2e7fa inset !important;
   -webkit-text-fill-color: rgb(52, 56, 73) !important;
 }
+
 @layer utilities {
   .rotate-y-180 {
 		transform : rotateY(180deg)

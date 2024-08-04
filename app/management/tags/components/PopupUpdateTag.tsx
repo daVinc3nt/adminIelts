@@ -5,6 +5,7 @@ import { FcCancel } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { useTagManagement } from "../provider/TagManagementProvide";
 import { Tag } from "@/app/interface/tag/tag";
+import { Skill } from "@/app/lib/interfaces";
 
 export default function PopupUpdateTag() {
 	const {
@@ -32,6 +33,7 @@ export default function PopupUpdateTag() {
 			id: currentTag.id,
 			value: currentTag.value,
 			forQuiz: currentTag.forQuiz,
+			skill: currentTag.skill,
 		};
 
 		if (
@@ -94,7 +96,7 @@ export default function PopupUpdateTag() {
 						className="flex-1 px-2 py-1 bg-gray-100 rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 "></input>
 				</div>
 
-				<div className="flex flex-row flex-wrap w-full gap-2 p-4">
+				{/* <div className="flex flex-row flex-wrap w-full gap-2 p-4">
 					<span className="text-lg text-gray-400 min-w-fit">
 						Tag type:{" "}
 					</span>
@@ -116,6 +118,29 @@ export default function PopupUpdateTag() {
 						<option value={"Tag for Group"}>Group tag</option>
 					</select>
 				</div>
+
+				<div className="flex flex-row flex-wrap w-full gap-2 px-4 py-2">
+					<span className="text-lg text-gray-400 min-w-fit">
+						Skill:{" "}
+					</span>
+					<select
+						value={
+							currentTag.skill ? currentTag.skill : Skill.READING
+						}
+						onChange={(e) =>
+							onSelectTag({
+								...currentTag,
+								skill: e.target.value as Skill,
+							})
+						}
+						required
+						className="flex-1 px-2 py-1 bg-gray-100 border-0 rounded-md dark:bg-gray-22">
+						<option value={Skill.READING}>Reading</option>
+						<option value={Skill.LISTENING}>Listening</option>
+						<option value={Skill.WRITING}>Writing</option>
+						<option value={Skill.SPEAKING}>Speaking</option>
+					</select>
+				</div> */}
 
 				<div className="flex flex-row items-center justify-between w-full p-4">
 					<button

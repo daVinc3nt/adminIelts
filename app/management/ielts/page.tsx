@@ -6,6 +6,8 @@ import AddButton from "./components/AddButton";
 import TestManagementProvider, {
 	useTestManagement,
 } from "./provider/TestManagementProvider";
+import SelectFetchTypeButton from "./components/SelectFetchTypeButton";
+import SelectSkillButton from "./components/SelectSkillButton";
 
 export default function Page() {
 	return (
@@ -16,7 +18,7 @@ export default function Page() {
 }
 
 function IELTSManagement() {
-	const { currentPage, handleChangePage } = useTestManagement();
+	const { currentPage, handleChangePage, fetchType } = useTestManagement();
 
 	return (
 		<main className="flex justify-center flex-1 main">
@@ -28,6 +30,9 @@ function IELTSManagement() {
 					<AddButton />
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
+					<SelectFetchTypeButton />
+					{fetchType == "practice" && <SelectSkillButton />}
+
 					<SearchBar />
 				</div>
 				<div className="w-full">

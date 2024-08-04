@@ -1,19 +1,20 @@
 "use client";
-import PopupTagManagement from "./components/PopupTagManagement";
+import { useUtility } from "../provider/UtilityProvider";
 
-export default function Page() {
-	const onOpenPopup = () => {
-		const popupTagManagement = document.getElementById(
-			"popupRecordManagement"
-		) as HTMLDetailsElement;
-		if (popupTagManagement) {
-			popupTagManagement.open = true;
-		}
+export default function Home() {
+	const { setSuccess } = useUtility();
+
+	const onSetSuccess = () => {
+		setSuccess("succsess");
 	};
 
 	return (
-		<main className="relative flex items-center justify-center flex-1 main">
-			<button onClick={() => onOpenPopup()}>Open Tag Management</button>
+		<main className="flex items-center justify-center flex-1 p-4 bg-gray-100 h-fit">
+			<button
+				onClick={() => onSetSuccess()}
+				className="p-4 bg-foreground-blue text-white">
+				Set Success
+			</button>
 		</main>
 	);
 }

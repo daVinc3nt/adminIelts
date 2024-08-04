@@ -1,7 +1,6 @@
 "use client";
 import Select from "@/components/Select/Select";
 import { useTagManagement } from "../provider/TagManagementProvide";
-import { SplitType } from "@/app/lib/interfaces";
 
 const option = [
 	{ value: "", label: "All tags" },

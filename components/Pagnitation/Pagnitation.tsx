@@ -1,9 +1,9 @@
+"use client";
 import {
 	createTheme,
 	Pagination as MuiPagination,
 	ThemeProvider,
 } from "@mui/material";
-import { create } from "domain";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 

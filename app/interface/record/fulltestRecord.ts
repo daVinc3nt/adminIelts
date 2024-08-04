@@ -93,14 +93,47 @@ export interface RecordQuiz {
 }
 
 export interface RecordTest {
-	id: string;
-	name: string;
-	isPractice: boolean;
-	createdAt: string;
-	updatedAt: string;
-	score: number;
-	reading: RecordQuiz[];
-	listening: RecordQuiz[];
-	writing: RecordQuiz[];
-	speaking: RecordQuiz[];
+	id?: string;
+	testId?: string;
+	name?: string;
+	isPractice?: boolean;
+	completeReading?: boolean;
+	completeListening?: boolean;
+	completeWriting?: boolean;
+	completeSpeaking?: boolean;
+
+	createdAt?: string;
+	updatedAt?: string;
+	score?: number;
+
+	reading?: RecordQuiz[];
+	readingAmount?: number;
+	readingCompletedQuizzes?: number;
+	readingCorrectAnswers?: number;
+	readingDuration?: number;
+	readingUncompletedQuizzes?: number;
+	readingWrongAnswers?: number;
+
+	listening?: RecordQuiz[];
+	listeningAmount?: number;
+	listeningCompletedQuizzes?: number;
+	listeningCorrectAnswers?: number;
+	listeningDuration?: number;
+	listeningUncompletedQuizzes?: number;
+	listeningWrongAnswers?: number;
+
+	writing?: RecordQuiz[];
+	writingAmount?: number;
+	writingCompletedQuizzes?: number;
+	writingCorrectAnswers?: number;
+	writingDuration?: number;
+	writingUncompletedQuizzes?: number;
+
+	speaking?: RecordQuiz[];
+	speakingAmount?: number;
+	speakingCompletedQuizzes?: number;
+	speakingCorrectAnswers?: number;
+	speakingDuration?: number;
+	speakingUncompletedQuizzes?: number;
+	speakingWrongAnswers?: number;
 }

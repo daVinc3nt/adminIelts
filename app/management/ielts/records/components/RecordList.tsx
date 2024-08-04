@@ -10,7 +10,7 @@ import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 
 export default function RecordList() {
 	return (
-		<div className="flex flex-col items-center w-full p-4 pt-2 duration-200 bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[430px] dark:bg-pot-black">
+		<div className="flex flex-col items-center w-full p-4 pt-2  bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[430px] dark:bg-pot-black">
 			<div className="flex flex-row items-center w-full gap-2 py-2 font-medium text-gray-400 h-fit">
 				<div className="w-[3%]"></div>
 				<div className="w-[22%]">Username</div>
@@ -45,7 +45,7 @@ function List() {
 					return (
 						<div
 							key={record.id}
-							className="flex flex-row items-center w-full gap-2 py-2 text-sm text-gray-600 duration-200 bg-white rounded-md cursor-default dark:text-gray-200 h-fit dark:bg-pot-black dark:hover:bg-black-night group hover:shadow-md hover:z-10">
+							className="flex flex-row items-center w-full gap-2 py-2 text-sm text-gray-600  bg-white rounded-md cursor-default dark:text-gray-200 h-fit dark:bg-pot-black dark:hover:bg-black-night group hover:shadow-md hover:z-10">
 							<div className="w-[3%]"></div>
 							<div className="w-[22%] flex flex-col">
 								<span className="text-base font-semibold">
@@ -99,15 +99,16 @@ function OptionButton({ id }: OptionButtonProps) {
 	return (
 		<details
 			ref={inforRef}
-			className="relative z-20 h-full duration-200 cursor-pointer w-fit">
+			className="relative z-20 h-full  cursor-pointer w-fit">
 			<summary className="h-full list-none">
-				<div className="p-1 duration-200 opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
+				<div className="p-1  opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
 					<BsThreeDotsVertical className="size-5" />
 				</div>
 			</summary>
 			<div className="absolute top-0 flex flex-col gap-1 p-2 bg-white rounded-md shadow-lg w-[130px] h-fit dark:bg-gray-22 left-8">
 				<Link
 					href={`/management/ielts/records/fulltest/${id}`}
+					target="_blank"
 					className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
 					<span className="text-xs text-black dark:text-gray-200">
 						Detail

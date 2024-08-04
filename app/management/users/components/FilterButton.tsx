@@ -41,7 +41,7 @@ export default function FilterButton() {
 			ref={filterRef}
 			className="relative h-full cursor-pointer w-fit">
 			<summary className="h-full list-none">
-				<div className="flex flex-row items-center justify-center h-full gap-2 px-4 font-bold text-white duration-200 rounded-md dark:text-gray-200 w-fit borde-0 whitespace-nowrap bg-foreground-blue dark:bg-foreground-red">
+				<div className="flex flex-row items-center justify-center h-full gap-2 px-4 font-bold text-white  rounded-md dark:text-gray-200 w-fit borde-0 whitespace-nowrap bg-foreground-blue dark:bg-foreground-red">
 					Filter
 					<TbFilterPlus strokeWidth="3" size={20} />
 				</div>
@@ -75,7 +75,7 @@ export default function FilterButton() {
 
 					<button
 						onClick={() => addFilter()}
-						className="p-2 font-bold text-white duration-200 rounded-md w-fit h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200">
+						className="p-2 font-bold text-white  rounded-md w-fit h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200">
 						Add filter
 					</button>
 				</div>
@@ -135,7 +135,7 @@ function SelectFieldButton({
 						<div
 							key={index}
 							onClick={() => onSelectField(field.value)}
-							className="flex flex-row items-center justify-center p-1 font-bold text-black duration-200 border-2 rounded-md h-fit w-fit hover:text-white dark:text-gray-200 borde-0 whitespace-nowrap hover:bg-foreground-blue dark:hover:bg-foreground-red border-foreground-blue dark:border-foreground-red">
+							className="flex flex-row items-center justify-center p-1 font-bold text-black  border-2 rounded-md h-fit w-fit hover:text-white dark:text-gray-200 borde-0 whitespace-nowrap hover:bg-foreground-blue dark:hover:bg-foreground-red border-foreground-blue dark:border-foreground-red">
 							{field.label}
 						</div>
 					);
@@ -204,7 +204,7 @@ function SelectOperator({
 						<div
 							key={index}
 							onClick={() => onSelectField(operator.value)}
-							className="flex flex-row items-center justify-center h-full p-1 font-bold text-black duration-200 border-2 rounded-md w-fit hover:text-white dark:text-gray-200 borde-0 whitespace-nowrap hover:bg-foreground-blue dark:hover:bg-foreground-red border-foreground-blue dark:border-foreground-red">
+							className="flex flex-row items-center justify-center h-full p-1 font-bold text-black  border-2 rounded-md w-fit hover:text-white dark:text-gray-200 borde-0 whitespace-nowrap hover:bg-foreground-blue dark:hover:bg-foreground-red border-foreground-blue dark:border-foreground-red">
 							{operator.label}
 						</div>
 					);

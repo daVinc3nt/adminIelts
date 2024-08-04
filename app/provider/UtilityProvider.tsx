@@ -113,13 +113,13 @@ export default function UtilityProvider({
 			<SideBar />
 			<Navbar />
 
-			<AnimatePresence>
+			<AnimatePresence mode="wait">
 				{isOpenNotificate && <Nofitication type="success" />}
 			</AnimatePresence>
-			<AnimatePresence>
+			<AnimatePresence mode="wait">
 				{isOpenError && <Nofitication type="error" />}
 			</AnimatePresence>
-			<AnimatePresence>
+			<AnimatePresence mode="wait">
 				{confirmation && (
 					<Comfirmation
 						func={confirmation.onConfirm}

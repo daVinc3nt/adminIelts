@@ -1,11 +1,18 @@
 import TextArea from "@/components/TextArea/TextArea";
-import { BsThreeDots } from "react-icons/bs";
+import { BsThreeDots, BsTrash } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { Skill } from "@/app/lib/interfaces";
 import { useTest } from "../provider/TestProvider";
 import { FGroup, FQuestion, Quiz } from "@/app/interface/test/test";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
+import { useUtility } from "@/app/provider/UtilityProvider";
+import { MdControlPointDuplicate } from "react-icons/md";
+import { AiOutlineClear } from "react-icons/ai";
+import Link from "next/link";
+import { FiFilePlus } from "react-icons/fi";
+import { RemoveStyleRegex } from "@/regex/IeltsRegex";
+import { FaArrowRight } from "react-icons/fa";
 
 interface SpeakingQuizProps {
 	quizIndex: number;
@@ -23,7 +30,15 @@ export default function SpeakingQuiz({ quizIndex, skill }: SpeakingQuizProps) {
 
 	const quizGroupSettingRef = useClickOutsideDetails();
 
-	const { test, onChangeQuiz } = useTest();
+	const { onSetConfirmation, setSuccess, setError } = useUtility();
+	const {
+		test,
+		onChangeQuiz,
+		onSelectPractice,
+		onChangeIsOpenCreateQuizPractice,
+		onChangePracticeType,
+		isLoading,
+	} = useTest();
 
 	let currentQuiz: Quiz;
 	switch (skill) {
@@ -57,9 +72,32 @@ export default function SpeakingQuiz({ quizIndex, skill }: SpeakingQuizProps) {
 		onChangeQuiz(currentQuiz, skill, quizIndex);
 	};
 
+	const removeStyle = () => {
+		currentGroup.question = currentGroup.question.replace(
+			RemoveStyleRegex,
+			""
+		);
+		currentQuiz.groups[0] = currentGroup;
+		onChangeQuiz(currentQuiz, skill, quizIndex);
+	};
+
+	const onOpenCreatePractice = () => {
+		const newQuiz = { ...currentQuiz };
+		newQuiz.groups = [currentGroup];
+		if (!currentGroup.id || !currentQuiz.id) {
+			setError("You must save this test before creating a practice");
+			return;
+		}
+		onSelectPractice(newQuiz);
+		onChangeIsOpenCreateQuizPractice(true);
+		onChangePracticeType("quiz");
+	};
+
 	return (
 		<div className="flex flex-col items-center w-full gap-6 h-fit">
-			<div className="flex flex-col w-full h-fit">
+			<div
+				style={{ display: isLoading ? "none" : "flex" }}
+				className="flex flex-col w-full h-fit">
 				<div className="flex flex-row items-center justify-between w-full p-2 h-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 rounded-t-md">
 					<div className="flex flex-col w-full h-fit">
 						<span className="text-2xl font-bold text-white ">
@@ -71,7 +109,32 @@ export default function SpeakingQuiz({ quizIndex, skill }: SpeakingQuizProps) {
 						<summary className="list-none">
 							<BsThreeDots className="p-1 text-white size-8" />
 						</summary>
-						<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center"></div>
+						<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center text-xs">
+							<button
+								onClick={() => removeStyle()}
+								className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+								Clear style
+								<AiOutlineClear className="size-4" />
+							</button>
+							{!test.isPractice ? (
+								currentQuiz.linkToTest ? (
+									<Link
+										href={`/management/ielts/fulltest/${currentQuiz.linkToTest}`}
+										target="_blank"
+										className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+										Go to practice
+										<FaArrowRight className="size-4" />
+									</Link>
+								) : (
+									<button
+										onClick={() => onOpenCreatePractice()}
+										className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+										Create practice
+										<FiFilePlus className="size-4" />
+									</button>
+								)
+							) : null}
+						</div>
 					</details>
 				</div>
 
@@ -133,9 +196,11 @@ function FillingQuestion({
 	fillingIndex,
 	skill,
 }: FillingQuestionProps) {
-	const questionSettingRef = useClickOutsideDetails();
+	const { onSetConfirmation, setSuccess } = useUtility();
 
 	const { test, onChangeQuiz } = useTest();
+
+	const questionSettingRef = useClickOutsideDetails();
 
 	let currentQuiz: Quiz;
 	switch (skill) {
@@ -162,31 +227,37 @@ function FillingQuestion({
 		onChangeQuiz(currentQuiz, skill, quizIndex);
 	};
 
-	const onChangeAnswer = (answer: string) => {
-		currentQuestion.answer = answer.split("/");
-		currentGroup.quizzes[fillingIndex] = currentQuestion;
-		currentQuiz.groups[quizGroupIndex] = currentGroup;
-		onChangeQuiz(currentQuiz, skill, quizIndex);
-	};
-
-	const onChangeExplaination = (explaination: string) => {
-		currentQuestion.explaination = explaination;
-		currentGroup.quizzes[fillingIndex] = currentQuestion;
-		currentQuiz.groups[quizGroupIndex] = currentGroup;
-		onChangeQuiz(currentQuiz, skill, quizIndex);
-	};
-
 	const removeQuestion = () => {
-		currentGroup.quizzes.splice(fillingIndex, 1);
+		const remove = () => {
+			currentGroup.quizzes.splice(fillingIndex, 1);
+			currentQuiz.groups[quizGroupIndex] = currentGroup;
+			onChangeQuiz(currentQuiz, skill, quizIndex);
+			setSuccess("Question removed successfully");
+		};
+
+		onSetConfirmation(
+			"Do you want to remove this question?",
+			remove,
+			"delete"
+		);
+	};
+
+	const duplicateQuestion = () => {
+		const newQuestion: FQuestion = {
+			description: currentQuestion.description,
+			answer: currentQuestion.answer,
+			explaination: currentQuestion.explaination,
+		};
+		currentGroup.quizzes.push(newQuestion);
 		currentQuiz.groups[quizGroupIndex] = currentGroup;
 		onChangeQuiz(currentQuiz, skill, quizIndex);
 	};
 
 	return (
-		<div className="flex flex-col w-full gap-1 duration-200 bg-white border rounded-md shadow-md h-fit dark:bg-pot-black border-foreground-blue dark:border-foreground-red">
+		<div className="flex flex-col w-full gap-1  bg-white border rounded-md shadow-md h-fit dark:bg-pot-black border-foreground-blue dark:border-foreground-red">
 			<div className="flex flex-col w-full p-2 text-black rounded-t-md h-fit dark:text-gray-200">
 				<div className="flex flex-row items-center justify-between w-full h-fit">
-					<span className="text-xl font-semibold duration-200">
+					<span className="text-xl font-semibold ">
 						Speaking question
 					</span>
 
@@ -194,11 +265,18 @@ function FillingQuestion({
 						<summary className="list-none">
 							<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
 						</summary>
-						<div className="top-8 -left-10 absolute w-32 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
+						<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center text-xs">
+							<button
+								onClick={() => duplicateQuestion()}
+								className="flex items-center justify-between w-full p-2 text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black text-xs">
+								Duplicate question
+								<MdControlPointDuplicate className="size-4 text-black dark:text-gray-200" />
+							</button>
 							<button
 								onClick={() => removeQuestion()}
-								className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Delete
+								className="flex items-center justify-between w-full p-2 text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black text-xs">
+								Delete question
+								<BsTrash className="size-4 text-red-500" />
 							</button>
 						</div>
 					</details>

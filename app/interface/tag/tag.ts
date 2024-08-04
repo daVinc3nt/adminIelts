@@ -1,7 +1,10 @@
+import { Skill } from "@/app/lib/interfaces";
+
 export interface Tag {
 	id?: string;
 	value: string;
 	forQuiz: boolean;
+	skill: Skill;
 	createAt?: string;
 	updateAt?: string;
 }

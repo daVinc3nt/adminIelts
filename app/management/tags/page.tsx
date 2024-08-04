@@ -2,6 +2,7 @@
 import AddTagButton from "./components/AddTagButton";
 import PopupAddTag from "./components/PopupAddTag";
 import PopupUpdateTag from "./components/PopupUpdateTag";
+import SelectSkillTypeButton from "./components/SelectSkillType";
 import SelectFetchTypeButton from "./components/SelectTagType";
 import TagList from "./components/TagList";
 import TagSearchBar from "./components/TagSearchBar";
@@ -34,6 +35,7 @@ function TagManagement() {
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
 					<SelectFetchTypeButton />
+					<SelectSkillTypeButton />
 
 					<TagSearchBar />
 				</div>

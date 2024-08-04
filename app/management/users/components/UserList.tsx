@@ -10,7 +10,7 @@ import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 
 export default function UserList() {
 	return (
-		<div className="flex flex-col items-center w-full px-4 py-2 duration-200 bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[434px] dark:bg-pot-black">
+		<div className="flex flex-col items-center w-full px-4 py-2  bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[434px] dark:bg-pot-black">
 			<div className="flex flex-row items-center w-full gap-2 py-2 font-medium text-gray-400 h-fit">
 				<div className="w-[7%] flex justify-center items-center"></div>
 				<div className="w-[23%]">Name</div>
@@ -36,7 +36,7 @@ function List() {
 				{userInforList.map((user) => (
 					<div
 						key={user.id}
-						className="flex flex-row items-center w-full gap-2 py-2 text-sm text-gray-600 duration-200 bg-white rounded-md cursor-default dark:text-gray-200 h-fit dark:bg-pot-black dark:hover:bg-black-night group hover:shadow-md hover:z-10">
+						className="flex flex-row items-center w-full gap-2 py-2 text-sm text-gray-600  bg-white rounded-md cursor-default dark:text-gray-200 h-fit dark:bg-pot-black dark:hover:bg-black-night group hover:shadow-md hover:z-10">
 						<div className="w-[7%] flex justify-center items-center">
 							<FaCircleUser className="size-10" />
 						</div>
@@ -97,9 +97,9 @@ function OptionButton({ user }: OptionButtonProps) {
 	return (
 		<details
 			ref={inforRef}
-			className="relative z-20 h-full duration-200 cursor-pointer w-fit">
+			className="relative z-20 h-full  cursor-pointer w-fit">
 			<summary className="h-full list-none">
-				<div className="p-1 duration-200 opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
+				<div className="p-1  opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
 					<BsThreeDotsVertical className="size-5" />
 				</div>
 			</summary>
@@ -125,10 +125,6 @@ function OptionButton({ user }: OptionButtonProps) {
 						Update
 					</span>
 					<FiEdit className="size-4" />
-				</div>
-				<div className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
-					<span className="text-xs text-red-500">Delete</span>
-					<FaRegTrashCan className="text-red-500 size-4" />
 				</div>
 			</div>
 		</details>

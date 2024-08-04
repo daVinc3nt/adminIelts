@@ -85,13 +85,26 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		const fetchTagList = () => {
 			const newTagOperation = new TagOperation();
-			newTagOperation.search(sid).then((res) => {
-				if (res.success) {
-					setTagList(res.data);
-				} else {
-					setError(res.message);
-				}
-			});
+			newTagOperation
+				.search(
+					{
+						criteria: [],
+						addition: {
+							sort: [],
+							page: 1,
+							size: 1000,
+							group: [],
+						},
+					},
+					sid
+				)
+				.then((res) => {
+					if (res.success) {
+						setTagList(res.data);
+					} else {
+						setError(res.message);
+					}
+				});
 		};
 		fetchTagList();
 	}, []);
@@ -120,6 +133,7 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 				getFileList(newTest);
 				setTest(newTest);
 				setSuccess("Practice created successfully");
+				setIsOpenCreateQuizPractice(false);
 			} else {
 				setError(res.message);
 				console.error(res.message);
@@ -131,6 +145,11 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 		const newTestOperation = new TestOperation();
 		newTestOperation.findOne(id as any, sid).then((res) => {
 			if (res.success) {
+				if (res.data === null) {
+					setTest(null);
+					setError("Test not found");
+					return;
+				}
 				const newTest = ReciveTestToTest(res.data);
 				getFileList(newTest);
 				setTest(newTest);

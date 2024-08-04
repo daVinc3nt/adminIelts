@@ -18,6 +18,7 @@ interface RecordContextType {
 	currentPage: number;
 	recordList: RecordInfor[];
 	searchCriteria: SearchCriteria;
+	isLoading: boolean;
 
 	onChangeSearchCriteria: (criteria: SearchCriteria) => void;
 	getTestByTestId: (id: string) => void;
@@ -43,7 +44,7 @@ export default function RecordManagementProvider({
 	children: ReactNode;
 }) {
 	const { sid } = useAuth();
-	const { setError, setSuccess } = useUtility();
+	const { setError } = useUtility();
 
 	const [test, setTest] = useState<Test>();
 	const [currentPage, setCurrentPage] = useState<number>(1);
@@ -53,6 +54,7 @@ export default function RecordManagementProvider({
 		operator: "~",
 		value: "",
 	});
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		if (test) {
@@ -64,10 +66,17 @@ export default function RecordManagementProvider({
 		const newTestOperation = new TestOperation();
 		newTestOperation.findOne(id as any, sid).then((res) => {
 			if (res.success) {
+				if (!res.data) {
+					setError("Test not found");
+					setTest(null);
+					return;
+				}
 				setTest(ReciveTestToTest(res.data));
+				setIsLoading(false);
 			} else {
 				setError(res.message);
 				console.error(res.message);
+				throw new Error(res.message);
 			}
 		});
 	};
@@ -93,6 +102,9 @@ export default function RecordManagementProvider({
 				group: null,
 			},
 		};
+		if (searchCriteria.value != "" && searchCriteria.field != "") {
+			newSearchPayload.criteria.push(searchCriteria);
+		}
 		newRecordOperation.search(newSearchPayload, sid).then((res) => {
 			if (res.success) {
 				console.log(res);
@@ -100,6 +112,7 @@ export default function RecordManagementProvider({
 			} else {
 				setError(res.message);
 				console.error(res.message);
+				throw new Error(res.message);
 			}
 		});
 	};
@@ -115,6 +128,7 @@ export default function RecordManagementProvider({
 				recordList,
 				currentPage,
 				searchCriteria,
+				isLoading,
 
 				onChangeSearchCriteria,
 				getTestByTestId,

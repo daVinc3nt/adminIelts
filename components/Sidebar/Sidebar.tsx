@@ -31,7 +31,7 @@ const path = [
 	{
 		name: "User Management",
 		icon: <FaUser size={iconSize} className="inline-block" />,
-		link: "/management/user",
+		link: "/management/users",
 	},
 ];
 
@@ -41,10 +41,10 @@ export default function SideBar() {
 	return (
 		<div
 			style={{ left: isOpenSidebar ? "0px" : "-240px" }}
-			className="w-[240px] h-screen bg-white dark:bg-pot-black fixed duration-200 z-[1101] p-2 flex flex-col gap-4 shadow-md">
+			className="w-[240px] h-screen bg-white dark:bg-pot-black fixed  z-[1101] p-2 flex flex-col gap-4 shadow-md">
 			<img
 				src={"/images/Logo_name.png"}
-				className="w-full px-3 duration-200 bg-white rounded-md dark:bg-pot-black h-fit mb-4"
+				className="w-full px-3  bg-white rounded-md dark:bg-pot-black h-fit mb-4"
 			/>
 			{
 				<div className="flex flex-col w-full gap-1 h-fit px-1">

@@ -81,23 +81,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkL
 
 ###
 
-POST https://engo.tiendungcorp.com/v1/flashcards
+GET https://engo.tiendungcorp.com/v1/records/writing/answer/9856aae5-2a93-4576-9348-02c62aee86c6
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
 
-{
-    "question": "What is the capital of Vietnam?",
-    "answer": "Hanoi",
-    "tags": ["00aa3476-6a72-4893-9410-24f1f7a789c3"]
-}
+###
 
-### 
-
-POST https://engo.tiendungcorp.com/v1/ftags/create
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
-
-{
-    "value": "bla tag",
-	"isPublic": true
-}
+POST https://engo.tiendungcorp.com/v1/records

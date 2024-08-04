@@ -10,6 +10,7 @@ import WritingQuiz from "../components/WritingQuiz";
 import SpeakingQuiz from "../components/SpeakingQuiz";
 import PopupCreatePractice from "../components/CreatePractice/PopupCreatePractice";
 import AudioPlayer from "../components/AudioPlayer";
+import ScrollTopButton from "@/components/ScrollTopButton/ScrollTopButton";
 
 export default function Page({ params }: { params: { id: string } }) {
 	return (
@@ -41,10 +42,16 @@ function Test({ id }: TestProps) {
 		onChangeTest({ ...test, name: e.target.value });
 	};
 
-	if (!test) return null;
+	if (!test)
+		return (
+			<main className="flex flex-col h-screen -mt-14 justify-center items-center flex-1 relative">
+				<span className="text-3xl font-bold">Test Not found!</span>
+			</main>
+		);
 
 	return (
 		<main className="flex flex-col items-center flex-1 relative">
+			<ScrollTopButton />
 			{isOpenCreateQuizPractice && <PopupCreatePractice />}
 			<div className="flex flex-col items-center w-11/12 min-h-screen gap-4 py-4">
 				<div className="flex flex-col w-full gap-1 h-fit">
@@ -55,11 +62,11 @@ function Test({ id }: TestProps) {
 					<div className="w-full flex flex-row items-center justify-between">
 						<div className="flex flex-col gap-1 w-[70%]">
 							<QuizList />
-							<div className="flex flex-col w-full gap-2 h-fit pt-2 font-bold">
+							<div className="flex flex-col w-full gap-2 h-fit pt-2">
 								<input
 									value={test ? test.name : ""}
 									onChange={onChangeName}
-									className="w-full h-fit px-4 py-1 text-3xl bg-white dark:bg-pot-black ring-0 outline-none duration-200 rounded-md"
+									className="w-full h-fit px-4 py-1 text-xl bg-white dark:bg-pot-black ring-0 outline-none  rounded-md shadow-md"
 									placeholder="Enter your test name"
 								/>
 							</div>

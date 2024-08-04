@@ -5,6 +5,7 @@ import { useHorizontallScroll } from "@/hooks/useHorizontalScroll";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 import { Quiz } from "@/app/interface/test/test";
 import { Fragment } from "react";
+import { useUtility } from "@/app/provider/UtilityProvider";
 
 export default function QuizList() {
 	const { test, onChangeTest } = useTest();
@@ -45,13 +46,44 @@ export default function QuizList() {
 		onChangeTest(newTest);
 	};
 
+	let currentQuiz: Quiz = null;
+	if (test.isPractice) {
+		if (test.reading.length > 0) {
+			currentQuiz = test.reading[0];
+		} else if (test.listening.length > 0) {
+			currentQuiz = test.listening[0];
+		} else if (test.writing.length > 0) {
+			currentQuiz = test.writing[0];
+		} else if (test.speaking.length > 0) {
+			currentQuiz = test.speaking[0];
+		}
+
+		if (currentQuiz == null) {
+			return null;
+		}
+
+		return (
+			<div className="flex flex-row w-full px-4 mt-1">
+				{currentQuiz.tags[0].forQuiz ? (
+					<span className="text-3xl font-bold">
+						IELTS Quiz Practice
+					</span>
+				) : (
+					<span className="text-3xl font-bold">
+						IELTS Group Practice
+					</span>
+				)}
+			</div>
+		);
+	}
+
 	return (
-		<div className="flex flex-row w-full gap-2 pt-2">
+		<div className="flex flex-row w-full gap-2 pt-2 mt-1">
 			<details ref={addQuizButtonRef} className="relative">
 				<summary className="list-none">
 					<div
 						title="Add Part"
-						className="flex items-center justify-center duration-200 rounded-full dark:bg-foreground-red size-8 bg-foreground-blue">
+						className="flex items-center justify-center  rounded-full dark:bg-foreground-red size-8 bg-foreground-blue">
 						<BsPlus size={35} color="white" strokeWidth={0.5} />
 					</div>
 				</summary>
@@ -96,6 +128,8 @@ interface PillsProps {
 }
 
 function Pills({ quizList }: PillsProps) {
+	const { onSetConfirmation } = useUtility();
+
 	const {
 		currentQuizIndex,
 		currentSkill,
@@ -111,6 +145,14 @@ function Pills({ quizList }: PillsProps) {
 		onChangeIsLoading(true);
 	};
 
+	const deleteQuiz = (index: number, skill: Skill) => {
+		onSetConfirmation(
+			"Are you sure you want to delete this quiz?",
+			() => onDeleteQuiz(index, skill),
+			"delete"
+		);
+	};
+
 	return (
 		<Fragment>
 			{quizList.map((quiz, index) => {
@@ -118,16 +160,16 @@ function Pills({ quizList }: PillsProps) {
 					<div
 						onClick={() => onSelectQuiz(index, quiz.skill)}
 						key={index}
-						className={`relative flex flex-row items-center justify-center whitespace-nowrap w-fit h-fit px-3 gap-2 py-1 text-center rounded-md cursor-pointer duration-200 ${currentQuizIndex == index && currentSkill == quiz.skill ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-mecury-gray"}`}>
+						className={`relative flex flex-row items-center justify-center whitespace-nowrap w-fit h-fit px-3 gap-2 py-1 text-center rounded-md cursor-pointer shadow-md  ${currentQuizIndex == index && currentSkill == quiz.skill ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-white"}`}>
 						{partLabel(quiz.skill, index)}
 						{currentQuizIndex == index &&
 						currentSkill == quiz.skill ? (
 							<BsTrash
-								onClick={() => onDeleteQuiz(index, quiz.skill)}
+								onClick={() => deleteQuiz(index, quiz.skill)}
 								className="size-4 text-white"
 							/>
 						) : (
-							<BsTrash className="size-4 text-mecury-gray dark:text-gray-22" />
+							<BsTrash className="size-4 text-white dark:text-gray-22" />
 						)}
 					</div>
 				);

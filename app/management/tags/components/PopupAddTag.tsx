@@ -6,27 +6,39 @@ import { FcCancel } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { Tag } from "@/app/interface/tag/tag";
 import { useTagManagement } from "../provider/TagManagementProvide";
+import { Skill } from "@/app/lib/interfaces";
+import { useUtility } from "@/app/provider/UtilityProvider";
 
 export default function PopupAddTag() {
+	const { onSetConfirmation } = useUtility();
 	const { addTag, onChangeIsOpenAddTag } = useTagManagement();
 	const [tag, setTag] = useState<Tag>({
 		value: "",
 		forQuiz: true,
+		skill: "" as any,
 	});
 
 	const close = () => {
 		setTag({
 			value: "",
 			forQuiz: true,
+			skill: "" as any,
 		});
 		onChangeIsOpenAddTag(false);
 	};
 
 	const addNewTag = (e: FormEvent) => {
 		e.preventDefault();
-		addTag(tag).then((success) => {
-			if (success) close();
-		});
+		const add = () => {
+			addTag(tag).then((success) => {
+				if (success) close();
+			});
+		};
+		onSetConfirmation(
+			"After create, you can't change the tag type and skill type. Are you sure you want to create this tag?",
+			add,
+			"create"
+		);
 	};
 
 	return (
@@ -85,6 +97,27 @@ export default function PopupAddTag() {
 						className="flex-1 px-2 py-1 bg-gray-100 border-0 rounded-md dark:bg-gray-22">
 						<option value={"Tag for Quiz"}>Quiz tag</option>
 						<option value={"Tag for Group"}>Group tag</option>
+					</select>
+				</div>
+				<div className="flex flex-row flex-wrap w-full gap-2 px-4 py-2">
+					<span className="text-lg text-gray-400 min-w-fit">
+						Skill:{" "}
+					</span>
+					<select
+						value={tag.skill}
+						onChange={(e) =>
+							setTag({
+								...tag,
+								skill: e.target.value as Skill,
+							})
+						}
+						required
+						className="flex-1 px-2 py-1 bg-gray-100 border-0 rounded-md dark:bg-gray-22">
+						<option value="">Select skill</option>
+						<option value={Skill.READING}>Reading</option>
+						<option value={Skill.LISTENING}>Listening</option>
+						<option value={Skill.WRITING}>Writing</option>
+						<option value={Skill.SPEAKING}>Speaking</option>
 					</select>
 				</div>
 

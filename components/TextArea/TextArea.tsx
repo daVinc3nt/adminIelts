@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from "react";
 
 interface Props {
@@ -48,7 +49,7 @@ export default function TextArea({
 			spellCheck={false}
 			disabled={disabled}
 			className={
-				"w-full h-fit px-2 py-1 duration-200 overflow-hidden border border-gray-400 border-solid rounded-md outline-none resize-none focus:outline " +
+				"w-full h-fit px-2 py-1  overflow-hidden border border-gray-400 border-solid rounded-md outline-none resize-none focus:outline " +
 				className
 			}
 		/>

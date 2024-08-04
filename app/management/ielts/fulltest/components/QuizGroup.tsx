@@ -50,6 +50,13 @@ export default function QuizGroup({ quizIndex, skill }: QuizGroupProps) {
 		onChangeQuiz(currentQuiz, skill, quizIndex);
 	};
 
+	let isForQuiz: boolean;
+	if (currentQuiz.tags.length > 0) {
+		isForQuiz = currentQuiz.tags[0].forQuiz;
+	} else {
+		isForQuiz = true;
+	}
+
 	return (
 		<div className="flex flex-col items-center w-full gap-8 h-fit">
 			{currentQuiz.groups.map((group, index) => {
@@ -67,16 +74,20 @@ export default function QuizGroup({ quizIndex, skill }: QuizGroupProps) {
 			})}
 
 			<div className="flex flex-row w-full gap-2 items-center justify-center">
-				<button
-					onClick={() => addFillingGroup()}
-					className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
-					Add Filling Group
-				</button>
-				<button
-					onClick={() => addMultipleChoiceGroup()}
-					className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
-					Add Multiple Choice Group
-				</button>
+				{isForQuiz ? (
+					<Fragment>
+						<button
+							onClick={() => addFillingGroup()}
+							className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
+							Add Filling Group
+						</button>
+						<button
+							onClick={() => addMultipleChoiceGroup()}
+							className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
+							Add Multiple Choice Group
+						</button>
+					</Fragment>
+				) : null}
 			</div>
 		</div>
 	);

@@ -96,12 +96,12 @@ export interface ReceiveQuiz {
 
 export interface Test {
 	id?: string;
-	name: string;
+	name?: string;
 	isPractice?: boolean;
-	reading: Quiz[];
-	listening: Quiz[];
-	writing: Quiz[];
-	speaking: Quiz[];
+	reading?: Quiz[];
+	listening?: Quiz[];
+	writing?: Quiz[];
+	speaking?: Quiz[];
 	createdAt?: string;
 	updatedAt?: string;
 }
@@ -139,7 +139,6 @@ export const MCQuestionToUpdateMCQuiz = (
 		description: mcQuestion.description,
 		options: mcQuestion.options.map((o) => o.trim().replace(/\s+/g, " ")),
 		answer: mcQuestion.answer.map((a) => a.trim().replace(/\s+/g, " ")),
-		numOfAnswers: mcQuestion.numOfAnswers,
 		explaination: mcQuestion.explaination,
 	};
 	if (mcQuestion.id) {
@@ -249,6 +248,22 @@ export const TestToUpdateTest = (test: Test): UpdateTest => {
 	return newTest;
 };
 
+export const ReceiveGroupToGroup = (
+	group: FGroup | MCGroup
+): FGroup | MCGroup => {
+	const newGroup = { ...group };
+	newGroup.quizzes = group.order.map((id) => {
+		let questionIndex = group.quizzes.findIndex((q) => q.id === id);
+		if (questionIndex !== -1) {
+			const newQuestion = group.quizzes[questionIndex];
+			return newQuestion;
+		}
+		return null;
+	});
+
+	return group;
+};
+
 export const ReceiveQuizToQuiz = (quiz: ReceiveQuiz): Quiz => {
 	return {
 		id: quiz.id,
@@ -265,14 +280,14 @@ export const ReceiveQuizToQuiz = (quiz: ReceiveQuiz): Quiz => {
 			if (groupIndex !== -1) {
 				const newGroup = quiz.fillingQuiz[groupIndex];
 				newGroup.type = QuizType.FILLING;
-				return newGroup;
+				return ReceiveGroupToGroup(newGroup);
 			}
 
 			groupIndex = quiz.multipleChoiceQuiz.findIndex((q) => q.id === id);
 			if (groupIndex !== -1) {
 				const newGroup = quiz.multipleChoiceQuiz[groupIndex];
 				newGroup.type = QuizType.MULTIPLE_CHOICE;
-				return newGroup;
+				return ReceiveGroupToGroup(newGroup);
 			}
 
 			return null;
@@ -337,7 +352,6 @@ export const MCQuestionToCreateMCQuiz = (
 		description: mcQuestion.description,
 		options: mcQuestion.options,
 		answer: mcQuestion.answer,
-		numOfAnswers: mcQuestion.numOfAnswers,
 		explaination: mcQuestion.explaination,
 	};
 };
@@ -409,29 +423,117 @@ export const setStartFrom = (test: Test) => {
 	test.reading.forEach((quiz) => {
 		quiz.groups.forEach((group) => {
 			group.startFrom = count;
-			count += group.quizzes.length;
+			if (group.type == QuizType.FILLING) {
+				count += group.quizzes.length;
+			} else {
+				group.quizzes.forEach((q) => {
+					count += q.numOfAnswers;
+				});
+			}
 		});
 	});
 	count = 1;
 	test.listening.forEach((quiz) => {
 		quiz.groups.forEach((group) => {
 			group.startFrom = count;
-			count += group.quizzes.length;
+			if (group.type == QuizType.FILLING) {
+				count += group.quizzes.length;
+			} else {
+				group.quizzes.forEach((q) => {
+					count += q.numOfAnswers;
+				});
+			}
 		});
 	});
 	count = 1;
 	test.writing.forEach((quiz) => {
 		quiz.groups.forEach((group) => {
 			group.startFrom = count;
-			count += group.quizzes.length;
+			if (group.type == QuizType.FILLING) {
+				count += group.quizzes.length;
+			} else {
+				group.quizzes.forEach((q) => {
+					count += q.numOfAnswers;
+				});
+			}
 		});
 	});
 	count = 1;
 	test.speaking.forEach((quiz) => {
 		quiz.groups.forEach((group) => {
 			group.startFrom = count;
-			count += group.quizzes.length;
+			if (group.type == QuizType.FILLING) {
+				count += group.quizzes.length;
+			} else {
+				group.quizzes.forEach((q) => {
+					count += q.numOfAnswers;
+				});
+			}
 		});
 	});
 	return test;
+};
+
+export const getQuestionGroupIndex = (
+	test: Test,
+	quizIndex: number,
+	groupIndex: number,
+	skill: Skill
+) => {
+	const quizList: Quiz[] = [];
+	switch (skill) {
+		case Skill.READING:
+			quizList.push(...test.reading);
+			break;
+		case Skill.LISTENING:
+			quizList.push(...test.listening);
+			break;
+		case Skill.WRITING:
+			quizList.push(...test.writing);
+			break;
+		case Skill.SPEAKING:
+			quizList.push(...test.speaking);
+			break;
+	}
+
+	let count = 0;
+	for (let i = 0; i < quizIndex; i++) {
+		count += quizList[i].groups.length;
+	}
+	return count + groupIndex + 1;
+};
+
+export const getQuestionIndex = (
+	test: Test,
+	quizIndex: number,
+	groupIndex: number,
+	questionIndex: number,
+	skill: Skill
+) => {
+	const quizList: Quiz[] = [];
+	switch (skill) {
+		case Skill.READING:
+			quizList.push(...test.reading);
+			break;
+		case Skill.LISTENING:
+			quizList.push(...test.listening);
+			break;
+		case Skill.WRITING:
+			quizList.push(...test.writing);
+			break;
+		case Skill.SPEAKING:
+			quizList.push(...test.speaking);
+			break;
+	}
+
+	let count = 0;
+	for (let i = 0; i < quizIndex; i++) {
+		for (let j = 0; j < quizList[i].groups.length; j++) {
+			count += quizList[i].groups[j].quizzes.length;
+		}
+	}
+	for (let i = 0; i < groupIndex; i++) {
+		count += quizList[quizIndex].groups[i].quizzes.length;
+	}
+	return count + questionIndex + 1;
 };

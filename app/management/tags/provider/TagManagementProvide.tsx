@@ -1,5 +1,6 @@
 "use client";
 import { Tag } from "@/app/interface/tag/tag";
+import { Skill } from "@/app/lib/interfaces";
 import { TagOperation } from "@/app/lib/main";
 import { useAuth } from "@/app/provider/AuthProvider";
 import { useUtility } from "@/app/provider/UtilityProvider";
@@ -20,6 +21,7 @@ interface TagContextType {
 	isOpenAddTag: boolean;
 	tagIndex: number;
 	isOpenUpdateTag: boolean;
+	currentSkill: string;
 
 	addTag: (tag: Tag) => Promise<boolean>;
 	updateTag: (tag: Tag, noNotificate?: boolean) => Promise<boolean>;
@@ -30,6 +32,7 @@ interface TagContextType {
 	onChangeIsOpenAddTag: (value: boolean) => void;
 	onChangeTagIndex: (index: number) => void;
 	onChangeIsOpenUpdateTag: (value: boolean) => void;
+	onChangeCurrentSkill: (skill: string) => void;
 }
 
 const TagContext = createContext<TagContextType | null>(null);
@@ -57,22 +60,40 @@ export default function TagManagementProvider({
 	const [isOpenAddTag, setIsOpenAddTag] = useState<boolean>(false);
 	const [isOpenUpdateTag, setIsOpenUpdateTag] = useState<boolean>(false);
 	const [tagIndex, setTagIndex] = useState<number>(0);
+	const [currentSkill, setCurrentSkill] = useState<string>("");
 
 	useEffect(() => {
 		const fetchTagList = () => {
 			const newTagOperation = new TagOperation();
-			newTagOperation.search(sid).then((res) => {
-				if (res.success) {
-					setTagList(res.data);
-				} else {
-					setError(res.message);
-					console.error(res.message);
-				}
-			});
+			newTagOperation
+				.search(
+					{
+						criteria: [],
+						addition: {
+							sort: [],
+							page: 1,
+							size: 1000,
+							group: [],
+						},
+					},
+					sid
+				)
+				.then((res) => {
+					if (res.success) {
+						setTagList(res.data);
+					} else {
+						setError(res.message);
+						console.error(res.message);
+					}
+				});
 		};
 
 		fetchTagList();
 	}, []);
+
+	const onChangeCurrentSkill = (skill: string) => {
+		setCurrentSkill(skill);
+	};
 
 	const addTag = async (tag: Tag) => {
 		const newTagOperation = new TagOperation();
@@ -88,9 +109,8 @@ export default function TagManagementProvider({
 	};
 
 	const updateTag = async (tag: Tag, noNotificate?: boolean) => {
-		console.log(tag);
-
 		const newTagOperation = new TagOperation();
+		console.log(tag);
 		if (tag.id) {
 			const res = await newTagOperation.update(
 				tag.id as UUID,
@@ -98,8 +118,9 @@ export default function TagManagementProvider({
 				sid
 			);
 			if (res.success) {
+				console.log(res.data);
 				const newTagList = tagList.map((item) =>
-					item.id === tag.id ? tag : item
+					item.id === tag.id ? res.data : item
 				);
 				setTagList(newTagList);
 				if (!noNotificate) {
@@ -161,6 +182,7 @@ export default function TagManagementProvider({
 				isOpenAddTag,
 				tagIndex,
 				isOpenUpdateTag,
+				currentSkill,
 
 				addTag,
 				updateTag,
@@ -171,6 +193,7 @@ export default function TagManagementProvider({
 				onChangeIsOpenAddTag,
 				onChangeTagIndex,
 				onChangeIsOpenUpdateTag,
+				onChangeCurrentSkill,
 			}}>
 			{children}
 		</TagContext.Provider>

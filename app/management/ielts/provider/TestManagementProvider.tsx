@@ -9,7 +9,7 @@ import {
 	useState,
 } from "react";
 import { useAuth } from "@/app/provider/AuthProvider";
-import { FetchingType, SearchCriteria } from "@/app/lib/interfaces";
+import { FetchingType, SearchCriteria, Skill } from "@/app/lib/interfaces";
 import { ReciveTest, ReciveTestToTest, Test } from "@/app/interface/test/test";
 import { useUtility } from "@/app/provider/UtilityProvider";
 
@@ -18,6 +18,8 @@ interface TestContextType {
 	currentPage: number;
 	searchCriteria: SearchCriteria;
 	currentTest: Test;
+	fetchType: "test" | "practice";
+	currentSkill: Skill;
 
 	search: () => void;
 	deleteTest: (id: string) => void;
@@ -25,6 +27,8 @@ interface TestContextType {
 	handleChangePage: (_: any, value: number) => void;
 	onSelectTest: (test: Test) => void;
 	onChangeSearchCriteria: (criteria: SearchCriteria) => void;
+	onChangeFetchType: (type: "test" | "practice") => void;
+	onChangeCurrentSkill: (skill: Skill) => void;
 }
 
 const TestContext = createContext<TestContextType | null>(null);
@@ -49,11 +53,17 @@ export default function TestManagementProvider({
 	const [testList, setTestList] = useState<Test[]>([]);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [currentTest, setCurrentTest] = useState<Test>(null);
+	const [fetchType, setFetchType] = useState<"test" | "practice">("test");
+	const [currentSkill, setCurrentSkill] = useState<Skill>("" as any);
 	const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>({
 		field: "name",
 		operator: "~",
 		value: "",
 	});
+
+	useEffect(() => {
+		search();
+	}, [currentPage, currentSkill, fetchType]);
 
 	const search = () => {
 		const newTestOperation = new TestOperation();
@@ -63,10 +73,16 @@ export default function TestManagementProvider({
 			newSearchCriteria.push(searchCriteria);
 		}
 
+		newSearchCriteria.push({
+			field: "isPractice",
+			operator: "=",
+			value: fetchType == "practice",
+		});
+
 		newTestOperation
 			.search(
 				FetchingType.FULL,
-				null,
+				currentSkill,
 				{
 					criteria: newSearchCriteria,
 					addition: {
@@ -92,9 +108,13 @@ export default function TestManagementProvider({
 			});
 	};
 
-	useEffect(() => {
-		search();
-	}, [currentPage]);
+	const onChangeFetchType = (type: "test" | "practice") => {
+		setFetchType(type);
+	};
+
+	const onChangeCurrentSkill = (skill: Skill) => {
+		setCurrentSkill(skill);
+	};
 
 	const deleteTest = (id: string) => {
 		const newTestOperation = new TestOperation();
@@ -153,6 +173,8 @@ export default function TestManagementProvider({
 				currentPage,
 				searchCriteria,
 				currentTest,
+				fetchType,
+				currentSkill,
 
 				handleChangePage,
 				search,
@@ -160,6 +182,8 @@ export default function TestManagementProvider({
 				createTest,
 				onSelectTest,
 				onChangeSearchCriteria,
+				onChangeFetchType,
+				onChangeCurrentSkill,
 			}}>
 			{children}
 		</TestContext.Provider>

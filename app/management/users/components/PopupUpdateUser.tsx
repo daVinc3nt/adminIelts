@@ -231,7 +231,7 @@ export default function PopupUpdateUser() {
 											onClick={() =>
 												onSelectRole(role.value)
 											}
-											className="flex flex-row items-center justify-center p-1 font-bold text-black duration-200 border-2 rounded-md cursor-pointer h-fit w-fit hover:text-white dark:text-gray-200 borde-0 whitespace-nowrap hover:bg-foreground-blue dark:hover:bg-foreground-red border-foreground-blue dark:border-foreground-red">
+											className="flex flex-row items-center justify-center p-1 font-bold text-black  border-2 rounded-md cursor-pointer h-fit w-fit hover:text-white dark:text-gray-200 borde-0 whitespace-nowrap hover:bg-foreground-blue dark:hover:bg-foreground-red border-foreground-blue dark:border-foreground-red">
 											{role.label}
 										</div>
 									);
