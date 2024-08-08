@@ -1,3 +1,4 @@
+"use client";
 import TextArea from "@/components/TextArea/TextArea";
 import { BsThreeDots, BsTrash } from "react-icons/bs";
 import dynamic from "next/dynamic";
@@ -30,7 +31,7 @@ export default function SpeakingQuiz({ quizIndex, skill }: SpeakingQuizProps) {
 
 	const quizGroupSettingRef = useClickOutsideDetails();
 
-	const { onSetConfirmation, setSuccess, setError } = useUtility();
+	const { setError } = useUtility();
 	const {
 		test,
 		onChangeQuiz,
@@ -235,11 +236,11 @@ function FillingQuestion({
 			setSuccess("Question removed successfully");
 		};
 
-		onSetConfirmation(
-			"Do you want to remove this question?",
-			remove,
-			"delete"
-		);
+		onSetConfirmation({
+			message: "Do you want to remove this question?",
+			onConfirm: remove,
+			type: "delete",
+		});
 	};
 
 	const duplicateQuestion = () => {
@@ -254,7 +255,7 @@ function FillingQuestion({
 	};
 
 	return (
-		<div className="flex flex-col w-full gap-1  bg-white border rounded-md shadow-md h-fit dark:bg-pot-black border-foreground-blue dark:border-foreground-red">
+		<div className="flex flex-col w-full gap-1 bg-white border rounded-md shadow-md h-fit dark:bg-pot-black border-foreground-blue dark:border-foreground-red">
 			<div className="flex flex-col w-full p-2 text-black rounded-t-md h-fit dark:text-gray-200">
 				<div className="flex flex-row items-center justify-between w-full h-fit">
 					<span className="text-xl font-semibold ">
@@ -268,15 +269,15 @@ function FillingQuestion({
 						<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center text-xs">
 							<button
 								onClick={() => duplicateQuestion()}
-								className="flex items-center justify-between w-full p-2 text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black text-xs">
+								className="flex items-center justify-between w-full p-2 text-xs text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
 								Duplicate question
-								<MdControlPointDuplicate className="size-4 text-black dark:text-gray-200" />
+								<MdControlPointDuplicate className="text-black size-4 dark:text-gray-200" />
 							</button>
 							<button
 								onClick={() => removeQuestion()}
-								className="flex items-center justify-between w-full p-2 text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black text-xs">
+								className="flex items-center justify-between w-full p-2 text-xs text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
 								Delete question
-								<BsTrash className="size-4 text-red-500" />
+								<BsTrash className="text-red-500 size-4" />
 							</button>
 						</div>
 					</details>

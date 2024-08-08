@@ -7,9 +7,18 @@ import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 import { useFlashcardManagement } from "../provider/FlashcardManagementProvider";
 import { Flashcard } from "@/app/interface/flashcard/flashcard";
 import { useUtility } from "@/app/provider/UtilityProvider";
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 export default function FlashcardList() {
-	const { flashcardList } = useFlashcardManagement();
+	const { flashcardList, isLoading } = useFlashcardManagement();
+
+	if (isLoading) {
+		return (
+			<div className="flex w-full p-4  bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[450px] dark:bg-pot-black items-center justify-center">
+				<LoadingSpinner size={2} />
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex w-full p-4  bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[450px] dark:bg-pot-black">
@@ -21,7 +30,7 @@ export default function FlashcardList() {
 							className="flex items-center justify-between gap-3 px-3 py-2 text-black bg-gray-100 rounded-md cursor-default w-fit h-fit dark:bg-gray-22 group dark:text-gray-200">
 							<BsFillFilePostFill className="size-5" />
 							<div className="flex flex-col">
-								<span className="font-bold text-xs">
+								<span className="text-xs font-bold">
 									{flashcard.word}
 								</span>
 							</div>
@@ -66,21 +75,20 @@ function OptionButton({ flashcard, flashcardIndex }: OptionButtonProps) {
 			deleteFlashcard(flashcard.id);
 			inforRef.current.open = false;
 		};
-
-		onSetConfirmation(
-			`Do you want to delete "${flashcard.word}" flashcard?`,
-			del,
-			"delete"
-		);
+		onSetConfirmation({
+			message: `Do you want to delete "${flashcard.word}" flashcard?`,
+			onConfirm: del,
+			type: "delete",
+		});
 	};
 
 	return (
 		<details
 			tabIndex={-1}
 			ref={inforRef}
-			className="relative z-20 h-full  cursor-pointer w-fit">
+			className="relative z-20 h-full cursor-pointer w-fit">
 			<summary className="h-full list-none">
-				<div className="p-1  opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
+				<div className="p-1 opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
 					<BsThreeDots className="size-4" />
 				</div>
 			</summary>
@@ -96,7 +104,7 @@ function OptionButton({ flashcard, flashcardIndex }: OptionButtonProps) {
 				<div
 					onClick={() => onDeleteFlashcard()}
 					className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
-					<span className="text-red-500 text-xs">Delete</span>
+					<span className="text-xs text-red-500">Delete</span>
 					<FaRegTrashCan className="text-red-500 size-4" />
 				</div>
 			</div>

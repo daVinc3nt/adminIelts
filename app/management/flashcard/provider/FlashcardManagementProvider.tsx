@@ -1,7 +1,11 @@
 "use client";
 import { Flashcard } from "@/app/interface/flashcard/flashcard";
 import { FTag } from "@/app/interface/tag/tag";
-import { CreateFullFlashCard, SearchCriteria } from "@/app/lib/interfaces";
+import {
+	CreateFullFlashCard,
+	SearchCriteria,
+	SearchPayload,
+} from "@/app/lib/interfaces";
 import {
 	FlashCardOperation,
 	FTagOperation,
@@ -11,28 +15,42 @@ import { useAuth } from "@/app/provider/AuthProvider";
 import { useUtility } from "@/app/provider/UtilityProvider";
 import { createContext, useContext, useEffect, useState } from "react";
 
+const numberOfFlashcardPerPage = 40;
+const initSearchCriteria: SearchCriteria = {
+	field: "word",
+	operator: "~",
+	value: "",
+};
+
 interface FlashcardContextType {
 	flashcardList: Flashcard[];
 	currentFlashcard: Flashcard;
 	fetchType: string;
-	searchValue: SearchCriteria;
+	searchCriteria: SearchCriteria;
 	isOpenAddFlashcard: boolean;
 	flashcardIndex: number;
 	isOpenUpdateFlashcard: boolean;
 	fTagList: FTag[];
+	currentPage: number;
+	numberOfPages: number;
+	isLoading: boolean;
+	currentTag: string;
 
 	addFlashcard: (flashcard: CreateFullFlashCard) => Promise<boolean>;
 	updateFlashcard: (flashcard: CreateFullFlashCard, id: string) => void;
 	deleteFlashcard: (id: string) => void;
 	onSelectFlashcard: (flashcard: Flashcard) => void;
 	onChangeFetchType: (value: string) => void;
-	onChangeSearchValue: (value: SearchCriteria) => void;
+	onChangeSearchCritera: (value: SearchCriteria) => void;
 	onChangeIsOpenAddFlashcard: (value: boolean) => void;
 	onChangeFlashCardIndex: (value: number) => void;
 	onChangeIsOpenUpdateFlashcard: (value: boolean) => void;
 	getImagePath: (path: string | null) => Promise<any>;
 	createFtag: (value: string) => void;
 	deleteFtag: (id: string) => void;
+	onChangePage: (_: any, page: number) => void;
+	onChangeCurrentTag: (value: string) => void;
+	fetchFlashcardList: () => void;
 }
 
 const FlashcardContext = createContext<FlashcardContextType | null>(null);
@@ -62,39 +80,56 @@ export default function FlashcardManagementProvider({
 		useState<boolean>(false);
 	const [isOpenUpdateFlashcard, setIsOpenUpdateFlashcard] =
 		useState<boolean>(false);
-	const [searchValue, setSearchValue] = useState<SearchCriteria>({
-		field: "",
-		operator: "~",
-		value: "",
-	});
+	const [searchCriteria, setSearchCritera] =
+		useState<SearchCriteria>(initSearchCriteria);
 	const [fTagList, setFTagList] = useState<FTag[]>([]);
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [numberOfPages, setNumberOfPages] = useState<number>(10);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [currentTag, setCurrentTag] = useState<string>("");
 
 	useEffect(() => {
-		const fetchFlashcardList = () => {
-			const newFlashcardOperation = new FlashCardOperation();
+		fetchFlashcardList();
+	}, [currentPage]);
 
-			newFlashcardOperation
-				.search(
-					{
-						criteria: [],
-						addition: {
-							sort: [],
-							page: 1,
-							size: 20,
-							group: [],
-						},
-					},
-					sid
-				)
-				.then((res) => {
-					if (res.success) {
-						setFlashcardList(res.data);
-					} else {
-						setError(res.message);
-						console.error(res.message);
-					}
-				});
+	const fetchFlashcardList = () => {
+		const newFlashcardOperation = new FlashCardOperation();
+
+		const searchPayload: SearchPayload = {
+			criteria: [],
+			addition: {
+				sort: [],
+				page: currentPage,
+				size: numberOfFlashcardPerPage,
+				group: null,
+			},
 		};
+		if (searchCriteria.value !== "") {
+			searchPayload.criteria.push(searchCriteria);
+		}
+		if (currentTag !== "") {
+			searchPayload.criteria.push({
+				field: "tag",
+				operator: "=",
+				value: currentTag,
+			});
+		}
+
+		console.log(searchPayload);
+
+		newFlashcardOperation.search(searchPayload, sid).then((res) => {
+			if (res.success) {
+				console.log(res.data);
+				setFlashcardList(res.data);
+			} else {
+				setError(res.message);
+				console.error(res.message);
+			}
+			setIsLoading(false);
+		});
+	};
+
+	useEffect(() => {
 		const fetchFTagList = () => {
 			const newFTagOperation = new FTagOperation();
 			newFTagOperation
@@ -118,7 +153,6 @@ export default function FlashcardManagementProvider({
 				)
 				.then((res) => {
 					if (res.success) {
-						console.log(res.data);
 						setFTagList(res.data);
 					} else {
 						setError(res.message);
@@ -128,7 +162,6 @@ export default function FlashcardManagementProvider({
 		};
 
 		fetchFTagList();
-		fetchFlashcardList();
 	}, []);
 
 	const createFtag = (value: string) => {
@@ -214,8 +247,8 @@ export default function FlashcardManagementProvider({
 		setFetchType(value);
 	};
 
-	const onChangeSearchValue = (value: SearchCriteria) => {
-		setSearchValue(value);
+	const onChangeSearchCritera = (value: SearchCriteria) => {
+		setSearchCritera(value);
 	};
 
 	const onChangeIsOpenAddFlashcard = (value: boolean) => {
@@ -240,30 +273,46 @@ export default function FlashcardManagementProvider({
 		return null;
 	};
 
+	const onChangePage = (_: any, page: number) => {
+		console.log(page);
+		setCurrentPage(page);
+	};
+
+	const onChangeCurrentTag = (value: string) => {
+		setCurrentTag(value);
+	};
+
 	return (
 		<FlashcardContext.Provider
 			value={{
 				flashcardList,
 				currentFlashcard,
 				fetchType,
-				searchValue,
+				searchCriteria,
 				isOpenAddFlashcard,
 				flashcardIndex,
 				isOpenUpdateFlashcard,
 				fTagList,
+				currentPage,
+				numberOfPages,
+				isLoading,
+				currentTag,
 
 				addFlashcard,
 				updateFlashcard,
 				deleteFlashcard,
 				onSelectFlashcard,
 				onChangeFetchType,
-				onChangeSearchValue,
+				onChangeSearchCritera,
 				onChangeIsOpenAddFlashcard,
 				onChangeFlashCardIndex,
 				onChangeIsOpenUpdateFlashcard,
 				getImagePath,
 				createFtag,
 				deleteFtag,
+				onChangePage,
+				onChangeCurrentTag,
+				fetchFlashcardList,
 			}}>
 			{children}
 		</FlashcardContext.Provider>

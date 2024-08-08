@@ -1,13 +1,13 @@
 "use client";
 import Pagination from "@/components/Pagnitation/Pagnitation";
-import SearchBar from "./components/SearchBar";
 import TestList from "./components/TestList";
 import AddButton from "./components/AddButton";
 import TestManagementProvider, {
 	useTestManagement,
 } from "./provider/TestManagementProvider";
-import SelectFetchTypeButton from "./components/SelectFetchTypeButton";
-import SelectSkillButton from "./components/SelectSkillButton";
+import Select from "@/components/Select/Select";
+import { Skill } from "@/app/lib/interfaces";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 export default function Page() {
 	return (
@@ -18,7 +18,33 @@ export default function Page() {
 }
 
 function IELTSManagement() {
-	const { currentPage, handleChangePage, fetchType } = useTestManagement();
+	const {
+		currentPage,
+		fetchType,
+		currentSkill,
+		searchCriteria,
+		numberOfPage,
+		onChangeSearchCriteria,
+		handleChangePage,
+		onChangeFetchType,
+		onChangeCurrentSkill,
+		search,
+	} = useTestManagement();
+
+	const onChangeField = (value: string) => {
+		onChangeFetchType(value as "test" | "practice");
+	};
+
+	const onChangeSkill = (value: string) => {
+		onChangeCurrentSkill(value as Skill);
+	};
+
+	const onChangeSearchValue = (value: string) => {
+		onChangeSearchCriteria({
+			...searchCriteria,
+			value: value,
+		});
+	};
 
 	return (
 		<main className="flex justify-center flex-1 main">
@@ -30,17 +56,38 @@ function IELTSManagement() {
 					<AddButton />
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
-					<SelectFetchTypeButton />
-					{fetchType == "practice" && <SelectSkillButton />}
-
-					<SearchBar />
+					<div className="z-10 w-36">
+						<Select
+							input={fetchType}
+							onChangeInput={onChangeField}
+							option={fetchOption}
+							placeholder="Test"
+						/>
+					</div>
+					{fetchType == "practice" && (
+						<div className="z-10 w-36">
+							<Select
+								input={currentSkill}
+								onChangeInput={onChangeSkill}
+								option={skillOption}
+								placeholder="All skill"
+							/>
+						</div>
+					)}
+					<span className="ml-auto" />
+					<SearchBar
+						searchValue={searchCriteria.value}
+						onChangeSearchValue={onChangeSearchValue}
+						search={search}
+						placeholder="Search using test name"
+					/>
 				</div>
 				<div className="w-full">
 					<TestList />
 				</div>
 
 				<Pagination
-					numberOfPages={10}
+					numberOfPages={numberOfPage}
 					page={currentPage}
 					handleChangePage={handleChangePage}
 				/>
@@ -48,3 +95,16 @@ function IELTSManagement() {
 		</main>
 	);
 }
+
+const fetchOption = [
+	{ value: "test", label: "Test" },
+	{ value: "practice", label: "Practice" },
+];
+
+const skillOption = [
+	{ value: "", label: "All skill" },
+	{ value: Skill.READING, label: "Reading" },
+	{ value: Skill.LISTENING, label: "Listening" },
+	{ value: Skill.WRITING, label: "Writing" },
+	{ value: Skill.SPEAKING, label: "Speaking" },
+];

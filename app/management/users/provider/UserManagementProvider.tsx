@@ -15,14 +15,25 @@ import {
 import { useAuth } from "@/app/provider/AuthProvider";
 import { useUtility } from "@/app/provider/UtilityProvider";
 
+
+const numberOfUserPerPage = 1;
+const initSearchCriteria: SearchCriteria = {
+	field: "firstName",
+	operator: "~",
+	value: "",
+};
+
 interface UserContextType {
 	userInforList: UserInformation[];
 	currentUser: UserInformation;
 	role: string;
 	searchCriteria: SearchCriteria;
-	currentPage: number;
 	isOpenUserInfor: boolean;
 	isOpenUpdateInfor: boolean;
+	isLoading: boolean;
+	currentPage: number;
+	numberOfUser: number;
+	numberOfPage: number;
 
 	onChangeCurrentUser: (user: UserInformation) => void;
 	search: () => void;
@@ -55,55 +66,117 @@ export const UserManagementProvider = ({
 	const [userInforList, setUserInforList] = useState<UserInformation[]>([]);
 	const [currentUser, setCurrentUser] = useState<UserInformation>(null);
 	const [role, setRole] = useState<string>("");
-	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [isOpenUserInfor, setIsOpenUserInfor] = useState<boolean>(false);
 	const [isOpenUpdateInfor, setIsOpenUpdateInfor] = useState<boolean>(false);
-	const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>({
-		field: "firstName",
-		operator: "~",
-		value: "",
-	});
+	const [searchCriteria, setSearchCriteria] =
+		useState<SearchCriteria>(initSearchCriteria);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [numberOfPage, setNumberOfPage] = useState<number>(10);
+	const [numberOfUser, setNumberOfUser] = useState<number>(0);
 
 	const search = () => {
 		const accoutOperation = new AccountOperation();
-		const newSearchCriteria: SearchCriteria[] = [];
+
+		const searchPayload: SearchPayload = {
+			criteria: [],
+			addition: {
+				sort: [],
+				page: currentPage,
+				size: numberOfUserPerPage,
+				group: null,
+			},
+		};
+
 		if (role !== "") {
-			newSearchCriteria.push({
+			searchPayload.criteria.push({
 				field: "role",
 				operator: "=",
 				value: role,
 			});
 		}
 		if (searchCriteria.value !== "") {
-			newSearchCriteria.push(searchCriteria);
+			searchPayload.criteria.push(searchCriteria);
 		}
 
-		accoutOperation
-			.search(
-				{
-					criteria: newSearchCriteria,
-					addition: {
-						sort: [],
-						page: currentPage,
-						size: 6,
-						group: null,
-					},
-				} as SearchPayload,
-				sid
-			)
-			.then((res) => {
-				if (res.success) {
-					console.log(res.data);
-					setUserInforList(res.data as UserInformation[]);
+		accoutOperation.search(searchPayload, sid).then((res) => {
+			if (res.success) {
+				setUserInforList(res.data as UserInformation[]);
+				if (searchPayload.criteria.length === 0) {
+					accoutOperation.count(sid).then((res) => {
+						if (res.success) {
+							setNumberOfUser(res.data);
+							setNumberOfPage(
+								Math.ceil(res.data / numberOfUserPerPage)
+							);
+						} else {
+							setError(res.message);
+							console.error(res.message);
+						}
+					});
 				} else {
-					setError(res.message);
-					console.error(res.message);
+					if (res.data.length != 0) {
+						setNumberOfPage(2);
+					} else {
+						setNumberOfPage(1);
+					}
 				}
+			} else {
+				setError(res.message);
+				console.error(res.message);
+			}
+			setIsLoading(false);
+		});
+
+		setCurrentPage(1);
+	};
+
+	const changePage = () => {
+		const accoutOperation = new AccountOperation();
+
+		const searchPayload: SearchPayload = {
+			criteria: [],
+			addition: {
+				sort: [],
+				page: currentPage,
+				size: numberOfUserPerPage,
+				group: null,
+			},
+		};
+
+		if (role !== "") {
+			searchPayload.criteria.push({
+				field: "role",
+				operator: "=",
+				value: role,
 			});
+		}
+
+		if (searchCriteria.value !== "") {
+			searchPayload.criteria.push(searchCriteria);
+		}
+
+		accoutOperation.search(searchPayload, sid).then((res) => {
+			if (res.success) {
+				setUserInforList(res.data as UserInformation[]);
+				if(res.data.length > 0 && currentPage == numberOfPage) {
+					setNumberOfPage(numberOfPage + 1);
+				}
+			} else {
+				setError(res.message);
+				console.error(res.message);
+			}
+			setIsLoading(false);
+		});
 	};
 
 	useEffect(() => {
 		search();
+	}, []);
+
+	useEffect(() => {
+		changePage();
 	}, [currentPage]);
 
 	const handleChangePage = (_: any, value: number) => {
@@ -135,7 +208,6 @@ export const UserManagementProvider = ({
 		newAccountOperation
 			.update(currentUser.id as any, newInfor, sid)
 			.then((res) => {
-				console.log(res);
 				if (res.success) {
 					const userId = res.data.id;
 					setUserInforList(
@@ -162,9 +234,12 @@ export const UserManagementProvider = ({
 				currentUser,
 				role,
 				searchCriteria,
-				currentPage,
 				isOpenUserInfor,
 				isOpenUpdateInfor,
+				isLoading,
+				currentPage,
+				numberOfUser,
+				numberOfPage,
 
 				onChangeCurrentUser,
 				search,

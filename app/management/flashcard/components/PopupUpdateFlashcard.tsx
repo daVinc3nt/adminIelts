@@ -95,11 +95,11 @@ export default function PopupUpdateFlashcard() {
 		const del = () => {
 			deleteFtag(tag.id);
 		};
-		onSetConfirmation(
-			`Do you want to delete tag ${tag.value}?`,
-			del,
-			"delete"
-		);
+		onSetConfirmation({
+			message: `Do you want to delete tag ${tag.value}?`,
+			onConfirm: del,
+			type: "delete",
+		});
 	};
 
 	const tagListRef = useClickOutsideDetails();
@@ -117,7 +117,7 @@ export default function PopupUpdateFlashcard() {
 					stiffness: 500,
 				}}
 				onSubmit={update}
-				className="flex flex-col gap-2 overflow-hidden bg-white rounded-md w-5/12 dark:bg-pot-black h-5/6 items-stretch shadow-xl">
+				className="flex flex-col items-stretch w-5/12 gap-2 overflow-hidden bg-white rounded-md shadow-xl dark:bg-pot-black h-5/6">
 				<div className="flex flex-row items-center justify-between w-full px-4 py-3 h-fit bg-foreground-blue dark:bg-foreground-red">
 					<h1 className="text-3xl font-bold text-white dark:text-gray-200">
 						Update flashcard
@@ -129,8 +129,8 @@ export default function PopupUpdateFlashcard() {
 					/>
 				</div>
 
-				<div className="flex-1 flex flex-col gap-2 overflow-y-scroll scrollbar-hide pb-10">
-					<div className="flex flex-row flex-wrap w-2/3 pt-2 px-4">
+				<div className="flex flex-col flex-1 gap-2 pb-10 overflow-y-scroll scrollbar-hide">
+					<div className="flex flex-row flex-wrap w-2/3 px-4 pt-2">
 						<input
 							value={currentFlashcard.word}
 							onChange={(e) => onChangeWord(e.target.value)}
@@ -138,7 +138,7 @@ export default function PopupUpdateFlashcard() {
 							required
 							autoComplete="off"
 							placeholder="Enter flashcard word"
-							className="flex-1 px-2 py-1 bg-gray-100 rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 text-black dark:text-gray-200 font-bold text-2xl"
+							className="flex-1 px-2 py-1 text-2xl font-bold text-black bg-gray-100 rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 dark:text-gray-200"
 						/>
 					</div>
 					<div className="flex flex-row flex-wrap w-full gap-2 px-4 py-2">
@@ -149,8 +149,8 @@ export default function PopupUpdateFlashcard() {
 									<FaPlus className="size-3" />
 								</div>
 							</summary>
-							<div className="w-128 min-h-44 h-fit bg-white dark:bg-black-night absolute rounded-md border shadow-md top-10 p-2 flex flex-col gap-2 dark:border-black-night dark:shadow-lg">
-								<div className="w-full flex flex-row justify-between items-start h-fit gap-2">
+							<div className="absolute flex flex-col gap-2 p-2 bg-white border rounded-md shadow-md w-128 min-h-44 h-fit dark:bg-black-night top-10 dark:border-black-night dark:shadow-lg">
+								<div className="flex flex-row items-start justify-between w-full gap-2 h-fit">
 									<input
 										type="text"
 										autoComplete="off"
@@ -159,18 +159,18 @@ export default function PopupUpdateFlashcard() {
 											setSearchValue(e.target.value)
 										}
 										placeholder="Search tag"
-										className="w-1/2 p-2 bg-gray-100 rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 text-black dark:text-gray-200 text-sm"
+										className="w-1/2 p-2 text-sm text-black bg-gray-100 rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 dark:text-gray-200"
 									/>
 									<details
 										ref={addTagRef}
 										className="relative">
 										<summary className="list-none">
-											<div className="w-fit px-2 py-1 bg-foreground-blue dark:bg-foreground-red rounded-md text-white dark:text-gray-200 text-sm flex flex-row items-center gap-1 cursor-pointer">
+											<div className="flex flex-row items-center gap-1 px-2 py-1 text-sm text-white rounded-md cursor-pointer w-fit bg-foreground-blue dark:bg-foreground-red dark:text-gray-200">
 												Create tag
 												<FaPlus className="size-4" />
 											</div>
 										</summary>
-										<div className="h-fit w-64 p-1 absolute bg-white dark:bg-gray-22 dark:border-pot-black shadow-md dark:shadow-lg top-9 right-0 flex flex-row items-center justify-between rounded-md border">
+										<div className="absolute right-0 flex flex-row items-center justify-between w-64 p-1 bg-white border rounded-md shadow-md h-fit dark:bg-gray-22 dark:border-pot-black dark:shadow-lg top-9">
 											<input
 												type="text"
 												value={ftagValue}
@@ -179,17 +179,17 @@ export default function PopupUpdateFlashcard() {
 												}
 												autoComplete="off"
 												placeholder="Tag name"
-												className="w-full px-2 py-1 bg-white rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 text-black dark:text-gray-200 font-bold text-sm"
+												className="w-full px-2 py-1 text-sm font-bold text-black bg-white rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 dark:text-gray-200"
 											/>
 											<div
 												onClick={onCreateFtag}
-												className="w-fit px-2 py-1 hover:bg-foreground-blue dark:hover:bg-foreground-red rounded-md hover:text-white	text-black dark:text-gray-200 text-sm flex flex-row items-center gap-1 cursor-pointer">
+												className="flex flex-row items-center gap-1 px-2 py-1 text-sm text-black rounded-md cursor-pointer w-fit hover:bg-foreground-blue dark:hover:bg-foreground-red hover:text-white dark:text-gray-200">
 												Create
 											</div>
 										</div>
 									</details>
 								</div>
-								<div className="w-full h-fit bg-white dark:bg-black-night rounded-md flex flex-row flex-wrap pt-4 gap-2">
+								<div className="flex flex-row flex-wrap w-full gap-2 pt-4 bg-white rounded-md h-fit dark:bg-black-night">
 									{fTagList.map((tag, index) => {
 										if (
 											currentFlashcard.tags.find(
@@ -214,7 +214,7 @@ export default function PopupUpdateFlashcard() {
 											<div
 												onClick={() => onSelectTag(tag)}
 												key={tag.id + index}
-												className="w-fit h-fit px-2 py-1 bg-gray-100 dark:bg-gray-22 flex flex-row items-center justify-between gap-0 rounded-md cursor-pointer group min-h-8">
+												className="flex flex-row items-center justify-between gap-0 px-2 py-1 bg-gray-100 rounded-md cursor-pointer w-fit h-fit dark:bg-gray-22 group min-h-8">
 												<HiHashtag className="size-4" />
 												{tag.value}
 												<FaRegTrashCan
@@ -222,7 +222,7 @@ export default function PopupUpdateFlashcard() {
 														e.stopPropagation();
 														onDeleteTag(tag);
 													}}
-													className="size-4 group-hover:text-red-500 text-transparent ml-1"
+													className="ml-1 text-transparent size-4 group-hover:text-red-500"
 												/>
 											</div>
 										);
@@ -234,14 +234,14 @@ export default function PopupUpdateFlashcard() {
 							return (
 								<div
 									key={tag.id + index}
-									className="w-fit h-fit px-2 py-1 bg-gray-100 dark:bg-gray-22 flex flex-row items-center justify-between gap-0 rounded-md cursor-pointer group min-h-8">
+									className="flex flex-row items-center justify-between gap-0 px-2 py-1 bg-gray-100 rounded-md cursor-pointer w-fit h-fit dark:bg-gray-22 group min-h-8">
 									<HiHashtag className="size-4" />
 									<span className="font-medium">
 										{tag.value}
 									</span>
 									<FaXmark
 										onClick={() => onSelectTag(tag)}
-										className="size-4 text-transparent group-hover:text-red-500 ml-1"
+										className="ml-1 text-transparent size-4 group-hover:text-red-500"
 									/>
 								</div>
 							);
@@ -252,14 +252,14 @@ export default function PopupUpdateFlashcard() {
 							<img
 								src={directUrl}
 								alt="flashcard image"
-								className="w-full max-h-80 object-contain"
+								className="object-contain w-full max-h-80"
 							/>
 						)}
 						<input
 							type="file"
 							onChange={onChangeImage}
 							accept="image/png, image/jpg, image/jpeg"
-							className="px-2 w-1/2 py-1 bg-gray-100 rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 text-black dark:text-gray-200 file:border-0 file:bg-gray-100 dark:file:bg-gray-22 file:focus:outline-none file:focus:ring-0 file:text-black dark:file:text-gray-200"
+							className="w-1/2 px-2 py-1 text-black bg-gray-100 rounded-md dark:bg-gray-22 focus:outline-none focus:ring-0 dark:text-gray-200 file:border-0 file:bg-gray-100 dark:file:bg-gray-22 file:focus:outline-none file:focus:ring-0 file:text-black dark:file:text-gray-200"
 						/>
 					</div>
 					<div className="flex flex-row flex-wrap w-full gap-2 px-4 py-2">
@@ -269,7 +269,7 @@ export default function PopupUpdateFlashcard() {
 							required
 							autoComplete="off"
 							placeholder="Enter flashcard defeinition"
-							className="flex-1 text-black dark:text-gray-200 ring-0 border-0 outline-none bg-gray-100 dark:bg-gray-22 focus:border-0 focus:ring-0 focus:outline-none dark:focus:border-0 dark:focus:ring-0 duration-0 min-h-32"
+							className="flex-1 text-black bg-gray-100 border-0 outline-none dark:text-gray-200 ring-0 dark:bg-gray-22 focus:border-0 focus:ring-0 focus:outline-none dark:focus:border-0 dark:focus:ring-0 duration-0 min-h-32"
 						/>
 					</div>
 				</div>

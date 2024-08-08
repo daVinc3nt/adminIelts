@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { FaCircleUser, FaRegTrashCan } from "react-icons/fa6";
+"use client";
+import { FaCircleUser } from "react-icons/fa6";
 import { useUserManagement } from "../provider/UserManagementProvider";
 import { roleLabel, UserInformation } from "@/app/interface/user/user";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -7,6 +7,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { FiEdit, FiXCircle } from "react-icons/fi";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 export default function UserList() {
 	return (
@@ -26,7 +27,15 @@ export default function UserList() {
 }
 
 function List() {
-	const { userInforList } = useUserManagement();
+	const { userInforList, isLoading } = useUserManagement();
+
+	if (isLoading) {
+		return (
+			<div className="flex flex-col items-center justify-center flex-1">
+				<LoadingSpinner size={2} />
+			</div>
+		);
+	}
 
 	if (!userInforList) return null;
 
@@ -36,7 +45,7 @@ function List() {
 				{userInforList.map((user) => (
 					<div
 						key={user.id}
-						className="flex flex-row items-center w-full gap-2 py-2 text-sm text-gray-600  bg-white rounded-md cursor-default dark:text-gray-200 h-fit dark:bg-pot-black dark:hover:bg-black-night group hover:shadow-md hover:z-10">
+						className="flex flex-row items-center w-full gap-2 py-2 text-sm text-gray-600 bg-white rounded-md cursor-default dark:text-gray-200 h-fit dark:bg-pot-black dark:hover:bg-black-night group hover:shadow-md hover:z-10">
 						<div className="w-[7%] flex justify-center items-center">
 							<FaCircleUser className="size-10" />
 						</div>
@@ -97,9 +106,9 @@ function OptionButton({ user }: OptionButtonProps) {
 	return (
 		<details
 			ref={inforRef}
-			className="relative z-20 h-full  cursor-pointer w-fit">
+			className="relative z-20 h-full cursor-pointer w-fit">
 			<summary className="h-full list-none">
-				<div className="p-1  opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
+				<div className="p-1 opacity-0 cursor-pointer text-pot-black dark:text-gray-200 group-hover:opacity-100">
 					<BsThreeDotsVertical className="size-5" />
 				</div>
 			</summary>

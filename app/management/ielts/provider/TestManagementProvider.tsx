@@ -9,9 +9,21 @@ import {
 	useState,
 } from "react";
 import { useAuth } from "@/app/provider/AuthProvider";
-import { FetchingType, SearchCriteria, Skill } from "@/app/lib/interfaces";
+import {
+	FetchingType,
+	SearchCriteria,
+	SearchPayload,
+	Skill,
+} from "@/app/lib/interfaces";
 import { ReciveTest, ReciveTestToTest, Test } from "@/app/interface/test/test";
 import { useUtility } from "@/app/provider/UtilityProvider";
+
+const initSearchCriteria: SearchCriteria = {
+	field: "name",
+	operator: "~",
+	value: "",
+};
+const numberOfItemsPerPage = 8;
 
 interface TestContextType {
 	testList: Test[];
@@ -20,6 +32,8 @@ interface TestContextType {
 	currentTest: Test;
 	fetchType: "test" | "practice";
 	currentSkill: Skill;
+	isLoading: boolean;
+	numberOfPage: number;
 
 	search: () => void;
 	deleteTest: (id: string) => void;
@@ -29,6 +43,7 @@ interface TestContextType {
 	onChangeSearchCriteria: (criteria: SearchCriteria) => void;
 	onChangeFetchType: (type: "test" | "practice") => void;
 	onChangeCurrentSkill: (skill: Skill) => void;
+	refresh: () => void;
 }
 
 const TestContext = createContext<TestContextType | null>(null);
@@ -55,45 +70,48 @@ export default function TestManagementProvider({
 	const [currentTest, setCurrentTest] = useState<Test>(null);
 	const [fetchType, setFetchType] = useState<"test" | "practice">("test");
 	const [currentSkill, setCurrentSkill] = useState<Skill>("" as any);
-	const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>({
-		field: "name",
-		operator: "~",
-		value: "",
-	});
+	const [searchCriteria, setSearchCriteria] =
+		useState<SearchCriteria>(initSearchCriteria);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [numberOfPage, setNumberOfPage] = useState<number>(10);
 
 	useEffect(() => {
 		search();
 	}, [currentPage, currentSkill, fetchType]);
 
+	const refresh = () => {
+		setIsLoading(true);
+		setTimeout(() => {
+			search();
+			setIsLoading(false);
+		}, 100);
+	};
+
 	const search = () => {
 		const newTestOperation = new TestOperation();
 
-		let newSearchCriteria = [];
+		let searchPayload: SearchPayload = {
+			criteria: [],
+			addition: {
+				sort: [],
+				page: currentPage,
+				size: numberOfItemsPerPage,
+				group: null,
+			},
+		};
+
 		if (searchCriteria.value != "") {
-			newSearchCriteria.push(searchCriteria);
+			searchPayload.criteria.push(searchCriteria);
 		}
 
-		newSearchCriteria.push({
+		searchPayload.criteria.push({
 			field: "isPractice",
 			operator: "=",
 			value: fetchType == "practice",
 		});
 
 		newTestOperation
-			.search(
-				FetchingType.FULL,
-				currentSkill,
-				{
-					criteria: newSearchCriteria,
-					addition: {
-						sort: [],
-						page: currentPage,
-						size: 8,
-						group: null,
-					},
-				},
-				sid
-			)
+			.search(FetchingType.FULL, currentSkill, searchPayload, sid)
 			.then((res) => {
 				if (res.success) {
 					const newTestList = res.data.map(
@@ -105,6 +123,7 @@ export default function TestManagementProvider({
 					setError(res.message);
 					console.error(res.message);
 				}
+				setIsLoading(false);
 			});
 	};
 
@@ -146,7 +165,7 @@ export default function TestManagementProvider({
 		);
 		if (res.success) {
 			console.log(res.data);
-			router.push(`/management/ielts/fulltest/${res.data.id}`);
+			window.open(`/management/ielts/fulltest/${res.data.id}`, "_blank");
 			return true;
 		}
 		setError(res.message);
@@ -175,6 +194,8 @@ export default function TestManagementProvider({
 				currentTest,
 				fetchType,
 				currentSkill,
+				isLoading,
+				numberOfPage,
 
 				handleChangePage,
 				search,
@@ -184,6 +205,7 @@ export default function TestManagementProvider({
 				onChangeSearchCriteria,
 				onChangeFetchType,
 				onChangeCurrentSkill,
+				refresh,
 			}}>
 			{children}
 		</TestContext.Provider>

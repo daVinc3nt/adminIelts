@@ -5,9 +5,9 @@ import RecordManagementProvider, {
 } from "../provider/RecordManagementProvider";
 import RecordList from "../components/RecordList";
 import Pagination from "@/components/Pagnitation/Pagnitation";
-import SearchBar from "../components/SearchBar";
-import SelectSearchFieldButton from "../components/SelectSearchFieldButton";
-import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
+import SearchBar from "@/components/SearchBar/SearchBar";
+import Select from "@/components/Select/Select";
+import NotFoundPage from "@/components/Page/NotFoundPage";
 
 export default function Page({ params }: { params: { testId: string } }) {
 	return (
@@ -22,42 +22,66 @@ interface RecordManagementProps {
 }
 
 function RecordManagement({ testId }: RecordManagementProps) {
-	const { getTestByTestId, currentPage, handleChangePage, test, isLoading } =
-		useRecordManagement();
+	const {
+		test,
+		currentPage,
+		searchCriteria,
+
+		getTestByTestId,
+		handleChangePage,
+		search,
+		onChangeSearchCriteria,
+	} = useRecordManagement();
 
 	useEffect(() => {
 		getTestByTestId(testId);
 	}, [testId]);
 
-	if (isLoading) {
-		return (
-			<main className="flex items-center justify-center flex-1">
-				<LoadingSpinner />
-			</main>
-		);
-	}
+	const onChangeSearchValue = (value: string) => {
+		onChangeSearchCriteria({
+			...searchCriteria,
+			value: value,
+		});
+	};
+
+	const onChangeField = (value: string) => {
+		onChangeSearchCriteria({ ...searchCriteria, field: value });
+	};
 
 	if (!test) {
 		return (
-			<main className="flex items-center justify-center flex-1">
-				<span className="text-4xl font-bold text-black dark:text-gray-200">
-					Record not found
-				</span>
-			</main>
+			<NotFoundPage
+				message="Test not found"
+				subMessage={`There are no test with id: ${testId}`}
+				backto="Back to ielts management"
+				backtoLink="/management/ielts"
+			/>
 		);
 	}
 
 	return (
 		<main className="flex justify-center flex-1 main">
-			<div className="flex flex-col items-center w-10/12 h-full gap-6 py-4">
-				<div className="flex flex-row items-center gap-4 w-full h-fit">
+			<div className="flex flex-col items-center w-9/12 h-full gap-6 py-4">
+				<div className="flex flex-row items-center w-full gap-4 h-fit">
 					<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
-						"{test.name}" Records Management
+						{test ? test.name : ""} Records Management
 					</span>
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
-					<SelectSearchFieldButton />
-					<SearchBar />
+					<div className="z-40 w-40 ml-auto">
+						<Select
+							option={searchFieldOption}
+							input={searchCriteria.field}
+							onChangeInput={onChangeField}
+							placeholder="Select field"
+						/>
+					</div>
+					<SearchBar
+						searchValue={searchCriteria.value}
+						onChangeSearchValue={onChangeSearchValue}
+						search={search}
+						placeholder="Search record"
+					/>
 				</div>
 				<div className="w-full">
 					<RecordList />
@@ -71,3 +95,10 @@ function RecordManagement({ testId }: RecordManagementProps) {
 		</main>
 	);
 }
+
+const searchFieldOption = [
+	{ value: "", label: "SelectField" },
+	{ value: "account.username", label: "Username" },
+	{ value: "account.firstName", label: "First name" },
+	{ value: "account.lastName", label: "Last name" },
+];

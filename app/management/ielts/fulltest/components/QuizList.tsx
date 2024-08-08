@@ -1,3 +1,4 @@
+"use client";
 import { BsPlus, BsTrash } from "react-icons/bs";
 import { Category, QuizType, Skill } from "@/app/lib/interfaces";
 import { useTest } from "../provider/TestProvider";
@@ -64,15 +65,7 @@ export default function QuizList() {
 
 		return (
 			<div className="flex flex-row w-full px-4 mt-1">
-				{currentQuiz.tags[0].forQuiz ? (
-					<span className="text-3xl font-bold">
-						IELTS Quiz Practice
-					</span>
-				) : (
-					<span className="text-3xl font-bold">
-						IELTS Group Practice
-					</span>
-				)}
+				<span className="text-3xl font-bold">IELTS Practice</span>
 			</div>
 		);
 	}
@@ -83,7 +76,7 @@ export default function QuizList() {
 				<summary className="list-none">
 					<div
 						title="Add Part"
-						className="flex items-center justify-center  rounded-full dark:bg-foreground-red size-8 bg-foreground-blue">
+						className="flex items-center justify-center rounded-full dark:bg-foreground-red size-8 bg-foreground-blue">
 						<BsPlus size={35} color="white" strokeWidth={0.5} />
 					</div>
 				</summary>
@@ -146,11 +139,11 @@ function Pills({ quizList }: PillsProps) {
 	};
 
 	const deleteQuiz = (index: number, skill: Skill) => {
-		onSetConfirmation(
-			"Are you sure you want to delete this quiz?",
-			() => onDeleteQuiz(index, skill),
-			"delete"
-		);
+		onSetConfirmation({
+			message: "Are you sure you want to delete this quiz?",
+			onConfirm: () => onDeleteQuiz(index, skill),
+			type: "delete",
+		});
 	};
 
 	return (
@@ -166,10 +159,10 @@ function Pills({ quizList }: PillsProps) {
 						currentSkill == quiz.skill ? (
 							<BsTrash
 								onClick={() => deleteQuiz(index, quiz.skill)}
-								className="size-4 text-white"
+								className="text-white size-4"
 							/>
 						) : (
-							<BsTrash className="size-4 text-white dark:text-gray-22" />
+							<BsTrash className="text-white size-4 dark:text-gray-22" />
 						)}
 					</div>
 				);

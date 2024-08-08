@@ -65,5 +65,5 @@ interface WritingAnswer {
 			updatedAt?: string;
 		};
 	};
-	quiz?: string | null;
+	quiz?: any;
 }

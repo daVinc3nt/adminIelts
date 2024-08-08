@@ -6,9 +6,11 @@ import {
 	SetStateAction,
 	useContext,
 	useEffect,
+	useLayoutEffect,
 	useState,
 } from "react";
-import { getSid } from "../interface/cookies/cookies";
+import { getIsLogin, getSid } from "../interface/cookies/cookies";
+import { UserInformation } from "../interface/user/user";
 
 interface AuthContextType {
 	sid: string;
@@ -27,6 +29,23 @@ export const useAuth = () => {
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
 	const [sid, setSid] = useState<string>(getSid() || "");
+	const [isLogin, setIsLogin] = useState<boolean>(getIsLogin() == "true");
+	const [userInformation, setUserInformation] =
+		useState<UserInformation>(null);
+
+	useLayoutEffect(() => {
+		console.log(isLogin);
+
+		setIsLogin(localStorage.getItem("isLogin") ? true : false);
+		const sid = getSid();
+		const useInfor = JSON.parse(
+			localStorage.getItem("userinfo")
+		) as UserInformation;
+		if (sid && useInfor) {
+		} else {
+			setIsLogin(false);
+		}
+	}, []);
 
 	return (
 		<AuthContext.Provider

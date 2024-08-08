@@ -11,6 +11,8 @@ import SpeakingQuiz from "../components/SpeakingQuiz";
 import PopupCreatePractice from "../components/CreatePractice/PopupCreatePractice";
 import AudioPlayer from "../components/AudioPlayer";
 import ScrollTopButton from "@/components/ScrollTopButton/ScrollTopButton";
+import LoadingPage from "@/components/Page/LoadingPage";
+import NotFoundPage from "@/components/Page/NotFoundPage";
 
 export default function Page({ params }: { params: { id: string } }) {
 	return (
@@ -42,15 +44,23 @@ function Test({ id }: TestProps) {
 		onChangeTest({ ...test, name: e.target.value });
 	};
 
-	if (!test)
+	if (!test) {
 		return (
-			<main className="flex flex-col h-screen -mt-14 justify-center items-center flex-1 relative">
-				<span className="text-3xl font-bold">Test Not found!</span>
-			</main>
+			<NotFoundPage
+				message="Test not found"
+				subMessage={`There are no test with id: ${id}`}
+				backto="Back to ielts management"
+				backtoLink="/management/ielts"
+			/>
 		);
+	}
+
+	if (test.id == "") {
+		return <LoadingPage />;
+	}
 
 	return (
-		<main className="flex flex-col items-center flex-1 relative">
+		<main className="relative flex flex-col items-center flex-1">
 			<ScrollTopButton />
 			{isOpenCreateQuizPractice && <PopupCreatePractice />}
 			<div className="flex flex-col items-center w-11/12 min-h-screen gap-4 py-4">
@@ -59,14 +69,14 @@ function Test({ id }: TestProps) {
 					<div className="w-8/12 pr-5">
 						<hr className="w-full border-[0.5px] border-gray-200 dark:border-gray-400" />
 					</div>
-					<div className="w-full flex flex-row items-center justify-between">
+					<div className="flex flex-row items-center justify-between w-full">
 						<div className="flex flex-col gap-1 w-[70%]">
 							<QuizList />
-							<div className="flex flex-col w-full gap-2 h-fit pt-2">
+							<div className="flex flex-col w-full gap-2 pt-2 h-fit">
 								<input
 									value={test ? test.name : ""}
 									onChange={onChangeName}
-									className="w-full h-fit px-4 py-1 text-xl bg-white dark:bg-pot-black ring-0 outline-none  rounded-md shadow-md"
+									className="w-full px-4 py-1 text-xl bg-white rounded-md shadow-md outline-none h-fit dark:bg-pot-black ring-0"
 									placeholder="Enter your test name"
 								/>
 							</div>
@@ -77,7 +87,7 @@ function Test({ id }: TestProps) {
 					</div>
 				</div>
 
-				<div className="flex flex-row w-full gap-8 h-fit justify-center">
+				<div className="flex flex-row justify-center w-full gap-8 h-fit">
 					{test.reading.map((quiz, index) => {
 						if (
 							currentSkill !== Skill.READING ||

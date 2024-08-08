@@ -81,10 +81,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkL
 
 ###
 
-GET https://engo.tiendungcorp.com/v1/records/writing/answer/9856aae5-2a93-4576-9348-02c62aee86c6
+GET https://engo.tiendungcorp.com/v1/records/writing/answer/f0c8ac72-dbb1-42b4-ac73-7d62bcc49122
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
 
 ###
 
-POST https://engo.tiendungcorp.com/v1/records
+POST https://engo.tiendungcorp.com/v1/flashcards/search
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+    "criteria": [
+        {
+            "field": "tag",
+            "operator": "~",
+            "value": "Shopping"
+        }
+    ],
+    "addition": {
+        "sort": [],
+        "page": 1,
+        "size": 40,
+        "group": null
+    }
+}

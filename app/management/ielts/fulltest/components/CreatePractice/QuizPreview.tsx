@@ -1,3 +1,4 @@
+"use client";
 import { QuizType, Skill } from "@/app/lib/interfaces";
 import { FGroup, MCGroup, Quiz } from "@/app/interface/test/test";
 import { useTest } from "../../provider/TestProvider";

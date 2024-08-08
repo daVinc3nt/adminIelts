@@ -1,7 +1,8 @@
+"use client";
 import { QuizType, Skill } from "@/app/lib/interfaces";
 import React, { Fragment } from "react";
-import FillingQuizGroup from "./FillingQuizGroup";
-import MultipleChoiceQuizGroup from "./MultipleChoiceQuizGroup";
+import FillingQuizGroup from "./FillingQuizGroup/FillingQuizGroup";
+import MultipleChoiceQuizGroup from "./MultipleChoiceQuizGroup/MultipleChoiceQuizGroup";
 import { useTest } from "../provider/TestProvider";
 import { FGroup, MCGroup, Quiz } from "@/app/interface/test/test";
 

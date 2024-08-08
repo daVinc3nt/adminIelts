@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 
 interface Props {
@@ -98,7 +98,7 @@ export default function Select({
 			</div>
 
 			{open && (
-				<div className="absolute left-0 w-full overflow-hidden bg-white rounded-md shadow-md top-10 h-fit option dark:bg-gray-22">
+				<div className="absolute left-0 w-full overflow-hidden overflow-y-scroll bg-white rounded-md shadow-md top-10 max-h-80 h-fit option scrollbar-hide dark:bg-gray-22">
 					<div
 						className={`flex flex-col w-full overflow-y-scroll  h-fit scrollbar-hide`}>
 						{option.map((item, index) => {

@@ -236,9 +236,6 @@ function AddTagButton({ quizIndex, quizSkill }: AddTagButtonProps) {
 				</div>
 				<div className="w-full h-fit flex flex-row flex-wrap gap-2 mt-2">
 					{tagList.map((tag, index) => {
-						if (currentQuiz.tags[0].forQuiz != tag.forQuiz)
-							return null;
-
 						if (
 							searchValue &&
 							searchValue.trim() !== "" &&

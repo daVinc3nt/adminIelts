@@ -34,11 +34,13 @@ export default function PopupAddTag() {
 				if (success) close();
 			});
 		};
-		onSetConfirmation(
-			"After create, you can't change the tag type and skill type. Are you sure you want to create this tag?",
-			add,
-			"create"
-		);
+		onSetConfirmation({
+			message: "Are you sure you want to create this tag?",
+			subMessage:
+				"After create, you can't change the tag type and skill type",
+			onConfirm: add,
+			type: "create",
+		});
 	};
 
 	return (
@@ -54,7 +56,7 @@ export default function PopupAddTag() {
 				}}
 				onSubmit={addNewTag}
 				className="flex flex-col gap-2 overflow-hidden bg-white rounded-md w-112 dark:bg-pot-black h-fit">
-				<div className="flex flex-row items-center justify-between w-full py-2 px-4 h-fit bg-foreground-blue dark:bg-foreground-red">
+				<div className="flex flex-row items-center justify-between w-full px-4 py-2 h-fit bg-foreground-blue dark:bg-foreground-red">
 					<h1 className="text-3xl font-bold text-white dark:text-gray-200">
 						Add new tag
 					</h1>

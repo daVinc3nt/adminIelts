@@ -1,3 +1,4 @@
+"use client";
 import { Skill } from "@/app/lib/interfaces";
 import { useRecord } from "../provider/RecordProvider";
 import {

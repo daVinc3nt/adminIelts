@@ -13,24 +13,6 @@ select:-webkit-autofill {
   -webkit-text-fill-color: rgb(52, 56, 73) !important;
 }
 
-@layer utilities {
-  .rotate-y-180 {
-		transform : rotateY(180deg)
-	}
-	.preserve-3d {
-		transform-style: preserve-3d 
-	}
-	.perspective-1000 {
-		perspective : 1000px
-	}
-	.backface-hidden {
-    backface-visibility: hidden;
-	}
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
 @layer base {
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {

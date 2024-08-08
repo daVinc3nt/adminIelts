@@ -13,6 +13,7 @@ import QuizPreview from "./QuizPreview";
 import { Tag } from "@/app/interface/tag/tag";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 import { FaTag } from "react-icons/fa";
+import { IoMdRefresh } from "react-icons/io";
 
 export default function PopupCreatePractice() {
 	const {
@@ -23,6 +24,7 @@ export default function PopupCreatePractice() {
 		practiceType,
 		tagList,
 		currentSkill,
+		fetchTagList,
 	} = useTest();
 
 	const [currentTest, setCurrentTest] = useState<Test>({
@@ -157,39 +159,38 @@ export default function PopupCreatePractice() {
 									Add tag
 								</div>
 							</summary>
-							<div className="absolute w-176 flex flex-col top-10 bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] p-2 gap-4">
-								<input
-									type="text"
-									autoComplete="off"
-									value={searchValue}
-									onChange={(e) =>
-										setSearchValue(e.target.value)
-									}
-									placeholder="Search tag"
-									className="w-1/2 px-2 py-1 bg-gray-100 rounded-md dark:bg-pot-black focus:outline-none focus:ring-0 text-black dark:text-gray-200 text-sm"
-								/>
+							<div className="absolute w-176 flex flex-col top-10 bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] p-2 min-h-40 gap-4">
+								<div className="w-full flex flex-row gap-2 items-center">
+									<input
+										type="text"
+										autoComplete="off"
+										value={searchValue}
+										onChange={(e) =>
+											setSearchValue(e.target.value)
+										}
+										placeholder="Search tag"
+										className="w-1/2 px-2 py-1 bg-gray-100 rounded-md dark:bg-pot-black focus:outline-none focus:ring-0 text-black dark:text-gray-200 text-sm"
+									/>
+									<IoMdRefresh
+										onClick={() => fetchTagList()}
+										className="size-7 hover:bg-gray-100 rounded-md dark:hover:bg-pot-black p-1"
+									/>
+								</div>
 								<div className="w-full h-fit flex flex-row flex-wrap gap-2">
 									{tagList.map((tag, index) => {
-										if (
-											practiceType == "group" &&
-											tag.forQuiz
-										)
-											return null;
-										if (
-											practiceType == "quiz" &&
-											!tag.forQuiz
-										)
-											return null;
-										if (
+										const sameSkill =
+											tag.skill == currentSkill;
+										const tagType = tag.forQuiz
+											? "quiz"
+											: "group";
+										const alreadySelected =
 											selectedTag.find(
 												(t) => t.value == tag.value
-											)
-										)
+											);
+										if (!sameSkill) return null;
+										if (tagType != practiceType)
 											return null;
-										if (tag.skill != currentSkill) {
-											return null;
-										}
-
+										if (alreadySelected) return null;
 										if (
 											searchValue &&
 											searchValue.trim() !== "" &&

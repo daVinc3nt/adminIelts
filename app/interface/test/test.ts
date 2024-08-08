@@ -210,6 +210,7 @@ export const QuizToUpdateQuiz = (quiz: Quiz): UpdateQuiz => {
 		category: quiz.category,
 		skill: quiz.skill,
 		tagIds: quiz.tags.map((tag) => tag.id) as UUID[],
+		isFileUpdated: quiz.filePath == null,
 		groups: quiz.groups.map((group) => {
 			if (group.type == QuizType.FILLING) {
 				return FGroupToUpdateFGroup(group as FGroup);
@@ -218,9 +219,6 @@ export const QuizToUpdateQuiz = (quiz: Quiz): UpdateQuiz => {
 			}
 		}),
 	};
-	if (quiz.filePath == null) {
-		newQuiz.isFileUpdated = true;
-	}
 	if (quiz.id) {
 		newQuiz.id = quiz.id as UUID;
 	}
@@ -419,58 +417,30 @@ export const TestToCreateTest = (test: Test): CreateTest => {
 };
 
 export const setStartFrom = (test: Test) => {
-	let count = 1;
-	test.reading.forEach((quiz) => {
-		quiz.groups.forEach((group) => {
-			group.startFrom = count;
-			if (group.type == QuizType.FILLING) {
-				count += group.quizzes.length;
-			} else {
-				group.quizzes.forEach((q) => {
-					count += q.numOfAnswers;
-				});
-			}
+	const setStartFromForList = (quizList: Quiz[]) => {
+		let count = 1;
+		quizList.forEach((quiz, quizIndex) => {
+			quiz.groups.forEach((group, groupIndex) => {
+				if (!test.isPractice || !(groupIndex == 0)) {
+					group.startFrom = count;
+				}
+				if (group.type == QuizType.FILLING) {
+					count += group.quizzes.length;
+				} else {
+					group.quizzes.forEach((q) => {
+						count += q.numOfAnswers;
+					});
+				}
+			});
 		});
-	});
-	count = 1;
-	test.listening.forEach((quiz) => {
-		quiz.groups.forEach((group) => {
-			group.startFrom = count;
-			if (group.type == QuizType.FILLING) {
-				count += group.quizzes.length;
-			} else {
-				group.quizzes.forEach((q) => {
-					count += q.numOfAnswers;
-				});
-			}
-		});
-	});
-	count = 1;
-	test.writing.forEach((quiz) => {
-		quiz.groups.forEach((group) => {
-			group.startFrom = count;
-			if (group.type == QuizType.FILLING) {
-				count += group.quizzes.length;
-			} else {
-				group.quizzes.forEach((q) => {
-					count += q.numOfAnswers;
-				});
-			}
-		});
-	});
-	count = 1;
-	test.speaking.forEach((quiz) => {
-		quiz.groups.forEach((group) => {
-			group.startFrom = count;
-			if (group.type == QuizType.FILLING) {
-				count += group.quizzes.length;
-			} else {
-				group.quizzes.forEach((q) => {
-					count += q.numOfAnswers;
-				});
-			}
-		});
-	});
+		return quizList;
+	};
+
+	test.reading = setStartFromForList(test.reading);
+	test.listening = setStartFromForList(test.listening);
+	test.writing = setStartFromForList(test.writing);
+	test.speaking = setStartFromForList(test.speaking);
+
 	return test;
 };
 
@@ -526,14 +496,21 @@ export const getQuestionIndex = (
 			break;
 	}
 
-	let count = 0;
-	for (let i = 0; i < quizIndex; i++) {
-		for (let j = 0; j < quizList[i].groups.length; j++) {
-			count += quizList[i].groups[j].quizzes.length;
-		}
+	const currentGroup = quizList[quizIndex].groups[groupIndex];
+	let count = currentGroup.startFrom;
+
+	if (currentGroup.type == QuizType.FILLING) {
+		currentGroup.quizzes.forEach((q, i) => {
+			if (i < questionIndex) {
+				count++;
+			}
+		});
+	} else {
+		currentGroup.quizzes.forEach((q, i) => {
+			if (i < questionIndex) {
+				count += q.answer.length == 0 ? 1 : q.answer.length;
+			}
+		});
 	}
-	for (let i = 0; i < groupIndex; i++) {
-		count += quizList[quizIndex].groups[i].quizzes.length;
-	}
-	return count + questionIndex + 1;
+	return count;
 };

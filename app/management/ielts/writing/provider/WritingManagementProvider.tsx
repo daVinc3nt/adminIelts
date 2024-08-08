@@ -1,5 +1,5 @@
 "use client";
-import { SearchCriteria } from "@/app/lib/interfaces";
+import { SearchCriteria, SearchPayload } from "@/app/lib/interfaces";
 import { RemarkRequestOperation } from "@/app/lib/main";
 import { useAuth } from "@/app/provider/AuthProvider";
 import { useUtility } from "@/app/provider/UtilityProvider";
@@ -11,14 +11,25 @@ import {
 	useState,
 } from "react";
 
+//Constant declaration
+const numberOfItemsPerPage = 6;
+const initSearchCriteria: SearchCriteria = {
+	field: "",
+	operator: "~",
+	value: "",
+};
+
 interface WritingManagementContextType {
 	writingList: WritingAnswerInfor[];
 	currentPage: number;
 	searchCriteria: SearchCriteria;
+	isLoading: boolean;
 
 	search: () => void;
 	handleChangePage: (_: any, page: number) => void;
 	onChangeSearchCriteria: (criteria: SearchCriteria) => void;
+	onDelete: (id: string) => void;
+	onRefresh: () => void;
 }
 
 const WritingManagementContext =
@@ -40,11 +51,13 @@ export default function WritingManagementProvider({
 	children: ReactNode;
 }) {
 	const { sid } = useAuth();
-	const { setError } = useUtility();
+	const { setError, setSuccess } = useUtility();
 
 	const [writingList, setWritingList] = useState<WritingAnswerInfor[]>([]);
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>();
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [searchCriteria, setSearchCriteria] =
+		useState<SearchCriteria>(initSearchCriteria);
 
 	useEffect(() => {
 		search();
@@ -52,27 +65,37 @@ export default function WritingManagementProvider({
 
 	const search = () => {
 		const newRemarkOperation = new RemarkRequestOperation();
-		newRemarkOperation
-			.search(
-				{
-					criteria: [],
-					addition: {
-						sort: [],
-						page: currentPage,
-						size: 6,
-						group: null,
-					},
-				},
-				sid
-			)
-			.then((res) => {
-				if (res.success && res.data) {
-					setWritingList(res.data);
-				} else {
-					setWritingList([]);
-					setError(res.message);
-				}
-			});
+
+		const searchPayLoad: SearchPayload = {
+			criteria: [],
+			addition: {
+				sort: [],
+				page: currentPage,
+				size: numberOfItemsPerPage,
+				group: null,
+			},
+		};
+
+		if (searchCriteria.field != "" && searchCriteria.value.trim() != "") {
+			searchPayLoad.criteria.push(searchCriteria);
+		}
+
+		newRemarkOperation.search(searchPayLoad, sid).then((res) => {
+			if (res.success && res.data) {
+				setWritingList(res.data);
+			} else {
+				setWritingList(null);
+				setError(res.message);
+			}
+		});
+		setIsLoading(false);
+	};
+
+	const onRefresh = () => {
+		setIsLoading(true);
+		setTimeout(() => {
+			search();
+		}, 100);
 	};
 
 	const handleChangePage = (_: any, page: number) => {
@@ -83,15 +106,32 @@ export default function WritingManagementProvider({
 		setSearchCriteria(criteria);
 	};
 
+	const onDelete = (id: string) => {
+		const newRemarkOperation = new RemarkRequestOperation();
+		newRemarkOperation.delete(id as any, sid).then((res) => {
+			if (res.success) {
+				setSuccess("Delete successfully");
+				search();
+			} else {
+				setError(res.message);
+				console.log(res.message);
+			}
+		});
+	};
+
 	return (
 		<WritingManagementContext.Provider
 			value={{
 				writingList,
 				currentPage,
 				searchCriteria,
+				isLoading,
+
 				search,
 				handleChangePage,
 				onChangeSearchCriteria,
+				onDelete,
+				onRefresh,
 			}}>
 			{children}
 		</WritingManagementContext.Provider>

@@ -1,7 +1,8 @@
+"use client";
 import { useRecord } from "../provider/RecordProvider";
 
 export default function QuizRecordInfor() {
-	const { record, currentSkill } = useRecord();
+	const { record } = useRecord();
 
 	return (
 		<div className="w-full h-fit bg-white dark:bg-pot-black rounded-md flex flex-col gap-6 p-4 shadow-md mt-2">

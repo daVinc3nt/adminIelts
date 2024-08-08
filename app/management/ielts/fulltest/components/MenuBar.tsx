@@ -1,3 +1,4 @@
+"use client";
 import { setStartFrom } from "@/app/interface/test/test";
 import { useTest } from "../provider/TestProvider";
 
@@ -5,6 +6,7 @@ export default function MenuBar() {
 	const { onSave, urlList, test } = useTest();
 
 	const print = () => {
+		console.log(urlList);
 		console.log(setStartFrom(test));
 	};
 

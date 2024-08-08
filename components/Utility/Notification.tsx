@@ -11,11 +11,16 @@ import {
 } from "react-icons/md";
 
 interface NotificationProps {
+	message: string;
+	onClose: () => void;
 	type: "success" | "error" | "warning" | "info";
 }
 
-export default function Notification({ type }: NotificationProps) {
-	const { message, errorMessage } = useUtility();
+export default function Notification({
+	type,
+	message,
+	onClose,
+}: NotificationProps) {
 	const { theme } = useTheme();
 	const [isDark, setIsDark] = useState<boolean>(false);
 
@@ -46,21 +51,6 @@ export default function Notification({ type }: NotificationProps) {
 		}
 	}, [type]);
 
-	const displayMessage = useMemo(() => {
-		switch (type) {
-			case "success":
-				return message;
-			case "error":
-				return errorMessage;
-			case "warning":
-				return "";
-			case "info":
-				return "";
-			default:
-				return null;
-		}
-	}, [type, message, errorMessage]);
-
 	return (
 		<div className="fixed flex items-center justify-center w-fit h-16 z-[1200] top-0 left-1/2 -translate-x-1/2 p-2">
 			<motion.div
@@ -75,8 +65,11 @@ export default function Notification({ type }: NotificationProps) {
 				}}
 				className="h-full min-w-80 max-w-176">
 				<ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-					<Alert icon={icon} severity={type}>
-						{displayMessage}
+					<Alert
+						icon={icon}
+						severity={type}
+						onClose={() => onClose()}>
+						{message}
 					</Alert>
 				</ThemeProvider>
 			</motion.div>

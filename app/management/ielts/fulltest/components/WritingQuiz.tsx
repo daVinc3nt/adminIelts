@@ -1,11 +1,12 @@
+"use client";
 import { BsThreeDots } from "react-icons/bs";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { Skill } from "@/app/lib/interfaces";
 import { useTest } from "../provider/TestProvider";
-import { FGroup, Quiz } from "@/app/interface/test/test";
+import { Quiz } from "@/app/interface/test/test";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
-import { RemoveInputRegex, RemoveStyleRegex } from "@/regex/IeltsRegex";
+import { RemoveStyleRegex } from "@/regex/IeltsRegex";
 import { AiOutlineClear } from "react-icons/ai";
 import Link from "next/link";
 import { FiFilePlus } from "react-icons/fi";

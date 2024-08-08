@@ -1,12 +1,14 @@
 "use client";
+import Pagination from "@/components/Pagnitation/Pagnitation";
 import AddFlashcardButton from "./components/AddFlashcardButton";
 import FlashcardList from "./components/FlashcardList";
-import FlashcardSearchBar from "./components/FlashcardSearchBar";
 import PopupAddFlashcard from "./components/PopupAddFlashcard";
 import PopupUpdateFlashcard from "./components/PopupUpdateFlashcard";
 import FlashcardManagementProvider, {
 	useFlashcardManagement,
 } from "./provider/FlashcardManagementProvider";
+import Select from "@/components/Select/Select";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 export default function Page() {
 	return (
@@ -17,8 +19,33 @@ export default function Page() {
 }
 
 function FlashcardManagement() {
-	const { isOpenAddFlashcard, isOpenUpdateFlashcard } =
-		useFlashcardManagement();
+	const {
+		isOpenAddFlashcard,
+		isOpenUpdateFlashcard,
+		currentPage,
+		numberOfPages,
+		currentTag,
+		fTagList,
+		searchCriteria,
+		onChangeCurrentTag,
+		onChangePage,
+		onChangeSearchCritera,
+		fetchFlashcardList,
+	} = useFlashcardManagement();
+
+	const ftagOption = [{ label: "All tag", value: "" }];
+	ftagOption.push(
+		...fTagList.map((ftag) => {
+			return {
+				label: ftag.value,
+				value: ftag.value,
+			};
+		})
+	);
+
+	const onChangeSearchValue = (value: string) => {
+		onChangeSearchCritera({ ...searchCriteria, value });
+	};
 
 	return (
 		<main className="flex justify-center flex-1 main">
@@ -33,11 +60,29 @@ function FlashcardManagement() {
 					<AddFlashcardButton />
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
-					<FlashcardSearchBar />
+					<div className="w-44 z-20">
+						<Select
+							option={ftagOption}
+							onChangeInput={onChangeCurrentTag}
+							input={currentTag}
+							placeholder="All tag"
+						/>
+					</div>
+					<span className="ml-auto" />
+					<SearchBar
+						searchValue={searchCriteria.value}
+						onChangeSearchValue={onChangeSearchValue}
+						search={fetchFlashcardList}
+					/>
 				</div>
 				<div className="w-full">
 					<FlashcardList />
 				</div>
+				<Pagination
+					page={currentPage}
+					numberOfPages={numberOfPages}
+					handleChangePage={onChangePage}
+				/>
 			</div>
 		</main>
 	);

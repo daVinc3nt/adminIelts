@@ -5,6 +5,7 @@ import RecordPreview from "../components/RecordPreview";
 import { Skill } from "@/app/lib/interfaces";
 import RecordQuizList from "../components/RecordQuizList";
 import QuizRecordInfor from "../components/QuizRecordInfor";
+import NotFoundPage from "@/components/Page/NotFoundPage";
 
 export default function Page({ params }: { params: { id: string } }) {
 	return (
@@ -27,11 +28,12 @@ function Record({ id }: RecordProps) {
 
 	if (!record) {
 		return (
-			<main className="flex items-center justify-center flex-1">
-				<span className="text-4xl font-bold text-black dark:text-gray-200">
-					Record not found
-				</span>
-			</main>
+			<NotFoundPage
+				message="Record not found"
+				subMessage={`There are no record with id: ${id}`}
+				backto="Back to ielts management"
+				backtoLink="/management/ielts"
+			/>
 		);
 	}
 

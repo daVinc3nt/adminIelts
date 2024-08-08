@@ -3,11 +3,12 @@ import { RemarkWriting } from "@/app/lib/interfaces";
 import { RecordOperation } from "@/app/lib/main";
 import { useAuth } from "@/app/provider/AuthProvider";
 import { useUtility } from "@/app/provider/UtilityProvider";
-import { cn } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 interface WritingContextType {
 	writingAnswer: WritingAnswer;
+	isLoading: boolean;
 
 	getWritingAnswerById: (id: string) => void;
 	createRemark: (remmark: RemarkWriting) => void;
@@ -25,27 +26,27 @@ export const useWriting = () => {
 };
 
 export default function WritingProvider({ children }: { children: ReactNode }) {
-	const { sid } = useAuth();
-	const { setError } = useUtility();
+	const router = useRouter();
 
-	const [writingAnswer, setWritingAnswer] = useState<WritingAnswer>({
-		id: "",
-		content: "",
-		firstCriterion: "",
-		secondCriterion: "",
-		thirdCriterion: "",
-		fourthCriterion: "",
-		remark: "",
-	});
+	const { sid } = useAuth();
+	const { setError, setSuccess } = useUtility();
+
+	const [writingAnswer, setWritingAnswer] = useState<WritingAnswer>();
+	const [isLoading, setIsLoading] = useState(true);
 
 	const getWritingAnswerById = (id: string) => {
 		const newRecordOperation = new RecordOperation();
 		newRecordOperation.getWritingAnswer(id as any, sid).then((res) => {
-			console.log(res);
 			if (res.success && res.data) {
-				res.data.remark = res.data.content;
-				setWritingAnswer(res.data);
+				const record = res.data as WritingAnswer;
+				record.remark = record.content;
+				record.firstCriterion = "";
+				record.secondCriterion = "";
+				record.thirdCriterion = "";
+				record.fourthCriterion = "";
+				setWritingAnswer(record);
 			} else {
+				setWritingAnswer(null);
 				if (res.data == null) {
 					setError("Can't find writing answer");
 				} else {
@@ -53,6 +54,7 @@ export default function WritingProvider({ children }: { children: ReactNode }) {
 					console.error(res.message);
 				}
 			}
+			setIsLoading(false);
 		});
 	};
 
@@ -62,8 +64,11 @@ export default function WritingProvider({ children }: { children: ReactNode }) {
 			.createWritingRemark(writingAnswer.id as any, remmark, sid)
 			.then((res) => {
 				if (res.success) {
-					console.log("success");
+					setSuccess("Create remark successfully");
+					router.push("/management/ielts/writing");
 				} else {
+					setError(res.message);
+					console.error(res.message);
 				}
 			});
 	};
@@ -76,6 +81,7 @@ export default function WritingProvider({ children }: { children: ReactNode }) {
 		<WritingContext.Provider
 			value={{
 				writingAnswer,
+				isLoading,
 
 				getWritingAnswerById,
 				createRemark,

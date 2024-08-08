@@ -1,14 +1,14 @@
 "use client";
+import { Skill } from "@/app/lib/interfaces";
 import AddTagButton from "./components/AddTagButton";
 import PopupAddTag from "./components/PopupAddTag";
 import PopupUpdateTag from "./components/PopupUpdateTag";
-import SelectSkillTypeButton from "./components/SelectSkillType";
-import SelectFetchTypeButton from "./components/SelectTagType";
 import TagList from "./components/TagList";
-import TagSearchBar from "./components/TagSearchBar";
 import TagManagementProvider, {
 	useTagManagement,
 } from "./provider/TagManagementProvide";
+import Select from "@/components/Select/Select";
+import SearchBar from "@/components/SearchBar/SearchBar";
 
 export default function Page() {
 	return (
@@ -19,7 +19,16 @@ export default function Page() {
 }
 
 function TagManagement() {
-	const { isOpenAddTag, isOpenUpdateTag } = useTagManagement();
+	const {
+		isOpenAddTag,
+		isOpenUpdateTag,
+		currentSkill,
+		fetchType,
+		searchValue,
+		onChangeCurrentSkill,
+		onChangeFetchType,
+		onChangeSearchValue,
+	} = useTagManagement();
 
 	return (
 		<main className="flex justify-center flex-1 main">
@@ -34,10 +43,29 @@ function TagManagement() {
 					<AddTagButton />
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
-					<SelectFetchTypeButton />
-					<SelectSkillTypeButton />
+					<div className="z-10 w-36">
+						<Select
+							input={fetchType}
+							onChangeInput={onChangeFetchType}
+							option={typeOption}
+							placeholder="All tags"
+						/>
+					</div>
+					<div className="z-10 w-36">
+						<Select
+							input={currentSkill}
+							onChangeInput={onChangeCurrentSkill}
+							option={skillOption}
+							placeholder="All skill"
+						/>
+					</div>
 
-					<TagSearchBar />
+					<span className="ml-auto" />
+					<SearchBar
+						searchValue={searchValue}
+						onChangeSearchValue={onChangeSearchValue}
+						search={() => {}}
+					/>
 				</div>
 				<div className="w-full">
 					<TagList />
@@ -46,3 +74,17 @@ function TagManagement() {
 		</main>
 	);
 }
+
+const typeOption = [
+	{ value: "", label: "All tags" },
+	{ value: "true", label: "Quizs tags" },
+	{ value: "false", label: "Groups tags" },
+];
+
+const skillOption = [
+	{ value: "", label: "All skill" },
+	{ value: Skill.READING, label: "Reading" },
+	{ value: Skill.LISTENING, label: "Listening" },
+	{ value: Skill.WRITING, label: "Writing" },
+	{ value: Skill.SPEAKING, label: "Speaking" },
+];

@@ -84,6 +84,25 @@ export class AccountOperation {
 		}
     }
 
+    async findOne(id: UUID, token: string) {
+        try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/search/${id}`, {
+				withCredentials: true,
+                validateStatus: status => status >= 200 && status <= 500,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+			});
+			
+			return { success: response.data.success, message: response.data.message, data: response.data.data };
+		} 
+		catch (error: any) {
+			console.log("Error searching accounts: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+		}
+    }
+
     async update(id: UUID, payload: UpdateAccountPayload, token: string) {
         try {
 			const response: AxiosResponse = await axios.put(`${this.baseUrl}/update/${id}`, payload, {
@@ -140,6 +159,26 @@ export class AccountOperation {
 		} 
 		catch (error: any) {
 			console.log("Error getting avatar: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+		}
+    }
+
+    // get total amount number of accounts
+    async count(token: string) {
+        try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/count`, {
+				withCredentials: true,
+                validateStatus: status => status >= 200 && status <= 500,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+			});
+			
+			return { success: response.data.success, message: response.data.message, data: response.data.data };
+		} 
+		catch (error: any) {
+			console.log("Error searching accounts: ", error?.response?.data);
             console.error("Request that caused the error: ", error?.request);
             return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
 		}
@@ -722,6 +761,25 @@ export class FTagOperation {
     async search(payload: SearchPayload, token: string) {
         try {
 			const response: AxiosResponse = await axios.post(`${this.baseUrl}/search`, payload ,{
+				withCredentials: true,
+                validateStatus: status => status >= 200 && status <= 500,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+			});
+			
+			return { success: response.data.success, message: response.data.message, data: response.data.data };
+		} 
+		catch (error: any) {
+			console.log("Error searching accounts: ", error?.response?.data);
+            console.error("Request that caused the error: ", error?.request);
+            return { success: error?.response?.data, request: error?.request, status: error.response ? error.response.status : null };
+		}
+    }
+
+    async findOne(id: UUID, token: string) {
+        try {
+			const response: AxiosResponse = await axios.get(`${this.baseUrl}/search/${id}` ,{
 				withCredentials: true,
                 validateStatus: status => status >= 200 && status <= 500,
                 headers: {

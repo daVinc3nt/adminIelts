@@ -1,6 +1,5 @@
 "use client";
 import { Tag } from "@/app/interface/tag/tag";
-import { Skill } from "@/app/lib/interfaces";
 import { TagOperation } from "@/app/lib/main";
 import { useAuth } from "@/app/provider/AuthProvider";
 import { useUtility } from "@/app/provider/UtilityProvider";
@@ -22,6 +21,7 @@ interface TagContextType {
 	tagIndex: number;
 	isOpenUpdateTag: boolean;
 	currentSkill: string;
+	isLoading: boolean;
 
 	addTag: (tag: Tag) => Promise<boolean>;
 	updateTag: (tag: Tag, noNotificate?: boolean) => Promise<boolean>;
@@ -61,6 +61,7 @@ export default function TagManagementProvider({
 	const [isOpenUpdateTag, setIsOpenUpdateTag] = useState<boolean>(false);
 	const [tagIndex, setTagIndex] = useState<number>(0);
 	const [currentSkill, setCurrentSkill] = useState<string>("");
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
 		const fetchTagList = () => {
@@ -85,6 +86,7 @@ export default function TagManagementProvider({
 						setError(res.message);
 						console.error(res.message);
 					}
+					setIsLoading(false);
 				});
 		};
 
@@ -183,6 +185,7 @@ export default function TagManagementProvider({
 				tagIndex,
 				isOpenUpdateTag,
 				currentSkill,
+				isLoading,
 
 				addTag,
 				updateTag,

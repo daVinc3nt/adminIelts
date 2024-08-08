@@ -2,63 +2,113 @@
 import { CredentialsForm } from "@/app/login/components/CredentialsForm";
 import { GoogleSignInButton } from "@/app/login/components/GoogleSignInButton";
 import { SignUpForm } from "@/app/login/components/SignUpForm";
-import Image from "next/image";
 import { useState } from "react";
-export default function Log() {
-	const [show, setShow] = useState(false);
+import { motion, AnimatePresence } from "framer-motion";
+
+const duration = 0.2;
+
+export default function Page() {
+	const [isLogin, setIsLogin] = useState<boolean>(true);
+
 	return (
-		<div className="bg-gray-100 fixed z-50 inset-0">
-			<div
-				className={`relative preserve-3d ${show ? "rotate-y-180" : ""} duration-500 w-full flex flex-col py-5  px-10 items-center justify-center min-h-screen`}>
-				<div
-					className="absolute bg-white rounded-xl flex 
-                flex-col items-center
-                px-10 py-10 md:px-20 md:pb-10 shadow-md h-[calc(100%)] md:h-[calc(90%)]">
-					<Image
-						src="/images/Logo_name2.png"
-						className="mb-5"
-						alt="Google Logo"
-						width={300}
-						height={300}
-					/>
-					<GoogleSignInButton />
-					<span className="text-2xl font-semibold text-black text-center mt-5">
-						hoặc
-					</span>
-					<CredentialsForm />
-					<span className="text-sm text-black  text-center mt-10">
-						Chưa có tài khoản?{" "}
-					</span>{" "}
-					<span
-						className="text-blue-500 cursor-pointer"
-						onClick={() => setShow(!show)}>
-						Tạo mới
-					</span>
-				</div>
-				<div
-					className="absolute rotate-y-180 backface-hidden bg-white rounded-xl flex 
-                flex-col items-center
-                px-10 md:px-20 py-5 shadow-md h-[calc(100%)] md:h-[calc(90%)]">
-					<Image
-						src="/images/Logo_name2.png"
-						className="mb-5"
-						alt="Google Logo"
-						width={300}
-						height={300}
-					/>
-					<div className="relative h-full w-full">
-						<SignUpForm />
-					</div>
-					<span className="text-sm text-black  text-center mt-5">
-						Đã có tài khoản?{" "}
-					</span>{" "}
-					<span
-						className="text-blue-500 cursor-pointer"
-						onClick={() => setShow(!show)}>
-						Đăng nhập
-					</span>
-				</div>
+		<main className="flex items-center justify-center flex-1 h-screen gap-2">
+			<AnimatePresence mode="wait" initial={false}>
+				{isLogin && <Login setIsLogin={setIsLogin} />}
+			</AnimatePresence>
+			<AnimatePresence mode="wait">
+				{!isLogin && <SignUp setIsLogin={setIsLogin} />}
+			</AnimatePresence>
+		</main>
+	);
+}
+
+interface LoginProps {
+	setIsLogin: (isLogin: boolean) => void;
+}
+
+function Login({ setIsLogin }: LoginProps) {
+	return (
+		<motion.div
+			initial={{ rotateY: 90 }}
+			animate={{
+				rotateY: 0,
+				transition: { delay: duration, ease: "linear" },
+			}}
+			exit={{
+				rotateY: 90,
+				transition: { duration: duration, ease: "linear" },
+			}}
+			className="absolute flex h-[80%] z-40 w-128">
+			<div className="w-full h-full z-30 bg-foreground-red absolute top-0 left-0 rounded-md rotate-6 shadow-md" />
+
+			<div className="w-full h-full z-20 bg-foreground-blue absolute top-0 left-0 rounded-md rotate-12 shadow-md rotate-in-12" />
+
+			<div className="flex flex-col items-center justify-between z-40 bg-white dark:bg-gray-22 px-10 py-10 md:px-20 md:pb-10 shadow-md w-full h-full rounded-md">
+				<img
+					src="/images/Logo_name.png"
+					className="mb-5 w-[300px] h-fit object-contain"
+					alt="Google Logo"
+				/>
+				<span className="text-3xl font-semibold text-center mb-4">
+					Log in
+				</span>
+				<GoogleSignInButton />
+				<span className="mt-5 text-2xl font-semibold text-center text-black dark:text-white">
+					or
+				</span>
+				<CredentialsForm />
+				<span className="mt-5 text-sm text-center text-black dark:text-white">
+					Don't have an account?{" "}
+				</span>{" "}
+				<span
+					onClick={() => setIsLogin(false)}
+					className="text-blue-500 dark:text-red-500 cursor-pointer">
+					Sign up
+				</span>
 			</div>
-		</div>
+		</motion.div>
+	);
+}
+
+interface SignUpProps {
+	setIsLogin: (isLogin: boolean) => void;
+}
+
+function SignUp({ setIsLogin }: SignUpProps) {
+	return (
+		<motion.div
+			initial={{ rotateY: 90 }}
+			animate={{
+				rotateY: 0,
+				transition: { delay: duration, ease: "linear" },
+			}}
+			exit={{
+				rotateY: 90,
+				transition: { duration: duration, ease: "linear" },
+			}}
+			className="absolute flex h-[80%] z-40 w-128">
+			<div className="w-full h-full z-30 bg-foreground-red absolute top-0 left-0 rounded-md -rotate-6 shadow-md rotate-in-12" />
+
+			<div className="w-full h-full z-20 bg-foreground-blue absolute top-0 left-0 rounded-md -rotate-12 shadow-md rotate-in-12" />
+
+			<div className="flex flex-col items-center justify-between z-40 bg-white dark:bg-gray-22 px-10 py-10 md:px-20 md:pb-10 shadow-md w-full h-full rounded-md">
+				<img
+					src="/images/Logo_name.png"
+					className="mb-5 w-[300px] h-fit object-contain"
+					alt="Google Logo"
+				/>
+				<div className="relative w-full h-full">
+					<SignUpForm />
+				</div>
+				<span className="mt-5 text-sm text-center text-black dark:text-white">
+					Already have an account?{" "}
+				</span>{" "}
+				<span
+					onClick={() => setIsLogin(true)}
+					className="text-blue-500 cursor-pointer dark:text-red-500">
+					Log in
+				</span>
+			</div>
+		</motion.div>
 	);
 }

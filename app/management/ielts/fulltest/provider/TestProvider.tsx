@@ -50,10 +50,12 @@ interface TestContextType {
 	onDeleteQuiz: (quizIndex: number, skill: Skill) => void;
 	onSelectPractice: (test: Quiz) => void;
 	onChangeFileList: (files: File[]) => void;
+	onChangeUrlList: (urls: string[]) => void;
 	onChangeIsOpenCreateQuizPractice: (value: boolean) => void;
 	createPratice: (test: CreateFullPracticeFromTest) => void;
 	onChangeIsLoading: (value: boolean) => void;
 	onChangePracticeType: (type: "quiz" | "group") => void;
+	fetchTagList: () => void;
 }
 
 const TestContext = createContext<TestContextType | null>(null);
@@ -70,7 +72,9 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 	const { sid } = useAuth();
 	const { setSuccess, setError } = useUtility();
 
-	const [test, setTest] = useState<Test>();
+	const [test, setTest] = useState<Test>({
+		id: "",
+	});
 	const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
 	const [currentSkill, setCurrentSkill] = useState<Skill>(Skill.READING);
 	const [practiceType, setPracticeType] = useState<"quiz" | "group">("quiz");
@@ -83,29 +87,6 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 	const [tagList, setTagList] = useState<Tag[]>([]);
 
 	useEffect(() => {
-		const fetchTagList = () => {
-			const newTagOperation = new TagOperation();
-			newTagOperation
-				.search(
-					{
-						criteria: [],
-						addition: {
-							sort: [],
-							page: 1,
-							size: 1000,
-							group: [],
-						},
-					},
-					sid
-				)
-				.then((res) => {
-					if (res.success) {
-						setTagList(res.data);
-					} else {
-						setError(res.message);
-					}
-				});
-		};
 		fetchTagList();
 	}, []);
 
@@ -116,6 +97,30 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 			}, 400);
 		}
 	}, [isLoading]);
+
+	const fetchTagList = () => {
+		const newTagOperation = new TagOperation();
+		newTagOperation
+			.search(
+				{
+					criteria: [],
+					addition: {
+						sort: [],
+						page: 1,
+						size: 1000,
+						group: [],
+					},
+				},
+				sid
+			)
+			.then((res) => {
+				if (res.success) {
+					setTagList(res.data);
+				} else {
+					setError(res.message);
+				}
+			});
+	};
 
 	const onChangePracticeType = (type: "quiz" | "group") => {
 		setPracticeType(type);
@@ -171,9 +176,16 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 
 	const onSave = () => {
 		const newTestOperation = new TestOperation();
-		const updateTest = TestToUpdateTest(setStartFrom(test));
+		const updateTest = TestToUpdateTest(test);
+		const notNullFile = fileList.find((file) => file !== null);
+		const newFileList = fileList.map((file) => {
+			if (file === null && notNullFile) {
+				return notNullFile;
+			}
+			return file;
+		});
 		const updateFullTest: UpdateFullTest = {
-			files: fileList,
+			files: newFileList,
 			data: updateTest,
 		};
 		newTestOperation
@@ -271,7 +283,7 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 			default:
 				newTest.reading[quizIndex] = quiz;
 		}
-		onChangeTest(newTest);
+		setTest(setStartFrom(newTest));
 	};
 
 	const onChangecurrentQuizIndex = (index: number) => {
@@ -287,30 +299,31 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 	};
 
 	const getFileList = (test: Test) => {
-		let files: File[] = [];
 		let newUrlList: string[] = [];
 		const newUploadOperation = new UploadOperation();
-		test.listening.forEach((quiz) => {
-			files.push(null);
+		test.listening.forEach((quiz, index) => {
 			if (quiz.filePath) {
 				newUploadOperation.search(quiz.filePath, sid).then((res) => {
 					if (res.success) {
-						newUrlList.push(res.data);
+						newUrlList[index] = res.data;
 					} else {
-						newUrlList.push(null);
+						newUrlList[index] = "";
 					}
 				});
 			} else {
-				files.push(null);
-				newUrlList.push(null);
+				newUrlList[index] = "";
 			}
 		});
 		setUrlList(newUrlList);
-		setFileList(files);
+		setFileList(Array(test.listening.length).fill(null));
 	};
 
 	const onChangeFileList = (files: File[]) => {
 		setFileList(files);
+	};
+
+	const onChangeUrlList = (urls: string[]) => {
+		setUrlList(urls);
 	};
 
 	const onChangeIsOpenCreateQuizPractice = (value: boolean) => {
@@ -344,6 +357,8 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 				createPratice,
 				onChangeIsLoading,
 				onChangePracticeType,
+				fetchTagList,
+				onChangeUrlList,
 			}}>
 			{children}
 		</TestContext.Provider>

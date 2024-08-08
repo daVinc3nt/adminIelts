@@ -1,3 +1,4 @@
+"use client";
 import { useRecord } from "../../fulltest/provider/RecordProvider";
 import { Skill } from "@/app/lib/interfaces";
 import { useHorizontallScroll } from "@/hooks/useHorizontalScroll";

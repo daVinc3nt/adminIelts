@@ -5,7 +5,6 @@ import { FcCancel } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { useTagManagement } from "../provider/TagManagementProvide";
 import { Tag } from "@/app/interface/tag/tag";
-import { Skill } from "@/app/lib/interfaces";
 
 export default function PopupUpdateTag() {
 	const {

@@ -16,11 +16,7 @@ interface UtilityContextType {
 	toggleSidebar: () => void;
 	setError: (message: string) => void;
 	setSuccess: (message: string) => void;
-	onSetConfirmation: (
-		message: string,
-		onConfirm: () => void,
-		type: "delete" | "update" | "create" | "confirm"
-	) => void;
+	onSetConfirmation: (confirm: ComfirmationType) => void;
 }
 
 const UtilityContext = createContext<UtilityContextType | null>(null);
@@ -35,6 +31,7 @@ export const useUtility = () => {
 
 interface ComfirmationType {
 	message: string;
+	subMessage?: string;
 	onConfirm: () => void;
 	type: "delete" | "update" | "create" | "confirm";
 }
@@ -85,16 +82,20 @@ export default function UtilityProvider({
 		setIsOpenNotificate(true);
 	};
 
-	const onSetConfirmation = (
-		message: string,
-		onConfirm: () => void,
-		type: "delete" | "update" | "create" | "confirm"
-	) => {
-		setConfirmation({ message, onConfirm, type });
+	const onSetConfirmation = (confirm: ComfirmationType) => {
+		setConfirmation(confirm);
 	};
 
 	const closeConfirmation = () => {
 		setConfirmation(null);
+	};
+
+	const onCloseMessage = () => {
+		setIsOpenNotificate(false);
+	};
+
+	const onCloseError = () => {
+		setIsOpenError(false);
 	};
 
 	return (
@@ -114,10 +115,22 @@ export default function UtilityProvider({
 			<Navbar />
 
 			<AnimatePresence mode="wait">
-				{isOpenNotificate && <Nofitication type="success" />}
+				{isOpenNotificate && (
+					<Nofitication
+						type="success"
+						message={message}
+						onClose={onCloseMessage}
+					/>
+				)}
 			</AnimatePresence>
 			<AnimatePresence mode="wait">
-				{isOpenError && <Nofitication type="error" />}
+				{isOpenError && (
+					<Nofitication
+						type="error"
+						message={errorMessage}
+						onClose={onCloseError}
+					/>
+				)}
 			</AnimatePresence>
 			<AnimatePresence mode="wait">
 				{confirmation && (

@@ -444,8 +444,8 @@ export interface CreateFullFlashCard {
 // export interface GetFlashCard {
 //     word?: string;
 //     definition?: string;
-//     tagIds?: UUID[];
 //     isPublic?: boolean;
+//     tag?: string;
 // }
 
 export interface UpdateFlashCard {

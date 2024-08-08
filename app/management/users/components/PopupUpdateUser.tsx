@@ -6,6 +6,7 @@ import { UpdateAccountPayload, UserRole } from "@/app/lib/interfaces";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { roleLabel } from "@/app/interface/user/user";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
+import { useUtility } from "@/app/provider/UtilityProvider";
 
 export default function PopupUpdateUser() {
 	const {
@@ -14,6 +15,7 @@ export default function PopupUpdateUser() {
 		onChangeCurrentUser,
 		updateUserInformation,
 	} = useUserManagement();
+	const { onSetConfirmation } = useUtility();
 
 	const [password, setPassword] = useState<string>("");
 
@@ -44,44 +46,50 @@ export default function PopupUpdateUser() {
 	const updateAccount = (e: FormEvent) => {
 		e.preventDefault();
 
-		console.log(currentUser.id);
+		const update = () => {
+			const newUpdateAccountPayload: UpdateAccountPayload = {
+				username: currentUser.username,
+				firstName: currentUser.firstName,
+				lastName: currentUser.lastName,
+				roles: currentUser.roles.map((role) => {
+					switch (role.role) {
+						case UserRole.ADMIN:
+							return "ADMIN";
+						case UserRole.SYS_ADMIN:
+							return "SYS_ADMIN";
+						case UserRole.EXAM_ADMIN:
+							return "EXAM_ADMIN";
+						case UserRole.STUDENT:
+							return "STUDENT";
+						case UserRole.PAID_USER:
+							return "PAID_USER";
+						default:
+							return "NONPAID_USER";
+					}
+				}) as any,
+			};
 
-		const newUpdateAccountPayload: UpdateAccountPayload = {
-			username: currentUser.username,
-			firstName: currentUser.firstName,
-			lastName: currentUser.lastName,
-			roles: currentUser.roles.map((role) => {
-				switch (role.role) {
-					case UserRole.ADMIN:
-						return "ADMIN";
-					case UserRole.SYS_ADMIN:
-						return "SYS_ADMIN";
-					case UserRole.EXAM_ADMIN:
-						return "EXAM_ADMIN";
-					case UserRole.STUDENT:
-						return "STUDENT";
-					case UserRole.PAID_USER:
-						return "PAID_USER";
-					default:
-						return "NONPAID_USER";
-				}
-			}) as any,
+			if (password && password != "") {
+				newUpdateAccountPayload.password = password;
+			}
+
+			if (currentUser.phoneNumber && currentUser.phoneNumber != "") {
+				newUpdateAccountPayload.phoneNumber = currentUser.phoneNumber;
+			}
+
+			if (currentUser.dateOfBirth && currentUser.dateOfBirth != "") {
+				newUpdateAccountPayload.dateOfBirth = new Date(
+					currentUser.dateOfBirth
+				);
+			}
+			updateUserInformation(newUpdateAccountPayload);
 		};
 
-		if (password && password != "") {
-			newUpdateAccountPayload.password = password;
-		}
-
-		if (currentUser.phoneNumber && currentUser.phoneNumber != "") {
-			newUpdateAccountPayload.phoneNumber = currentUser.phoneNumber;
-		}
-
-		if (currentUser.dateOfBirth && currentUser.dateOfBirth != "") {
-			newUpdateAccountPayload.dateOfBirth = new Date(
-				currentUser.dateOfBirth
-			);
-		}
-		updateUserInformation(newUpdateAccountPayload);
+		onSetConfirmation({
+			message: "Do you want to update this user information?",
+			onConfirm: update,
+			type: "confirm",
+		});
 	};
 
 	return (
@@ -98,7 +106,7 @@ export default function PopupUpdateUser() {
 				onSubmit={(e) => {
 					updateAccount(e);
 				}}
-				className="flex flex-col pb-4 mt-8 overflow-hidden bg-white shadow-md rounded-xl w-144 h-fit dark:bg-pot-black dark:border-gray-22">
+				className="flex flex-col pb-4 mt-8 overflow-hidden bg-white shadow-md rounded-xl w-160 h-fit dark:bg-pot-black dark:border-gray-22">
 				<div className="flex flex-row items-center justify-between w-full px-4 py-3 cursor-default h-fit bg-foreground-blue dark:bg-foreground-red">
 					<span className="text-2xl font-bold text-white dark:text-gray-200">
 						Update Information
@@ -231,7 +239,7 @@ export default function PopupUpdateUser() {
 											onClick={() =>
 												onSelectRole(role.value)
 											}
-											className="flex flex-row items-center justify-center p-1 font-bold text-black  border-2 rounded-md cursor-pointer h-fit w-fit hover:text-white dark:text-gray-200 borde-0 whitespace-nowrap hover:bg-foreground-blue dark:hover:bg-foreground-red border-foreground-blue dark:border-foreground-red">
+											className="flex flex-row items-center justify-center p-1 font-bold text-black border-2 rounded-md cursor-pointer h-fit w-fit hover:text-white dark:text-gray-200 borde-0 whitespace-nowrap hover:bg-foreground-blue dark:hover:bg-foreground-red border-foreground-blue dark:border-foreground-red">
 											{role.label}
 										</div>
 									);
