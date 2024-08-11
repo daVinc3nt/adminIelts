@@ -8,9 +8,11 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 
 const roboto = Roboto({
-	weight: "400",
-	subsets: ["latin"],
-});
+	weight: ['100','400', '700'],
+	style: ['normal', 'italic'],
+	subsets: ['latin'],
+	display: 'swap',
+  })
 
 export default function RootLayout({
 	children,
