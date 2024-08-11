@@ -1,5 +1,12 @@
+
+@import url(https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap);
+
+.ck-content{
+  font-family: 'Roboto' !important;
+}
+
 :root {
-    --red-100: #fee2e2;
+    --red-100: #fee2e2 ;
     --red-200: #CB0000;
     --foreground-red: #CB0000;
     --red-500: #ef4444;
@@ -127,7 +134,7 @@
 	--ck-color-light-red:										hsl(0, 100%, 90%);
 
     --ck-color-focus-disabled-shadow: var(--red-200);
-    --ck-color-selector-focused-cell-background: var(--red-100);
+    --ck-color-selector-focused-cell-background: #0f0f0f;
 
 
 	--ck-accessibility-help-dialog-code-background-color: #222222;
@@ -158,6 +165,7 @@
 
 
 .ck-content {
+
 	border: 1px solid #CB0000 !important;
 	border-bottom-left-radius: 6px !important;
 	border-bottom-right-radius: 6px !important;

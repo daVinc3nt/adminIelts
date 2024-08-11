@@ -4,7 +4,6 @@
 
 body {
   scroll-behavior: smooth;
-
 }
 
 input:-webkit-autofill,
@@ -12,23 +11,6 @@ textarea:-webkit-autofill,
 select:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #d2e7fa inset !important;
   -webkit-text-fill-color: rgb(52, 56, 73) !important;
-}
-@layer utilities {
-  .rotate-y-180 {
-		transform : rotateY(180deg)
-	}
-	.preserve-3d {
-		transform-style: preserve-3d 
-	}
-	.perspective-1000 {
-		perspective : 1000px
-	}
-	.backface-hidden {
-    backface-visibility: hidden;
-	}
-  .text-balance {
-    text-wrap: balance;
-  }
 }
 
 @layer base {
@@ -40,16 +22,13 @@ select:-webkit-autofill {
 }
 
 .main-container {
-	font-family: 'Lato';
 	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
 .ck-content {
-	font-family: 'Roboto';
-	line-height: 1.6;
-	word-break: break-word;
+	word-break: break-word !important;
 }
 
 .ck-content h1 {
@@ -65,3 +44,26 @@ select:-webkit-autofill {
   font-weight: bold;
 }
 
+.preview h1 {
+  font-size: xx-large;
+  font-weight: bold;
+}
+.preview h2 {
+  font-size: x-large;
+  font-weight: bold;
+}
+.preview h3 {
+  font-size: larger;
+  font-weight: bold;
+}
+
+.preview table,
+.preview th,
+.preview td {
+    border: 1px solid;
+    border-collapse: collapse;
+}
+
+.preview {
+  white-space-collapse: discard;
+}

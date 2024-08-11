@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa";
 
 interface Props {
@@ -24,6 +24,23 @@ export default function Select({
 	const [currentOption, setCurrentOption] = useState<number>(0);
 
 	const inputRef = useRef<HTMLInputElement>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				containerRef.current &&
+				!containerRef.current.contains(event.target as Node)
+			) {
+				setOpen(false);
+				setSearchValue("");
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, []);
 
 	const defaultPlaceholder = placeholder ? placeholder : "Select...";
 
@@ -42,43 +59,28 @@ export default function Select({
 		return value.toLowerCase().includes(searchValue.toLowerCase());
 	};
 
-	const onBlur = () => {
-		setTimeout(() => {
-			setOpen(false);
-			setSearchValue("");
-		}, 150);
-	};
-
-	const resetValue = () => {
-		onChangeInput("");
-		setCurrentOption(-1);
-	};
-
 	const selectValue = (value: string, index: number) => {
 		onChangeInput(value);
 		setCurrentOption(index);
+		setOpen(false);
 	};
 
 	return (
 		<div
-			className={`relative border-2 rounded-md min-w-fit w-full cursor-pointer bg-foreground-blue dark:bg-foreground-red shadow-md
+			ref={containerRef}
+			className={`relative border-2 rounded-md min-w-fit w-full cursor-pointer bg-white dark:bg-pot-black shadow-md
 			${open ? "border-foreground-blue dark:border-foreground-red" : "border-transparent"}
 			`}>
 			<div
 				onClick={openDropdown}
-				onBlur={onBlur}
 				className="flex flex-row items-center justify-start gap-2 px-2 py-1 control">
 				<input
 					ref={inputRef}
 					type="text"
-					placeholder={
-						input == ""
-							? defaultPlaceholder
-							: option[currentOption].label
-					}
+					placeholder={option[currentOption].label}
 					value={searchValue}
 					onChange={(e) => setSearchValue(e.target.value)}
-					className={`w-full text-base border-none outline-none cursor-pointer mr-auto bg-foreground-blue dark:bg-foreground-red placeholder-white dark:placeholder-gray-200 text-white dark:text-gray-200`}
+					className={`w-full text-base border-none outline-none cursor-pointer mr-auto bg-white dark:bg-pot-black placeholder-black dark:placeholder-gray-200 text-black dark:text-gray-200`}
 				/>
 
 				<span className="w-0 h-5 border border-gray-200" />
@@ -92,7 +94,7 @@ export default function Select({
 			</div>
 
 			{open && (
-				<div className="absolute left-0 w-full overflow-hidden bg-white rounded-md shadow-md top-10 h-fit option dark:bg-gray-22">
+				<div className="absolute left-0 w-full overflow-hidden overflow-y-scroll bg-white rounded-md shadow-md top-10 max-h-80 h-fit option scrollbar-hide dark:bg-gray-22">
 					<div
 						className={`flex flex-col w-full overflow-y-scroll  h-fit scrollbar-hide`}>
 						{option.map((item, index) => {
@@ -104,7 +106,7 @@ export default function Select({
 									onClick={() =>
 										selectValue(item.value, index)
 									}
-									className={`${input == item.value ? "bg-foreground-blue dark:bg-foreground-red text-white" : "text-black hover:text-white"} w-full px-3 py-1 h-fit hover:bg-foreground-blue dark:hover:bg-foreground-red  dark:text-gray-200`}>
+									className={`${input === item.value ? "bg-foreground-blue dark:bg-foreground-red text-white" : "text-black hover:text-white"} w-full px-3 py-1 h-fit hover:bg-foreground-blue dark:hover:bg-foreground-red  dark:text-gray-200`}>
 									{item.label}
 								</div>
 							);

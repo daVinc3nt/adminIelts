@@ -44,7 +44,6 @@ import {
 
 import "ckeditor5/ckeditor5.css";
 import { useTheme } from "next-themes";
-import dynamic from "next/dynamic";
 
 const themes = {
 	light: "/light-theme.css",
@@ -54,9 +53,14 @@ const themes = {
 interface Props {
 	content: string;
 	onChangeContent: (content: string) => void;
+	disable?: boolean;
 }
 
-export default function CK5Editor({ content, onChangeContent }: Props) {
+export default function CK5Editor({
+	content,
+	onChangeContent,
+	disable,
+}: Props) {
 	const editorContainerRef = useRef(null);
 	const editorRef = useRef(null);
 	const [isLayoutReady, setIsLayoutReady] = useState(false);
@@ -224,6 +228,7 @@ export default function CK5Editor({ content, onChangeContent }: Props) {
 					<div ref={editorRef}>
 						{isLayoutReady && (
 							<CKEditor
+								disabled={disable}
 								editor={ClassicEditor}
 								config={editorConfig as any}
 								data={content}

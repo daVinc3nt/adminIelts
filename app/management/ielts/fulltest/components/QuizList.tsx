@@ -1,263 +1,177 @@
-import { BsPlus, BsThreeDots } from "react-icons/bs";
-import { useQuizData } from "../../provider/QuizDataProvider";
-import { useEffect, useMemo, useRef } from "react";
-import { useDraggable } from "react-use-draggable-scroll";
-import {
-	FillingGroup,
-	Quiz,
-	QuizDataRecieve,
-	quizDataRecieve2Quiz,
-	TestDataRecieve2Test,
-} from "@/app/interface/quiz";
-import {
-	Category,
-	CreateQuiz,
-	QuizType,
-	Skill,
-	UpdateTest,
-} from "@/app/interface/interfaces";
-import { QuizOperation, TestOperation } from "@/app/interface/main";
+"use client";
+import { BsPlus, BsTrash } from "react-icons/bs";
+import { Category, QuizType, Skill } from "@/app/lib/interfaces";
+import { useTest } from "../provider/TestProvider";
+import { useHorizontallScroll } from "@/hooks/useHorizontalScroll";
+import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
+import { Quiz } from "@/app/interface/test/test";
+import { Fragment } from "react";
+import { useUtility } from "@/app/provider/UtilityProvider";
 
 export default function QuizList() {
-	const Tabref =
-		useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
-	const { events } = useDraggable(Tabref);
+	const { test, onChangeTest, hasPrivilege } = useTest();
 
-	const addQuizButtonRef = useRef<HTMLDetailsElement>(null);
+	const divRef = useHorizontallScroll();
+	const addQuizButtonRef = useClickOutsideDetails();
 
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				addQuizButtonRef.current &&
-				!addQuizButtonRef.current.contains(event.target as Node)
-			) {
-				addQuizButtonRef.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
-
-	const quizSettingRef = useRef<HTMLDetailsElement>(null);
-
-	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				quizSettingRef.current &&
-				!quizSettingRef.current.contains(event.target as Node)
-			) {
-				quizSettingRef.current.open = false;
-			}
-		};
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, []);
-
-	const {
-		quizList,
-		setQuizList,
-		currentQuizIndex,
-		setCurrentQuizIndex,
-		currentTest,
-		setCurrentTest,
-	} = useQuizData();
-
-	const addQuiz = (category: Category, skill: Skill) => {
-		const newQuiz: Quiz = {
-			content: "",
-			category: category,
-			tag: "",
+	const addQuiz = (skill: Skill) => {
+		const newTest = { ...test };
+		const newQuiz = {
+			category: Category.IELTS,
 			skill: skill,
+			content: "",
+			tags: [],
 			groups: [],
 		};
-
-		if (skill == Skill.WRITING) {
-			const newGroup: FillingGroup = {
-				type: QuizType.FILLING,
-				question: "",
-				startFrom: 0,
-				quizzes: [
+		switch (skill) {
+			case Skill.READING:
+				newTest.reading.push(newQuiz);
+				break;
+			case Skill.LISTENING:
+				newTest.listening.push(newQuiz);
+				break;
+			case Skill.WRITING:
+				newTest.writing.push(newQuiz);
+				break;
+			case Skill.SPEAKING:
+				newQuiz.groups = [
 					{
-						description: "",
-						answer: "",
-						explaination: "",
+						question: "",
+						type: QuizType.FILLING,
+						quizzes: [],
+						startFrom: 0,
 					},
-				],
-			};
-			newQuiz.groups.push(newGroup);
+				];
+				newTest.speaking.push(newQuiz);
+		}
+		onChangeTest(newTest);
+	};
+
+	let currentQuiz: Quiz = null;
+	if (test.isPractice) {
+		if (test.reading.length > 0) {
+			currentQuiz = test.reading[0];
+		} else if (test.listening.length > 0) {
+			currentQuiz = test.listening[0];
+		} else if (test.writing.length > 0) {
+			currentQuiz = test.writing[0];
+		} else if (test.speaking.length > 0) {
+			currentQuiz = test.speaking[0];
 		}
 
-		if (skill == Skill.SPEAKING) {
-			const newGroup: FillingGroup = {
-				type: QuizType.FILLING,
-				question: "",
-				startFrom: 0,
-				quizzes: [],
-			};
-			newQuiz.groups.push(newGroup);
+		if (currentQuiz == null) {
+			return null;
 		}
 
-		let newQuizList = [...quizList, newQuiz];
-
-		const testOperation = new TestOperation();
-		const updateTest: UpdateTest = TestDataRecieve2Test(
-			currentTest,
-			newQuizList
+		return (
+			<div className="flex flex-row w-full px-4 mt-1">
+				<span className="text-3xl font-bold">IELTS Practice</span>
+			</div>
 		);
-		testOperation
-			.update(currentTest.id as any, updateTest, testToken)
-			.then((response) => {
-				console.log(response);
-				if (response.success == true) {
-					setQuizList(newQuizList);
-				}
-			});
-	};
-
-	const deletePart = (quizIndex: number, deletefromDataBase: boolean) => {
-		if (deletefromDataBase) {
-			let newQuizList = [...quizList];
-			newQuizList.splice(quizIndex, 1);
-
-			const testOperation = new TestOperation();
-			const newUpdateTest = TestDataRecieve2Test(
-				currentTest,
-				newQuizList
-			);
-			testOperation
-				.update(currentTest.id as any, newUpdateTest, testToken)
-				.then((response) => {
-					console.log(response);
-					if (response.success == true) {
-						alert("Delete successfully");
-						setQuizList((prev) => {
-							const newQuizList = [...prev];
-							newQuizList.splice(quizIndex, 1);
-							return newQuizList;
-						});
-					}
-				});
-		} else {
-			const quizOperation = new QuizOperation();
-			quizOperation
-				.delete(quizList[quizIndex].id as any, testToken)
-				.then((response) => {
-					console.log(response);
-
-					if (response.success == true) {
-						alert("Delete successfully");
-						setQuizList((prev) => {
-							const newQuizList = [...prev];
-							newQuizList.splice(quizIndex, 1);
-							return newQuizList;
-						});
-					}
-				});
-		}
-	};
-
-	const onSelectQuiz = (index: number) => {
-		setCurrentQuizIndex(index);
-	};
-
-	const sortQuizList = useMemo(() => {
-		const order = {
-			reading: 1,
-			listening: 2,
-			writing: 3,
-			speaking: 4,
-		};
-		return quizList.sort((a, b) => order[a.skill] - order[b.skill]);
-	}, [quizList]);
+	}
 
 	return (
-		<div className="flex flex-row w-full gap-2 pt-2">
-			<details ref={addQuizButtonRef} className="relative">
-				<summary className="list-none">
-					<div
-						title="Add Part"
-						className="flex items-center justify-center duration-200 rounded-full dark:bg-foreground-red size-8 bg-foreground-blue">
-						<BsPlus size={35} color="white" strokeWidth={0.5} />
-					</div>
-				</summary>
-				<div className="top-8 -left-10 absolute w-44 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
-					<button
-						onClick={() => addQuiz(Category.IELTS, Skill.READING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-						Add Reading Part
-					</button>
-					<button
-						onClick={() => addQuiz(Category.IELTS, Skill.LISTENING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-						Add Listening Part
-					</button>
-					<button
-						onClick={() => addQuiz(Category.IELTS, Skill.WRITING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-						Add Writing Part
-					</button>
-					<button
-						onClick={() => addQuiz(Category.IELTS, Skill.SPEAKING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black dark:text-gray-200 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+		<div className="flex flex-row w-full gap-2 pt-2 mt-1">
+			{hasPrivilege && (
+				<details ref={addQuizButtonRef} className="relative">
+					<summary className="list-none">
+						<div
+							title="Add Part"
+							className="flex items-center justify-center rounded-full dark:bg-foreground-red size-8 bg-foreground-blue">
+							<BsPlus size={35} color="white" strokeWidth={0.5} />
+						</div>
+					</summary>
+					<div className="top-8 -left-10 absolute w-44 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
+						<button
+							onClick={() => addQuiz(Skill.READING)}
+							className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+							Add Reading Part
+						</button>
+						<button
+							onClick={() => addQuiz(Skill.LISTENING)}
+							className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+							Add Listening Part
+						</button>
+						<button
+							onClick={() => addQuiz(Skill.WRITING)}
+							className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+							Add Writing Part
+						</button>
+						{/* <button
+						onClick={() => addQuiz(Skill.SPEAKING)}
+						className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
 						Add Speaking Part
-					</button>
-				</div>
-			</details>
+					</button> */}
+					</div>
+				</details>
+			)}
 
 			<div
-				className="w-full overflow-x-scroll h-40 -mb-32 overflow-y-visible scrollbar-hide flex flex-row gap-2 cursor-pointer"
-				{...events}
-				ref={Tabref}>
-				{sortQuizList.map((quiz, index) => {
-					const countQuizSkillBeforeIndex = () => {
-						let count = 0;
-						for (let i = 0; i < index; i++) {
-							if (quizList[i].skill == quiz.skill) count++;
-						}
-						return count;
-					};
-					return (
-						<div
-							onClick={() => onSelectQuiz(index)}
-							key={index}
-							className={`relative flex flex-row items-center justify-center whitespace-nowrap w-fit h-fit px-2 py-1 text-center rounded-md cursor-pointer duration-200 ${currentQuizIndex == index ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-mecury-gray"}`}>
-							{partLabel(quiz.skill, countQuizSkillBeforeIndex())}
-							{currentQuizIndex == index ? (
-								<details
-									ref={quizSettingRef}
-									className="relative">
-									<summary className="list-none">
-										<BsThreeDots className="p-1 text-white size-6" />
-									</summary>
-									<div className="top-8 -left-10 absolute w-48 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
-										<button
-											onClick={() =>
-												deletePart(index, false)
-											}
-											className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-											Delete part from test
-										</button>
-										<button
-											onClick={() =>
-												deletePart(index, true)
-											}
-											className="flex items-start justify-start w-full p-2 text-sm text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-											Delete part from database
-										</button>
-									</div>
-								</details>
-							) : (
-								<BsThreeDots className="p-1 text-white size-6" />
-							)}
-						</div>
-					);
-				})}
+				ref={divRef}
+				className="flex flex-row w-full h-40 gap-2 -mb-32 overflow-x-scroll overflow-y-visible cursor-pointer scrollbar-hide">
+				<Pills quizList={test.reading} />
+				<Pills quizList={test.listening} />
+				<Pills quizList={test.writing} />
+				<Pills quizList={test.speaking} />
 			</div>
 		</div>
+	);
+}
+
+interface PillsProps {
+	quizList: Quiz[];
+}
+
+function Pills({ quizList }: PillsProps) {
+	const { onSetConfirmation } = useUtility();
+
+	const {
+		currentQuizIndex,
+		currentSkill,
+		hasPrivilege,
+		onChangecurrentQuizIndex,
+		onChangeCurrentSkill,
+		onDeleteQuiz,
+		onChangeIsLoading,
+	} = useTest();
+
+	const onSelectQuiz = (index: number, skill: Skill) => {
+		onChangecurrentQuizIndex(index);
+		onChangeCurrentSkill(skill);
+		onChangeIsLoading(true);
+	};
+
+	const deleteQuiz = (index: number, skill: Skill) => {
+		onSetConfirmation({
+			message: "Are you sure you want to delete this quiz?",
+			onConfirm: () => onDeleteQuiz(index, skill),
+			type: "delete",
+		});
+	};
+
+	return (
+		<Fragment>
+			{quizList.map((quiz, index) => {
+				return (
+					<div
+						onClick={() => onSelectQuiz(index, quiz.skill)}
+						key={index}
+						className={`relative flex flex-row items-center justify-center whitespace-nowrap w-fit h-fit px-3 gap-2 py-1 text-center rounded-md cursor-pointer shadow-md  ${currentQuizIndex == index && currentSkill == quiz.skill ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-white"}`}>
+						{partLabel(quiz.skill, index)}
+						{currentQuizIndex == index &&
+						currentSkill == quiz.skill &&
+						hasPrivilege ? (
+							<BsTrash
+								onClick={() => deleteQuiz(index, quiz.skill)}
+								className="text-white size-4"
+							/>
+						) : (
+							<BsTrash className="text-transparent size-4" />
+						)}
+					</div>
+				);
+			})}
+		</Fragment>
 	);
 }
 
@@ -273,6 +187,3 @@ const partLabel = (skill: Skill, index: number) => {
 			return `Speaking Part ${index + 1}`;
 	}
 };
-
-const testToken =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIwOTgxMTE1LCJleHAiOjE3NTI1MTcxMTV9.VHdXs5y2Vey-YjmqLN7Uxn1kF1dC-TXZF0ro9_u5mJQ";

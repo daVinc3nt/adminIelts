@@ -1,139 +1,184 @@
 "use client";
-import { QuizDataProvider, useQuizData } from "../../provider/QuizDataProvider";
-import QuizContent from "../../components/QuizContent";
-import QuizGroup from "../../components/QuizGroup";
 import { Fragment, useEffect } from "react";
-import { QuizDataRecieve, quizDataRecieve2Quiz } from "@/app/interface/quiz";
+import TestProvider, { useTest } from "../provider/TestProvider";
 import MenuBar from "../components/MenuBar";
-import { TestOperation } from "@/app/interface/main";
-import { Quiz } from "@/app/interface/quiz";
+import QuizContent from "../components/QuizContent";
+import { Skill } from "@/app/lib/interfaces";
 import QuizList from "../components/QuizList";
-import { Skill } from "@/app/interface/interfaces";
-import WritingQuizGroup from "../../components/WritingQuizGroup";
-import SpeakingQuizGroup from "../../components/SpeakingQuizGroup";
+import QuizGroup from "../components/QuizGroup";
+import WritingQuiz from "../components/WritingQuiz";
+import SpeakingQuiz from "../components/SpeakingQuiz";
+import PopupCreatePractice from "../components/CreatePractice/PopupCreatePractice";
+import AudioPlayer from "../components/AudioPlayer";
+import ScrollTopButton from "@/components/ScrollTopButton/ScrollTopButton";
+import LoadingPage from "@/components/Page/LoadingPage";
+import NotFoundPage from "@/components/Page/NotFoundPage";
 
 export default function Page({ params }: { params: { id: string } }) {
 	return (
-		<QuizDataProvider>
-			<QuizManagement id={params.id} />
-		</QuizDataProvider>
+		<TestProvider>
+			<Test id={params.id} />
+		</TestProvider>
 	);
 }
 
-interface QuizManagementProps {
+interface TestProps {
 	id: string;
 }
 
-function QuizManagement({ id }: QuizManagementProps) {
-	const { quizList, currentQuizIndex, setQuizList, setCurrentTest } =
-		useQuizData();
+function Test({ id }: TestProps) {
+	const {
+		test,
+		currentQuizIndex,
+		currentSkill,
+		isOpenCreateQuizPractice,
+		hasPrivilege,
+		onChangeTest,
+		getTestById,
+	} = useTest();
 
 	useEffect(() => {
-		const testOperation = new TestOperation();
-		testOperation.findOne(id as any, testToken).then((response) => {
-			if (!response.data) return null;
-
-			console.log(response.data);
-			let newTest = {
-				id: response.data.id,
-				name: response.data.name,
-			};
-			setCurrentTest(newTest);
-
-			let quizList: Quiz[] = [];
-			if (response.data.reading) {
-				const quizData = response.data.reading as QuizDataRecieve[];
-				quizData.forEach((quizdata) => {
-					const quiz = quizDataRecieve2Quiz(quizdata);
-					quizList.push(quiz);
-				});
-			}
-			if (response.data.listening) {
-				const quizData = response.data.listening as QuizDataRecieve[];
-				quizData.forEach((quizdata) => {
-					const quiz = quizDataRecieve2Quiz(quizdata);
-					quizList.push(quiz);
-				});
-			}
-			if (response.data.writing) {
-				const quizData = response.data.writing as QuizDataRecieve[];
-				quizData.forEach((quizdata) => {
-					const quiz = quizDataRecieve2Quiz(quizdata);
-					quizList.push(quiz);
-				});
-			}
-			if (response.data.speaking) {
-				const quizData = response.data.speaking as QuizDataRecieve[];
-				quizData.forEach((quizdata) => {
-					const quiz = quizDataRecieve2Quiz(quizdata);
-					quizList.push(quiz);
-				});
-			}
-			setQuizList(quizList);
-		});
+		getTestById(id);
 	}, []);
 
+	const onChangeName = (e: any) => {
+		onChangeTest({ ...test, name: e.target.value });
+	};
+
+	if (!test) {
+		return (
+			<NotFoundPage
+				message="Test not found"
+				subMessage={`There are no test with id: ${id}`}
+				backto="Back to ielts management"
+				backtoLink="/management/ielts"
+			/>
+		);
+	}
+
+	if (test.id == "") {
+		return <LoadingPage />;
+	}
+
 	return (
-		<main className="flex items-center justify-center flex-1">
+		<main className="relative flex flex-col items-center flex-1">
+			<ScrollTopButton />
+			{isOpenCreateQuizPractice && <PopupCreatePractice />}
 			<div className="flex flex-col items-center w-11/12 min-h-screen gap-4 py-4">
 				<div className="flex flex-col w-full gap-1 h-fit">
-					<MenuBar />
-
-					<hr className="w-full border-[0.5px] border-gray-200" />
-
-					<div className="flex flex-row w-full gap-8 h-fit">
-						<div className="flex flex-col w-2/3">
+					{hasPrivilege && <MenuBar />}
+					<div className="w-full pr-5">
+						<hr className="w-full border-[0.5px] border-gray-200 dark:border-gray-400" />
+					</div>
+					<div className="flex flex-row items-center justify-between w-full">
+						<div className="flex flex-col gap-1 w-[70%]">
 							<QuizList />
+							<div className="flex flex-row w-full gap-2 pt-2 h-fit items-center">
+								<input
+									value={test ? test.name : ""}
+									disabled={!hasPrivilege}
+									onChange={onChangeName}
+									className="w-full px-4 py-1 text-xl bg-white rounded-md shadow-md outline-none h-fit dark:bg-pot-black ring-0"
+									placeholder="Enter your test name"
+								/>
+								<input
+									disabled={!hasPrivilege}
+									className="w-40 px-4 py-1 text-xl bg-white rounded-md shadow-md outline-none h-fit dark:bg-pot-black ring-0"
+									type="number"
+									placeholder="Quiz duration"
+								/>
+								<span className="text-lg">sec</span>
+							</div>
 						</div>
-
-						<div className="flex-1 m-1"></div>
+						<div className="w-[25%] h-fit">
+							{currentSkill == Skill.LISTENING && <AudioPlayer />}
+						</div>
 					</div>
 				</div>
 
-				<div className="flex flex-row w-full gap-8 h-fit justify-center">
-					{quizList.map((quiz, index) => {
-						if (index != currentQuizIndex) return null;
-
-						switch (quiz.skill) {
-							case Skill.READING:
-								return (
-									<Fragment key={index}>
-										<div className="w-1/2 h-fit">
-											<QuizContent
-												quizIndex={index}
-												oneQuiz
-											/>
-										</div>
-										<div className="w-1/2 h-fit">
-											<QuizGroup quizIndex={index} />
-										</div>
-									</Fragment>
-								);
-							case Skill.LISTENING:
-								return (
-									<div key={index} className="w-2/3 h-fit">
-										<QuizGroup quizIndex={index} />
-									</div>
-								);
-							case Skill.WRITING:
-								return (
-									<div key={index} className="w-2/3 h-fit">
-										<WritingQuizGroup quizIndex={index} />
-									</div>
-								);
-							case Skill.SPEAKING:
-								return (
-									<div key={index} className="w-2/3 h-fit">
-										<SpeakingQuizGroup quizIndex={index} />
-									</div>
-								);
-						}
+				<div className="flex flex-row justify-center w-full gap-8 h-fit">
+					{test.reading.map((quiz, index) => {
+						if (
+							currentSkill !== Skill.READING ||
+							currentQuizIndex != index
+						)
+							return null;
+						return (
+							<Fragment key={quiz.id + index}>
+								<div className="w-1/2 h-fit">
+									<QuizContent
+										quizIndex={index}
+										quizSkill={Skill.READING}
+									/>
+								</div>
+								<div className="w-1/2 h-fit">
+									<QuizGroup
+										quizIndex={index}
+										skill={Skill.READING}
+									/>
+								</div>
+							</Fragment>
+						);
+					})}
+					{test.listening.map((quiz, index) => {
+						if (
+							currentSkill !== Skill.LISTENING ||
+							currentQuizIndex != index
+						)
+							return null;
+						return (
+							<Fragment key={quiz.id + index}>
+								<div className="w-1/2 h-fit">
+									<QuizContent
+										quizIndex={index}
+										quizSkill={Skill.LISTENING}
+									/>
+								</div>
+								<div className="w-1/2 h-fit">
+									<QuizGroup
+										quizIndex={index}
+										skill={Skill.LISTENING}
+									/>
+								</div>
+							</Fragment>
+						);
+					})}
+					{test.writing.map((quiz, index) => {
+						if (
+							currentSkill !== Skill.WRITING ||
+							currentQuizIndex != index
+						)
+							return null;
+						return (
+							<Fragment key={quiz.id + index}>
+								<div className="w-2/3 h-fit">
+									<WritingQuiz
+										quizIndex={index}
+										skill={Skill.WRITING}
+									/>
+								</div>
+							</Fragment>
+						);
+					})}
+					{test.speaking.map((quiz, index) => {
+						if (
+							currentSkill !== Skill.SPEAKING ||
+							currentQuizIndex != index
+						)
+							return null;
+						return (
+							<Fragment key={quiz.id + index}>
+								<div className="w-2/3 h-fit">
+									<SpeakingQuiz
+										quizIndex={index}
+										skill={Skill.SPEAKING}
+									/>
+								</div>
+							</Fragment>
+						);
 					})}
 				</div>
 			</div>
 		</main>
 	);
 }
-
-const testToken =
-	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIwOTgxMTE1LCJleHAiOjE3NTI1MTcxMTV9.VHdXs5y2Vey-YjmqLN7Uxn1kF1dC-TXZF0ro9_u5mJQ";

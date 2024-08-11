@@ -1,0 +1,128 @@
+POST https://engo.tiendungcorp.com/v1/auth/login
+Content-Type: application/json
+
+{
+    "identifier": "tranthenhan",
+    "password": "12345"
+}
+
+###
+
+GET https://engo.tiendungcorp.com/v1/tags/search
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIxODk4MDIwLCJleHAiOjE3NTM0MzQwMjB9.9Ut8K9PDmQt8hBgWYgxHbtvbwO6TICtqmMvhOTdkSac
+
+{
+    
+}
+
+###
+
+PUT https://engo.tiendungcorp.com/v1/tags/update/00aa3476-6a72-4893-9410-24f1f7a789c3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIxODk4MDIwLCJleHAiOjE3NTM0MzQwMjB9.9Ut8K9PDmQt8hBgWYgxHbtvbwO6TICtqmMvhOTdkSac
+
+{
+    "value": "True/False/Not given Questions",
+    "forQuiz": "false"
+}
+
+###
+
+POST https://engo.tiendungcorp.com/v1/accounts/search
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIxODk4MDIwLCJleHAiOjE3NTM0MzQwMjB9.9Ut8K9PDmQt8hBgWYgxHbtvbwO6TICtqmMvhOTdkSac
+
+{
+    "criteria": [
+        {
+            "field": "role",
+            "operator": "~",
+            "value": "Quản trị viên"
+        }
+    ],
+    "addition": {
+        "sort": [],
+        "page": 1,
+        "size": 6,
+        "group": null
+    }
+}
+
+###
+PUT https://engo.tiendungcorp.com/v1/accounts/update/2882db41-9bc0-415d-832a-f440f0012471
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+    "username": "user123",
+    "firstName": "Quang",
+    "lastName": "Trần Vĩ",
+    "roles": ["NONPAID_USER"],
+    "phoneNumber": "13413545",
+    "dateOfBirth": "2024-07-18T00:00:00.000Z"
+}
+
+###
+
+GET https://engo.tiendungcorp.com/v1/tests/f486242a-2d3e-48a2-b1c9-9093013b698e
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+###
+
+DELETE https://engo.tiendungcorp.com/v1/tests/42eff997-7296-40c9-b0c7-045506fb27aa
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+
+}
+
+###
+
+GET https://engo.tiendungcorp.com/v1/records/writing/answer/f0c8ac72-dbb1-42b4-ac73-7d62bcc49122
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+###
+
+POST https://engo.tiendungcorp.com/v1/records/search
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+    "criteria": [
+        {
+            "field": "testId",
+            "operator": "=",
+            "value": "c2709675-e23d-4ea3-91fa-c97d188b1aa1"
+        }
+    ],
+    "addition": {
+        "sort": [],
+        "page": 1,
+        "size": 200,
+        "group": null
+    }
+}
+
+###
+
+GET https://engo.tiendungcorp.com/v1/accounts/search/b42e81dd-231a-41a6-b9ec-395677778717
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+    
+}
+
+###
+
+GET https://engo.tiendungcorp.com/v1/privilege_config
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+    
+}

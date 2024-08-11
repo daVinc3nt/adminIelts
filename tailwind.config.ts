@@ -34,9 +34,6 @@ const config: Config = {
 		},
 	},
 	darkMode: "class",
-	plugins: [
-		require("tailwind-scrollbar-hide"),
-		require("autoprefixer"),
-	],
+	plugins: [require("tailwind-scrollbar-hide"), require("autoprefixer")],
 };
 export default config;
