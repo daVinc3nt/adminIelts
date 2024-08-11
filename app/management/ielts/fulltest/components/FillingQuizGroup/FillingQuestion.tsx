@@ -27,7 +27,7 @@ export default function FillingQuestion({
 	skill,
 }: FillingQuestionProps) {
 	const { onSetConfirmation, setSuccess } = useUtility();
-	const { test, onChangeQuiz } = useTest();
+	const { test, hasPrivilege, onChangeQuiz } = useTest();
 
 	const questionSettingRef = useClickOutsideDetails();
 
@@ -110,29 +110,32 @@ export default function FillingQuestion({
 						)}
 					</span>
 
-					<details ref={questionSettingRef} className="relative">
-						<summary className="list-none">
-							<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
-						</summary>
-						<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
-							<button
-								onClick={() => duplicateQuestion()}
-								className="flex items-center justify-between w-full p-2 text-xs text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Duplicate question
-								<MdControlPointDuplicate className="text-black size-4 dark:text-gray-200" />
-							</button>
-							<button
-								onClick={() => removeQuestion()}
-								className="flex items-center justify-between w-full p-2 text-xs text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Delete question
-								<BsTrash className="text-red-500 size-4" />
-							</button>
-						</div>
-					</details>
+					{hasPrivilege && (
+						<details ref={questionSettingRef} className="relative">
+							<summary className="list-none">
+								<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
+							</summary>
+							<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
+								<button
+									onClick={() => duplicateQuestion()}
+									className="flex items-center justify-between w-full p-2 text-xs text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Duplicate question
+									<MdControlPointDuplicate className="text-black size-4 dark:text-gray-200" />
+								</button>
+								<button
+									onClick={() => removeQuestion()}
+									className="flex items-center justify-between w-full p-2 text-xs text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Delete question
+									<BsTrash className="text-red-500 size-4" />
+								</button>
+							</div>
+						</details>
+					)}
 				</div>
 				<TextArea
 					value={currentQuestion.description}
 					onChangeInput={onChangeDescription}
+					disabled={!hasPrivilege}
 					placeholder="Type in your question here or leave it blank"
 					className="text-base bg-white border-transparent dark:bg-pot-black focus:border-transparent focus:ring-transparent dark:placeholder:text-gray-300"
 				/>
@@ -144,6 +147,7 @@ export default function FillingQuestion({
 					<TextArea
 						value={currentQuestion.answer.join("/")}
 						onChangeInput={onChangeAnswer}
+						disabled={!hasPrivilege}
 						className="flex-1 text-sm text-gray-400 dark:bg-pot-black focus:border-foreground-blue focus:ring-foreground-blue dark:focus:border-foreground-red dark:focus:ring-foreground-red"
 					/>
 				</div>
@@ -154,6 +158,7 @@ export default function FillingQuestion({
 					<TextArea
 						value={currentQuestion.explaination}
 						onChangeInput={onChangeExplaination}
+						disabled={!hasPrivilege}
 						className="flex-1 text-sm text-gray-400 dark:bg-pot-black focus:border-foreground-blue focus:ring-foreground-blue dark:focus:border-foreground-red dark:focus:ring-foreground-red"
 					/>
 				</div>

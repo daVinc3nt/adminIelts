@@ -7,6 +7,7 @@ export default function AudioPlayer() {
 		currentQuizIndex,
 		fileList,
 		urlList,
+		hasPrivilege,
 		onChangeTest,
 		onChangeFileList,
 		onChangeUrlList,
@@ -41,6 +42,7 @@ export default function AudioPlayer() {
 			<hr className="w-full border border-gray-200 dark:border-gray-400" />
 			<input
 				type="file"
+				disabled={!hasPrivilege}
 				id="audio"
 				accept="audio/*"
 				onChange={onSelectFile}

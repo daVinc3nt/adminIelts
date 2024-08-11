@@ -26,6 +26,8 @@ function RecordManagement({ testId }: RecordManagementProps) {
 		test,
 		currentPage,
 		searchCriteria,
+		numberOfPage,
+		numberOfRecord,
 
 		getTestByTestId,
 		handleChangePage,
@@ -61,10 +63,13 @@ function RecordManagement({ testId }: RecordManagementProps) {
 
 	return (
 		<main className="flex justify-center flex-1 main">
-			<div className="flex flex-col items-center w-9/12 h-full gap-6 py-4">
-				<div className="flex flex-row items-center w-full gap-4 h-fit">
+			<div className="flex flex-col items-center w-9/12 h-full gap-4 py-4">
+				<div className="flex flex-col w-full h-fit">
 					<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
 						{test ? test.name : ""} Records Management
+					</span>
+					<span className="text-xl text-zinc-500 dark:text-zinc-400">
+						{numberOfRecord} records
 					</span>
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
@@ -87,7 +92,7 @@ function RecordManagement({ testId }: RecordManagementProps) {
 					<RecordList />
 				</div>
 				<Pagination
-					numberOfPages={10}
+					numberOfPages={numberOfPage}
 					page={currentPage}
 					handleChangePage={handleChangePage}
 				/>

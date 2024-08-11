@@ -43,8 +43,9 @@ export default function MultipleChoiceQuizGroup({
 
 	const {
 		test,
-		onChangeQuiz,
 		isLoading,
+		hasPrivilege,
+		onChangeQuiz,
 		onChangeIsOpenCreateQuizPractice,
 		onChangePracticeType,
 		onSelectPractice,
@@ -143,48 +144,53 @@ export default function MultipleChoiceQuizGroup({
 						</span>
 					</div>
 
-					<details ref={quizGroupSettingRef} className="relative">
-						<summary className="list-none">
-							<BsThreeDots className="p-1 text-white size-8" />
-						</summary>
-						<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center text-xs">
-							<button
-								onClick={() => removeStyle()}
-								className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Clear style
-								<AiOutlineClear className="size-4" />
-							</button>
-							{!test.isPractice ? (
-								currentGroup.linkToTest ? (
-									<Link
-										href={`/management/ielts/fulltest/${currentGroup.linkToTest}`}
-										target="_blank"
-										className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-										Go to practice
-										<FaArrowRight className="size-4" />
-									</Link>
-								) : (
-									<button
-										onClick={() => onOpenCreatePractice()}
-										className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-										Create practice
-										<FiFilePlus className="size-4" />
-									</button>
-								)
-							) : null}
-							<button
-								onClick={() => removeQuizGroup()}
-								className="flex items-center justify-between w-full p-2 text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Delete group
-								<BsTrash className="text-red-500 size-4" />
-							</button>
-						</div>
-					</details>
+					{hasPrivilege && (
+						<details ref={quizGroupSettingRef} className="relative">
+							<summary className="list-none">
+								<BsThreeDots className="p-1 text-white size-8" />
+							</summary>
+							<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center text-xs">
+								<button
+									onClick={() => removeStyle()}
+									className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Clear style
+									<AiOutlineClear className="size-4" />
+								</button>
+								{!test.isPractice ? (
+									currentGroup.linkToTest ? (
+										<Link
+											href={`/management/ielts/fulltest/${currentGroup.linkToTest}`}
+											target="_blank"
+											className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+											Go to practice
+											<FaArrowRight className="size-4" />
+										</Link>
+									) : (
+										<button
+											onClick={() =>
+												onOpenCreatePractice()
+											}
+											className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+											Create practice
+											<FiFilePlus className="size-4" />
+										</button>
+									)
+								) : null}
+								<button
+									onClick={() => removeQuizGroup()}
+									className="flex items-center justify-between w-full p-2 text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Delete group
+									<BsTrash className="text-red-500 size-4" />
+								</button>
+							</div>
+						</details>
+					)}
 				</div>
 
 				<CK5Editor
 					content={currentGroup.question}
 					onChangeContent={onChangeQuestion}
+					disable={!hasPrivilege}
 				/>
 			</div>
 			<div className="flex flex-col w-full gap-8 h-fit">
@@ -200,11 +206,13 @@ export default function MultipleChoiceQuizGroup({
 					);
 				})}
 			</div>
-			<button
-				onClick={() => addMultipleChoiceQuiz()}
-				className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
-				Add Question
-			</button>
+			{hasPrivilege && (
+				<button
+					onClick={() => addMultipleChoiceQuiz()}
+					className="p-1 text-white rounded-md bg-foreground-blue dark:bg-foreground-red dark:text-gray-200 w-fit h-fit">
+					Add Question
+				</button>
+			)}
 		</div>
 	);
 }

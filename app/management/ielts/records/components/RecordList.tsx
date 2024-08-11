@@ -2,9 +2,7 @@
 import { Fragment } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useRecordManagement } from "../provider/RecordManagementProvider";
-import { FaRegCheckCircle } from "react-icons/fa";
-import { FiXCircle } from "react-icons/fi";
-import { IoMdInformationCircleOutline } from "react-icons/io";
+import { IoMdInformationCircleOutline, IoMdRefresh } from "react-icons/io";
 import { FaRegTrashCan } from "react-icons/fa6";
 import Link from "next/link";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
@@ -12,17 +10,22 @@ import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 import { useUtility } from "@/app/provider/UtilityProvider";
 
 export default function RecordList() {
+	const { refresh } = useRecordManagement();
 	return (
 		<div className="flex flex-col items-center w-full p-4 pt-2  bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[438px] dark:bg-pot-black">
 			<div className="flex flex-row items-center w-full gap-2 py-2 font-medium text-gray-400 h-fit">
 				<div className="w-[3%]"></div>
 				<div className="w-[22%]">Username</div>
 				<div className="w-[30%]">Record id</div>
-				<div className="w-[10%] text-center">Completed</div>
 				<div className="w-[10%] text-center">Score</div>
-				<div className="w-[10%] text-center">Date created</div>
-				<div className="w-[10%] text-center">Last update</div>
-				<div className="w-[5%]"></div>
+				<div className="w-[15%] text-center">Created at</div>
+				<div className="w-[15%] text-center">Updated at</div>
+				<div className="w-[5%]">
+					<IoMdRefresh
+						onClick={() => refresh()}
+						className="rounded-md size-6 hover:bg-gray-100 dark:hover:bg-gray-22"
+					/>
+				</div>
 			</div>
 			<hr className="w-full my-1 border border-gray-200 dark:border-gray-400" />
 			<List />
@@ -46,12 +49,6 @@ function List() {
 		<Fragment>
 			<div className="flex flex-col items-center w-full h-fit">
 				{recordList.map((record) => {
-					const isCompleteFullTest =
-						record.completeListening &&
-						record.completeReading &&
-						record.completeWriting &&
-						record.completeSpeaking;
-
 					return (
 						<div
 							key={record.id}
@@ -67,26 +64,39 @@ function List() {
 									@{record.account.username}
 								</span>
 							</div>
-							<div className="w-[30%] font-bold">{record.id}</div>
-							<div className="w-[10%] flex items-center justify-center">
-								{isCompleteFullTest ? (
-									<FaRegCheckCircle className="text-green-500 size-5" />
-								) : (
-									<FiXCircle className="text-red-500 size-5" />
-								)}
+							<div className="w-[30%] font-bold text-sm">
+								{record.id}
 							</div>
 							<div className="w-[10%] text-center font-semibold">
 								{record.score}
 							</div>
-							<div className="w-[10%] text-center font-semibold">
-								{new Date(
-									record.createdAt
-								).toLocaleDateString()}
+							<div className="w-[15%] flex flex-col items-center">
+								<span className="text-base font-semibold">
+									{new Date(
+										record.createdAt
+									).toLocaleDateString()}
+								</span>
+								<span className="text-xs">
+									{
+										new Date(record.createdAt)
+											.toTimeString()
+											.split(" ")[0]
+									}
+								</span>
 							</div>
-							<div className="w-[10%] text-center font-semibold">
-								{new Date(
-									record.updatedAt
-								).toLocaleDateString()}
+							<div className="w-[15%] flex flex-col items-center">
+								<span className="text-base font-semibold">
+									{new Date(
+										record.updatedAt
+									).toLocaleDateString()}
+								</span>
+								<span className="text-xs ">
+									{
+										new Date(record.updatedAt)
+											.toTimeString()
+											.split(" ")[0]
+									}
+								</span>
 							</div>
 							<div className="w-[5%]">
 								<OptionButton id={record.id} />
@@ -105,7 +115,7 @@ interface OptionButtonProps {
 
 function OptionButton({ id }: OptionButtonProps) {
 	const { onSetConfirmation } = useUtility();
-	const { deleteRecord } = useRecordManagement();
+	const { deleteRecord, hasPrivilege } = useRecordManagement();
 
 	const inforRef = useClickOutsideDetails();
 
@@ -136,12 +146,14 @@ function OptionButton({ id }: OptionButtonProps) {
 					</span>
 					<IoMdInformationCircleOutline className="size-[18px]" />
 				</Link>
-				<div
-					onClick={() => del()}
-					className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
-					<span className="text-xs text-red-500">Delete</span>
-					<FaRegTrashCan className="text-red-500 size-4" />
-				</div>
+				{hasPrivilege && (
+					<div
+						onClick={() => del()}
+						className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
+						<span className="text-xs text-red-500">Delete</span>
+						<FaRegTrashCan className="text-red-500 size-4" />
+					</div>
+				)}
 			</div>
 		</details>
 	);

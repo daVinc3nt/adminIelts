@@ -1,5 +1,8 @@
 "use client";
+import { setId, setLogin } from "@/app/interface/cookies/cookies";
+import { isAdmin } from "@/app/interface/privilegeconfig/privilegeconfig";
 import { AuthOperation } from "@/app/lib/main";
+import { useAuth } from "@/app/provider/AuthProvider";
 import { useUtility } from "@/app/provider/UtilityProvider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +11,7 @@ interface CredentialsFormProps {
 	csrfToken?: string;
 }
 export function CredentialsForm(props: CredentialsFormProps) {
+	const { setIsLogin, setUserInformation } = useAuth();
 	const { setError, setSuccess } = useUtility();
 
 	const router = useRouter();
@@ -26,12 +30,22 @@ export function CredentialsForm(props: CredentialsFormProps) {
 			})
 			.then((response) => {
 				if (response.success) {
-					setSuccess("Login successful");
-					localStorage.setItem(
-						"userinfo",
-						JSON.stringify(response.data)
-					);
-					router.push("/");
+					const userRole = response.data.roles.map((role) => {
+						return role.role;
+					});
+					if (isAdmin(userRole)) {
+						setSuccess("Login successful");
+						setUserInformation(response.data);
+						setId(response.data.id);
+						setLogin(true);
+						setIsLogin(true);
+						window.location.href = "/";
+					} else {
+						setError("You are not allowed to access this page");
+						setErrorMessage(
+							"You are not allowed to access this page"
+						);
+					}
 				} else {
 					setError("Your username/password is wrong");
 					setErrorMessage("Your username/password is wrong");

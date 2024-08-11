@@ -91,7 +91,6 @@ export default function PopupCreatePractice() {
 			files: [currentFile],
 			data: createPracticeFromTest,
 		};
-		console.log(createFullPracticeFromTest);
 		createPratice(createFullPracticeFromTest);
 	};
 

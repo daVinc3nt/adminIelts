@@ -48,6 +48,19 @@ export default function RecordQuizList() {
 					</div>
 				);
 			})}
+			{record.writing.map((quiz, index) => {
+				return (
+					<div
+						onClick={() => {
+							onChangeCurrentQuizIndex(index);
+							onChangeSkill(Skill.WRITING);
+						}}
+						key={quiz.id + index}
+						className={`relative flex flex-row items-center justify-center whitespace-nowrap w-fit h-fit px-3 py-1 text-center rounded-md cursor-pointer  ${currentQuizIndex == index && currentSkill == Skill.WRITING ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-mecury-gray"}`}>
+						Writing Part {index + 1}
+					</div>
+				);
+			})}
 		</div>
 	);
 }

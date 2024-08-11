@@ -31,7 +31,7 @@ export default function MultipleChoiceQuestion({
 	const { onSetConfirmation, setSuccess } = useUtility();
 	const questionSettingRef = useClickOutsideDetails();
 
-	const { test, onChangeQuiz } = useTest();
+	const { test, hasPrivilege, onChangeQuiz } = useTest();
 
 	let currentQuiz: Quiz;
 	switch (skill) {
@@ -127,29 +127,32 @@ export default function MultipleChoiceQuestion({
 						)}
 					</span>
 
-					<details ref={questionSettingRef} className="relative">
-						<summary className="list-none">
-							<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
-						</summary>
-						<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
-							<button
-								onClick={() => duplicateQuestion()}
-								className="flex items-center justify-between w-full p-2 text-xs text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Duplicate question
-								<MdControlPointDuplicate className="text-black size-4 dark:text-gray-200" />
-							</button>
-							<button
-								onClick={() => removeQuestion()}
-								className="flex items-center justify-between w-full p-2 text-xs text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Delete question
-								<BsTrash className="text-red-500 size-4" />
-							</button>
-						</div>
-					</details>
+					{hasPrivilege && (
+						<details ref={questionSettingRef} className="relative">
+							<summary className="list-none">
+								<BsThreeDots className="p-1 text-white rounded-full size-7 bg-foreground-blue dark:bg-foreground-red" />
+							</summary>
+							<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
+								<button
+									onClick={() => duplicateQuestion()}
+									className="flex items-center justify-between w-full p-2 text-xs text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Duplicate question
+									<MdControlPointDuplicate className="text-black size-4 dark:text-gray-200" />
+								</button>
+								<button
+									onClick={() => removeQuestion()}
+									className="flex items-center justify-between w-full p-2 text-xs text-red-500 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Delete question
+									<BsTrash className="text-red-500 size-4" />
+								</button>
+							</div>
+						</details>
+					)}
 				</div>
 				<TextArea
 					value={currentQuestion.description}
 					onChangeInput={onChangeDescription}
+					disabled={!hasPrivilege}
 					placeholder="Type in your question here"
 					className="text-base bg-white border-transparent dark:bg-pot-black focus:border-transparent focus:ring-transparent dark:placeholder:text-gray-300"
 				/>
@@ -171,11 +174,15 @@ export default function MultipleChoiceQuestion({
 						);
 					})}
 
-					<div className="flex items-center justify-center w-full h-fit">
-						<button title="Add option" onClick={() => addOption()}>
-							<FaPlus className="text-foreground-blue dark:text-foreground-red size-5" />
-						</button>
-					</div>
+					{hasPrivilege && (
+						<div className="flex items-center justify-center w-full h-fit">
+							<button
+								title="Add option"
+								onClick={() => addOption()}>
+								<FaPlus className="text-foreground-blue dark:text-foreground-red size-5" />
+							</button>
+						</div>
+					)}
 				</div>
 				<hr className="w-full border-t dark:border-gray-400" />
 
@@ -192,6 +199,7 @@ export default function MultipleChoiceQuestion({
 					<TextArea
 						value={currentQuestion.explaination}
 						onChangeInput={onChangeExplaination}
+						disabled={!hasPrivilege}
 						className="flex-1 text-sm text-gray-400 dark:bg-pot-black focus:border-foreground-blue focus:ring-foreground-blue dark:focus:border-foreground-red dark:focus:ring-foreground-red"
 					/>
 				</div>
@@ -219,7 +227,7 @@ function Option({
 	setIsSelect,
 	skill,
 }: OptionProps) {
-	const { test, onChangeQuiz } = useTest();
+	const { test, hasPrivilege, onChangeQuiz } = useTest();
 
 	let currentQuiz: Quiz;
 	switch (skill) {
@@ -281,6 +289,7 @@ function Option({
 	};
 
 	const onSelectOption = (index: number) => {
+		if (!hasPrivilege) return;
 		const newIsSelect = [...isSelect];
 
 		if (newIsSelect[index] == -1) {
@@ -308,13 +317,15 @@ function Option({
 
 	return (
 		<div className="flex flex-row items-center justify-center w-full gap-2 h-fit">
-			<div
-				onClick={() => onSelectOption(optionIndex)}
-				className="flex items-center justify-center border rounded-full size-5 border-foreground-blue dark:border-foreground-red">
-				{isSelect[optionIndex] > -1 && (
-					<MdDone className="size-4 text-foreground-blue dark:text-foreground-red" />
-				)}
-			</div>
+			{
+				<div
+					onClick={() => onSelectOption(optionIndex)}
+					className="flex items-center justify-center border rounded-full size-5 border-foreground-blue dark:border-foreground-red">
+					{isSelect[optionIndex] > -1 && (
+						<MdDone className="size-4 text-foreground-blue dark:text-foreground-red" />
+					)}
+				</div>
+			}
 
 			<span className="text-lg font-bold text-black dark:text-gray-200">
 				{getOptionAlpha(optionIndex)}.
@@ -322,12 +333,15 @@ function Option({
 			<TextArea
 				value={currentOption}
 				onChangeInput={onChangeOption}
+				disabled={!hasPrivilege}
 				className="flex-1 text-sm text-gray-white dark:text-gray-200 dark:bg-pot-black focus:border-foreground-blue focus:ring-foreground-blue dark:focus:border-foreground-red dark:focus:ring-foreground-red"
 			/>
 
-			<div onClick={() => removeOption(optionIndex)}>
-				<FaMinus className="text-foreground-blue dark:text-foreground-red" />
-			</div>
+			{hasPrivilege && (
+				<div onClick={() => removeOption(optionIndex)}>
+					<FaMinus className="text-foreground-blue dark:text-foreground-red" />
+				</div>
+			)}
 		</div>
 	);
 }

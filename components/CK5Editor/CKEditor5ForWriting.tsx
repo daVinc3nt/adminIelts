@@ -74,7 +74,6 @@ export default function CKEditor5ForWriting({
 				"undo",
 				"redo",
 				"|",
-				"selectAll",
 				"|",
 				"heading",
 				"|",

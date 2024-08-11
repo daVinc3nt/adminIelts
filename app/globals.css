@@ -64,3 +64,6 @@ select:-webkit-autofill {
     border-collapse: collapse;
 }
 
+.preview {
+  white-space-collapse: discard;
+}

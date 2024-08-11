@@ -1,4 +1,5 @@
 "use client";
+import { getSid } from "@/app/interface/cookies/cookies";
 import { Flashcard } from "@/app/interface/flashcard/flashcard";
 import { FTag } from "@/app/interface/tag/tag";
 import {
@@ -35,6 +36,7 @@ interface FlashcardContextType {
 	numberOfPages: number;
 	isLoading: boolean;
 	currentTag: string;
+	numberOfFlashCard: number;
 
 	addFlashcard: (flashcard: CreateFullFlashCard) => Promise<boolean>;
 	updateFlashcard: (flashcard: CreateFullFlashCard, id: string) => void;
@@ -70,7 +72,6 @@ export default function FlashcardManagementProvider({
 }: {
 	children: React.ReactNode;
 }) {
-	const { sid } = useAuth();
 	const { setError, setSuccess } = useUtility();
 	const [flashcardList, setFlashcardList] = useState<Flashcard[]>([]);
 	const [currentFlashcard, setCurrentFlashcard] = useState<Flashcard>(null);
@@ -83,14 +84,16 @@ export default function FlashcardManagementProvider({
 	const [searchCriteria, setSearchCritera] =
 		useState<SearchCriteria>(initSearchCriteria);
 	const [fTagList, setFTagList] = useState<FTag[]>([]);
-	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [numberOfPages, setNumberOfPages] = useState<number>(10);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [currentTag, setCurrentTag] = useState<string>("");
 
+	const [numberOfPages, setNumberOfPages] = useState<number>(10);
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [numberOfFlashCard, setNumberOfFlashCard] = useState<number>(0);
+
 	useEffect(() => {
 		fetchFlashcardList();
-	}, [currentPage]);
+	}, []);
 
 	const fetchFlashcardList = () => {
 		const newFlashcardOperation = new FlashCardOperation();
@@ -115,19 +118,78 @@ export default function FlashcardManagementProvider({
 			});
 		}
 
-		console.log(searchPayload);
-
-		newFlashcardOperation.search(searchPayload, sid).then((res) => {
+		newFlashcardOperation.search(searchPayload, getSid()).then((res) => {
 			if (res.success) {
-				console.log(res.data);
 				setFlashcardList(res.data);
+				if (searchPayload.criteria.length > 0) {
+					if (res.data.length == numberOfFlashcardPerPage) {
+						setNumberOfPages(2);
+					} else {
+						setNumberOfPages(1);
+					}
+				} else {
+					newFlashcardOperation.count(getSid()).then((res) => {
+						setNumberOfFlashCard(res.data);
+						setNumberOfPages(
+							Math.ceil(res.data / numberOfFlashcardPerPage)
+						);
+					});
+				}
 			} else {
 				setError(res.message);
 				console.error(res.message);
 			}
 			setIsLoading(false);
 		});
+		setCurrentPage(1);
 	};
+
+	const changePage = () => {
+		const newFlashcardOperation = new FlashCardOperation();
+
+		const searchPayload: SearchPayload = {
+			criteria: [],
+			addition: {
+				sort: [],
+				page: currentPage,
+				size: numberOfFlashcardPerPage,
+				group: null,
+			},
+		};
+		if (searchCriteria.value !== "") {
+			searchPayload.criteria.push(searchCriteria);
+		}
+		if (currentTag !== "") {
+			searchPayload.criteria.push({
+				field: "tag",
+				operator: "=",
+				value: currentTag,
+			});
+		}
+
+		newFlashcardOperation.search(searchPayload, getSid()).then((res) => {
+			if (res.success) {
+				setFlashcardList(res.data);
+				if (searchPayload.criteria.length > 0) {
+					if (
+						res.data.length == numberOfFlashcardPerPage &&
+						currentPage == numberOfPages
+					) {
+						setNumberOfPages(numberOfPages + 1);
+					}
+				}
+			} else {
+				setError(res.message);
+				console.error(res.message);
+			}
+		});
+	};
+
+	useEffect(() => {
+		if (!isLoading) {
+			changePage();
+		}
+	}, [currentPage]);
 
 	useEffect(() => {
 		const fetchFTagList = () => {
@@ -149,7 +211,7 @@ export default function FlashcardManagementProvider({
 							group: [],
 						},
 					},
-					sid
+					getSid()
 				)
 				.then((res) => {
 					if (res.success) {
@@ -170,23 +232,27 @@ export default function FlashcardManagementProvider({
 			return;
 		}
 		const newFTagOperation = new FTagOperation();
-		newFTagOperation.create({ value, isPublic: true }, sid).then((res) => {
-			if (res.success) {
-				setSuccess("Create tag successfully");
-				setFTagList([...fTagList, res.data]);
-			} else {
-				setError(res.message);
-				console.error(res.message);
-			}
-		});
+		newFTagOperation
+			.create({ value, isPublic: true }, getSid())
+			.then((res) => {
+				if (res.success) {
+					setSuccess("Create tag successfully");
+					setFTagList([...fTagList, res.data]);
+					setNumberOfFlashCard(numberOfFlashCard + 1);
+				} else {
+					setError(res.message);
+					console.error(res.message);
+				}
+			});
 	};
 
 	const deleteFtag = (id: string) => {
 		const newFTagOperation = new FTagOperation();
-		newFTagOperation.delete(id as any, sid).then((res) => {
+		newFTagOperation.delete(id as any, getSid()).then((res) => {
 			if (res.success) {
 				setSuccess("Delete tag successfully");
 				setFTagList(fTagList.filter((tag) => tag.id !== id));
+				setNumberOfFlashCard(numberOfFlashCard - 1);
 			} else {
 				setError(res.message);
 				console.error(res.message);
@@ -196,7 +262,7 @@ export default function FlashcardManagementProvider({
 
 	const addFlashcard = async (flashcard: CreateFullFlashCard) => {
 		const newFlashcardOperation = new FlashCardOperation();
-		const res = await newFlashcardOperation.create(flashcard, sid);
+		const res = await newFlashcardOperation.create(flashcard, getSid());
 		if (res.success) {
 			setSuccess("Add flashcard successfully");
 			setFlashcardList([...flashcardList, res.data]);
@@ -209,24 +275,26 @@ export default function FlashcardManagementProvider({
 
 	const updateFlashcard = (flashcard: CreateFullFlashCard, id: string) => {
 		const newFlashcardOperation = new FlashCardOperation();
-		newFlashcardOperation.update(id as any, flashcard, sid).then((res) => {
-			if (res.success) {
-				setSuccess("Update flashcard successfully");
-				setFlashcardList(
-					flashcardList.map((flashcard) =>
-						flashcard.id === id ? res.data : flashcard
-					)
-				);
-			} else {
-				setError(res.message);
-				console.error(res.message);
-			}
-		});
+		newFlashcardOperation
+			.update(id as any, flashcard, getSid())
+			.then((res) => {
+				if (res.success) {
+					setSuccess("Update flashcard successfully");
+					setFlashcardList(
+						flashcardList.map((flashcard) =>
+							flashcard.id === id ? res.data : flashcard
+						)
+					);
+				} else {
+					setError(res.message);
+					console.error(res.message);
+				}
+			});
 	};
 
 	const deleteFlashcard = (id: string) => {
 		const newFlashcardOperation = new FlashCardOperation();
-		newFlashcardOperation.delete(id as any, sid).then((res) => {
+		newFlashcardOperation.delete(id as any, getSid()).then((res) => {
 			if (res.success) {
 				setSuccess("Delete flashcard successfully");
 				setFlashcardList(
@@ -266,7 +334,7 @@ export default function FlashcardManagementProvider({
 	const getImagePath = async (path: string | null) => {
 		if (!path) return null;
 		const newUploadOperation = new UploadOperation();
-		const res = await newUploadOperation.search(path, sid);
+		const res = await newUploadOperation.search(path, getSid());
 		if (res.success) {
 			return res.data;
 		}
@@ -274,7 +342,6 @@ export default function FlashcardManagementProvider({
 	};
 
 	const onChangePage = (_: any, page: number) => {
-		console.log(page);
 		setCurrentPage(page);
 	};
 
@@ -297,6 +364,7 @@ export default function FlashcardManagementProvider({
 				numberOfPages,
 				isLoading,
 				currentTag,
+				numberOfFlashCard,
 
 				addFlashcard,
 				updateFlashcard,

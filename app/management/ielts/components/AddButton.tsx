@@ -2,9 +2,15 @@
 import { FaPlus } from "react-icons/fa";
 import { useTestManagement } from "../provider/TestManagementProvider";
 import { useState } from "react";
+import { useAuth } from "@/app/provider/AuthProvider";
+import {
+	getRoleFromRoleInfor,
+	getTestPrivilege,
+} from "@/app/interface/privilegeconfig/privilegeconfig";
 
 export default function AddButton() {
-	const { createTest } = useTestManagement();
+	const { userInformation, privilage } = useAuth();
+	const { createTest, isLoading } = useTestManagement();
 	const [isDisabled, setIsDisabled] = useState(false);
 
 	const onClick = () => {
@@ -15,6 +21,17 @@ export default function AddButton() {
 			}
 		});
 	};
+
+	if (isLoading) {
+		return null;
+	}
+
+	if (!isLoading) {
+		const userRoles = getRoleFromRoleInfor(userInformation.roles);
+		if (!getTestPrivilege(userRoles, "create", privilage)) {
+			return null;
+		}
+	}
 
 	return (
 		<button

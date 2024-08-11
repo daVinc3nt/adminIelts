@@ -5,7 +5,7 @@ import "./globals.css";
 import AuthProvider from "./provider/AuthProvider";
 import { Metadata } from "next";
 import UtilityProvider from "./provider/UtilityProvider";
-import Layout from "./test/sublayout";
+import Layout from "./sublayout";
 
 export const metadata: Metadata = {
 	title: "Engonow",

@@ -1,4 +1,9 @@
 "use client";
+import { getSid } from "@/app/interface/cookies/cookies";
+import {
+	getRemarkRequestPrivilege,
+	getRoleFromRoleInfor,
+} from "@/app/interface/privilegeconfig/privilegeconfig";
 import { SearchCriteria, SearchPayload } from "@/app/lib/interfaces";
 import { RemarkRequestOperation } from "@/app/lib/main";
 import { useAuth } from "@/app/provider/AuthProvider";
@@ -24,6 +29,9 @@ interface WritingManagementContextType {
 	currentPage: number;
 	searchCriteria: SearchCriteria;
 	isLoading: boolean;
+	numberOfPages: number;
+	numberOfWriting: number;
+	hasPrivilege: boolean;
 
 	search: () => void;
 	handleChangePage: (_: any, page: number) => void;
@@ -50,7 +58,7 @@ export default function WritingManagementProvider({
 }: {
 	children: ReactNode;
 }) {
-	const { sid } = useAuth();
+	const { userInformation, privilage } = useAuth();
 	const { setError, setSuccess } = useUtility();
 
 	const [writingList, setWritingList] = useState<WritingAnswerInfor[]>([]);
@@ -58,12 +66,74 @@ export default function WritingManagementProvider({
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [searchCriteria, setSearchCriteria] =
 		useState<SearchCriteria>(initSearchCriteria);
+	const [numberOfPages, setNumberOfPages] = useState<number>(10);
+	const [numberOfWriting, setNumberOfWriting] = useState<number>(0);
+	const [hasPrivilege, setHasPrivilege] = useState<boolean>(false);
+
+	useEffect(() => {
+		const userRoles = userInformation?.roles;
+		if (userRoles) {
+			const newPrivilege = getRemarkRequestPrivilege(
+				getRoleFromRoleInfor(userRoles),
+				"search",
+				privilage
+			);
+			setHasPrivilege(newPrivilege);
+		}
+	}, [privilage, userInformation]);
 
 	useEffect(() => {
 		search();
-	}, [currentPage]);
+	}, []);
 
 	const search = () => {
+		const newRemarkOperation = new RemarkRequestOperation();
+
+		const searchPayLoad: SearchPayload = {
+			criteria: [],
+			addition: {
+				sort: [["createdAt", "DESC"]],
+				page: currentPage,
+				size: numberOfItemsPerPage,
+				group: null,
+			},
+		};
+
+		if (searchCriteria.field != "" && searchCriteria.value.trim() != "") {
+			searchPayLoad.criteria.push(searchCriteria);
+		}
+
+		newRemarkOperation.search(searchPayLoad, getSid()).then((res) => {
+			if (res.success && res.data) {
+				setWritingList(res.data);
+				if (searchPayLoad.criteria.length == 0) {
+					newRemarkOperation.count(getSid()).then((res) => {
+						if (res.success) {
+							setNumberOfWriting(res.data);
+							setNumberOfPages(
+								Math.ceil(res.data / numberOfItemsPerPage)
+							);
+						} else {
+							setError(res.message);
+						}
+					});
+				} else {
+					if (res.data.length == numberOfItemsPerPage) {
+						setNumberOfPages(2);
+					} else {
+						setNumberOfPages(1);
+					}
+				}
+			} else {
+				setWritingList(null);
+				setError(res.message);
+			}
+		});
+		setCurrentPage(1);
+		setIsLoading(false);
+	};
+
+	const changePage = () => {
 		const newRemarkOperation = new RemarkRequestOperation();
 
 		const searchPayLoad: SearchPayload = {
@@ -80,21 +150,34 @@ export default function WritingManagementProvider({
 			searchPayLoad.criteria.push(searchCriteria);
 		}
 
-		newRemarkOperation.search(searchPayLoad, sid).then((res) => {
+		newRemarkOperation.search(searchPayLoad, getSid()).then((res) => {
 			if (res.success && res.data) {
 				setWritingList(res.data);
+				if (searchPayLoad.criteria.length > 0) {
+					if (
+						res.data.length == numberOfItemsPerPage &&
+						currentPage == numberOfPages
+					) {
+						setNumberOfPages(numberOfPages + 1);
+					}
+				}
 			} else {
 				setWritingList(null);
 				setError(res.message);
 			}
 		});
-		setIsLoading(false);
 	};
+
+	useEffect(() => {
+		if (!isLoading) {
+			changePage();
+		}
+	}, [currentPage]);
 
 	const onRefresh = () => {
 		setIsLoading(true);
 		setTimeout(() => {
-			search();
+			changePage();
 		}, 100);
 	};
 
@@ -108,13 +191,14 @@ export default function WritingManagementProvider({
 
 	const onDelete = (id: string) => {
 		const newRemarkOperation = new RemarkRequestOperation();
-		newRemarkOperation.delete(id as any, sid).then((res) => {
+		newRemarkOperation.delete(id as any, getSid()).then((res) => {
 			if (res.success) {
 				setSuccess("Delete successfully");
+				setNumberOfWriting(numberOfWriting - 1);
 				search();
 			} else {
 				setError(res.message);
-				console.log(res.message);
+				console.error(res.message);
 			}
 		});
 	};
@@ -126,6 +210,9 @@ export default function WritingManagementProvider({
 				currentPage,
 				searchCriteria,
 				isLoading,
+				numberOfPages,
+				numberOfWriting,
+				hasPrivilege,
 
 				search,
 				handleChangePage,

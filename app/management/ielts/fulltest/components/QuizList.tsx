@@ -9,7 +9,7 @@ import { Fragment } from "react";
 import { useUtility } from "@/app/provider/UtilityProvider";
 
 export default function QuizList() {
-	const { test, onChangeTest } = useTest();
+	const { test, onChangeTest, hasPrivilege } = useTest();
 
 	const divRef = useHorizontallScroll();
 	const addQuizButtonRef = useClickOutsideDetails();
@@ -72,37 +72,39 @@ export default function QuizList() {
 
 	return (
 		<div className="flex flex-row w-full gap-2 pt-2 mt-1">
-			<details ref={addQuizButtonRef} className="relative">
-				<summary className="list-none">
-					<div
-						title="Add Part"
-						className="flex items-center justify-center rounded-full dark:bg-foreground-red size-8 bg-foreground-blue">
-						<BsPlus size={35} color="white" strokeWidth={0.5} />
-					</div>
-				</summary>
-				<div className="top-8 -left-10 absolute w-44 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
-					<button
-						onClick={() => addQuiz(Skill.READING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-						Add Reading Part
-					</button>
-					<button
-						onClick={() => addQuiz(Skill.LISTENING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-						Add Listening Part
-					</button>
-					<button
-						onClick={() => addQuiz(Skill.WRITING)}
-						className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-						Add Writing Part
-					</button>
-					<button
+			{hasPrivilege && (
+				<details ref={addQuizButtonRef} className="relative">
+					<summary className="list-none">
+						<div
+							title="Add Part"
+							className="flex items-center justify-center rounded-full dark:bg-foreground-red size-8 bg-foreground-blue">
+							<BsPlus size={35} color="white" strokeWidth={0.5} />
+						</div>
+					</summary>
+					<div className="top-8 -left-10 absolute w-44 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center">
+						<button
+							onClick={() => addQuiz(Skill.READING)}
+							className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+							Add Reading Part
+						</button>
+						<button
+							onClick={() => addQuiz(Skill.LISTENING)}
+							className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+							Add Listening Part
+						</button>
+						<button
+							onClick={() => addQuiz(Skill.WRITING)}
+							className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+							Add Writing Part
+						</button>
+						{/* <button
 						onClick={() => addQuiz(Skill.SPEAKING)}
 						className="flex items-start justify-start w-full p-2 text-sm text-black rounded-md dark:text-gray-200 h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
 						Add Speaking Part
-					</button>
-				</div>
-			</details>
+					</button> */}
+					</div>
+				</details>
+			)}
 
 			<div
 				ref={divRef}
@@ -126,6 +128,7 @@ function Pills({ quizList }: PillsProps) {
 	const {
 		currentQuizIndex,
 		currentSkill,
+		hasPrivilege,
 		onChangecurrentQuizIndex,
 		onChangeCurrentSkill,
 		onDeleteQuiz,
@@ -156,13 +159,14 @@ function Pills({ quizList }: PillsProps) {
 						className={`relative flex flex-row items-center justify-center whitespace-nowrap w-fit h-fit px-3 gap-2 py-1 text-center rounded-md cursor-pointer shadow-md  ${currentQuizIndex == index && currentSkill == quiz.skill ? "bg-foreground-blue dark:bg-foreground-red text-white dark:text-gray-200" : "dark:bg-gray-22 bg-white"}`}>
 						{partLabel(quiz.skill, index)}
 						{currentQuizIndex == index &&
-						currentSkill == quiz.skill ? (
+						currentSkill == quiz.skill &&
+						hasPrivilege ? (
 							<BsTrash
 								onClick={() => deleteQuiz(index, quiz.skill)}
 								className="text-white size-4"
 							/>
 						) : (
-							<BsTrash className="text-white size-4 dark:text-gray-22" />
+							<BsTrash className="text-transparent size-4" />
 						)}
 					</div>
 				);

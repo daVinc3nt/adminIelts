@@ -8,10 +8,17 @@ import { MdHistory } from "react-icons/md";
 import { Test } from "@/app/interface/test/test";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 import { useUtility } from "@/app/provider/UtilityProvider";
-import { Skill } from "@/app/lib/interfaces";
 import { Fragment } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 import { IoMdRefresh } from "react-icons/io";
+import { useAuth } from "@/app/provider/AuthProvider";
+import {
+	getRoleFromRoleInfor,
+	getTestPrivilege,
+} from "@/app/interface/privilegeconfig/privilegeconfig";
+import { FaRegCheckCircle } from "react-icons/fa";
+import { FiXCircle } from "react-icons/fi";
+import { Skill } from "@/app/lib/interfaces";
 
 export default function TestList() {
 	const { refresh } = useTestManagement();
@@ -19,11 +26,12 @@ export default function TestList() {
 	return (
 		<div className="flex flex-col items-center w-full px-4 py-2  bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[430px] dark:bg-pot-black">
 			<div className="flex flex-row items-center w-full gap-2 py-2 font-medium text-gray-400 h-fit">
-				<div className="w-[3%]"></div>
-				<div className="w-[25%]">Name</div>
-				<div className="w-[47%]">ID</div>
-				<div className="w-[10%] text-center">Date Create</div>
-				<div className="w-[10%] text-center">Last update</div>
+				<div className="w-[1%]"></div>
+				<div className="w-[20%]">Name</div>
+				<div className="w-[40%]">ID</div>
+				<div className="w-[8%] text-center">Published</div>
+				<div className="w-[13%] text-center">Created at</div>
+				<div className="w-[13%] text-center">Updated at</div>
 				<div className="w-[5%]">
 					<IoMdRefresh
 						onClick={() => refresh()}
@@ -57,25 +65,46 @@ function FullTestList() {
 					<div
 						key={test.id + index}
 						className="flex flex-row items-center w-full gap-2 py-2 text-sm text-gray-600 bg-white rounded-md cursor-default dark:text-gray-200 h-fit dark:bg-pot-black dark:hover:bg-black-night group hover:shadow-md hover:z-10">
-						<div className="w-[3%]"></div>
-						<div className="w-[25%]">
+						<div className="w-[1%]"></div>
+						<div className="w-[20%]">
 							<span className="text-base font-semibold">
 								{test.name}
 							</span>
 						</div>
-						<div className="w-[47%]">
-							<span className="text-base font-semibold">
+						<div className="w-[40%]">
+							<span className="text-sm font-semibold">
 								{test.id}
 							</span>
 						</div>
-						<div className="w-[10%] text-center">
+						<div className="w-[8%] flex items-center justify-center">
+							{test.hasPublished ? (
+								<FaRegCheckCircle className="text-green-500 size-5" />
+							) : (
+								<FiXCircle className="text-red-500 size-5" />
+							)}
+						</div>
+						<div className="w-[13%] flex flex-col items-center">
 							<span className="text-base font-semibold">
 								{new Date(test.createdAt).toLocaleDateString()}
 							</span>
+							<span className="text-xs">
+								{
+									new Date(test.createdAt)
+										.toTimeString()
+										.split(" ")[0]
+								}
+							</span>
 						</div>
-						<div className="w-[10%] text-center">
+						<div className="w-[13%] flex flex-col items-center">
 							<span className="text-base font-semibold">
 								{new Date(test.updatedAt).toLocaleDateString()}
+							</span>
+							<span className="text-xs ">
+								{
+									new Date(test.updatedAt)
+										.toTimeString()
+										.split(" ")[0]
+								}
 							</span>
 						</div>
 						<div className="w-[5%]">
@@ -94,8 +123,9 @@ interface OptionButtonProps {
 }
 
 function OptionButton({ id, test }: OptionButtonProps) {
+	const { userInformation, privilage } = useAuth();
 	const { onSetConfirmation } = useUtility();
-	const { deleteTest, currentSkill } = useTestManagement();
+	const { deleteTest } = useTestManagement();
 	const inforRef = useClickOutsideDetails();
 
 	const onDelete = () => {
@@ -108,6 +138,9 @@ function OptionButton({ id, test }: OptionButtonProps) {
 			type: "delete",
 		});
 	};
+
+	const userRoles = getRoleFromRoleInfor(userInformation.roles);
+	const isAdmin = getTestPrivilege(userRoles, "create", privilage);
 
 	return (
 		<details
@@ -128,28 +161,28 @@ function OptionButton({ id, test }: OptionButtonProps) {
 					</span>
 					<FiEdit className="text-black size-4 dark:text-gray-200" />
 				</Link>
-				{(currentSkill == Skill.READING ||
-					currentSkill == Skill.LISTENING ||
-					currentSkill == ("" as any)) && (
-					<Link
-						href={`/management/ielts/records/${id}`}
-						target="_blank"
-						className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
-						<span className="text-xs text-black dark:text-gray-200">
-							View record
-						</span>
-						<MdHistory
-							stroke="1px"
-							className="text-black size-5 dark:text-gray-200"
-						/>
-					</Link>
-				)}
-				<div
-					onClick={() => onDelete()}
+
+				<Link
+					href={`/management/ielts/records/${id}`}
+					target="_blank"
 					className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
-					<span className="text-xs text-red-500">Delete</span>
-					<FaRegTrashCan className="text-red-500 size-4" />
-				</div>
+					<span className="text-xs text-black dark:text-gray-200">
+						View record
+					</span>
+					<MdHistory
+						stroke="1px"
+						className="text-black size-5 dark:text-gray-200"
+					/>
+				</Link>
+
+				{isAdmin && (
+					<div
+						onClick={() => onDelete()}
+						className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
+						<span className="text-xs text-red-500">Delete</span>
+						<FaRegTrashCan className="text-red-500 size-4" />
+					</div>
+				)}
 			</div>
 		</details>
 	);

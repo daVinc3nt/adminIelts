@@ -3,7 +3,7 @@ import {
 	SearchPayload,
 	UpdateAccountPayload,
 } from "@/app/lib/interfaces";
-import { AccountOperation } from "@/app/lib/main";
+import { AccountOperation, UploadOperation } from "@/app/lib/main";
 import { UserInformation } from "@/app/interface/user/user";
 import {
 	createContext,
@@ -14,9 +14,9 @@ import {
 } from "react";
 import { useAuth } from "@/app/provider/AuthProvider";
 import { useUtility } from "@/app/provider/UtilityProvider";
+import { getSid } from "@/app/interface/cookies/cookies";
 
-
-const numberOfUserPerPage = 1;
+const numberOfUserPerPage = 6;
 const initSearchCriteria: SearchCriteria = {
 	field: "firstName",
 	operator: "~",
@@ -34,6 +34,7 @@ interface UserContextType {
 	currentPage: number;
 	numberOfUser: number;
 	numberOfPage: number;
+	avartarFilePaths: string[];
 
 	onChangeCurrentUser: (user: UserInformation) => void;
 	search: () => void;
@@ -43,6 +44,7 @@ interface UserContextType {
 	onChangeIsOpenUserInfor: (value: boolean) => void;
 	onChangeIsOpenUpdateInfor: (value: boolean) => void;
 	updateUserInformation: (newInfor: UpdateAccountPayload) => void;
+	refresh: () => void;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -60,7 +62,6 @@ export const UserManagementProvider = ({
 }: {
 	children: ReactNode;
 }) => {
-	const { sid } = useAuth();
 	const { setError, setSuccess } = useUtility();
 
 	const [userInforList, setUserInforList] = useState<UserInformation[]>([]);
@@ -75,6 +76,17 @@ export const UserManagementProvider = ({
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [numberOfPage, setNumberOfPage] = useState<number>(10);
 	const [numberOfUser, setNumberOfUser] = useState<number>(0);
+	const [avartarFilePaths, setAvartarFilePaths] = useState<string[]>(
+		new Array(numberOfUserPerPage).fill("/images/user.png")
+	);
+
+	const refresh = () => {
+		setIsLoading(true);
+		setTimeout(() => {
+			changePage();
+			setIsLoading(false);
+		}, 100);
+	};
 
 	const search = () => {
 		const accoutOperation = new AccountOperation();
@@ -100,11 +112,11 @@ export const UserManagementProvider = ({
 			searchPayload.criteria.push(searchCriteria);
 		}
 
-		accoutOperation.search(searchPayload, sid).then((res) => {
+		accoutOperation.search(searchPayload, getSid()).then((res) => {
 			if (res.success) {
 				setUserInforList(res.data as UserInformation[]);
 				if (searchPayload.criteria.length === 0) {
-					accoutOperation.count(sid).then((res) => {
+					accoutOperation.count(getSid()).then((res) => {
 						if (res.success) {
 							setNumberOfUser(res.data);
 							setNumberOfPage(
@@ -116,12 +128,21 @@ export const UserManagementProvider = ({
 						}
 					});
 				} else {
-					if (res.data.length != 0) {
+					if (res.data.length == numberOfUserPerPage) {
 						setNumberOfPage(2);
 					} else {
 						setNumberOfPage(1);
 					}
 				}
+				res.data.forEach((user, index) => {
+					if (user.avatar) {
+						getAvatar(user, index);
+					} else {
+						const newAvartarFilePaths = [...avartarFilePaths];
+						newAvartarFilePaths[index] = "/images/user.png";
+						setAvartarFilePaths(newAvartarFilePaths);
+					}
+				});
 			} else {
 				setError(res.message);
 				console.error(res.message);
@@ -157,26 +178,58 @@ export const UserManagementProvider = ({
 			searchPayload.criteria.push(searchCriteria);
 		}
 
-		accoutOperation.search(searchPayload, sid).then((res) => {
+		accoutOperation.search(searchPayload, getSid()).then((res) => {
 			if (res.success) {
 				setUserInforList(res.data as UserInformation[]);
-				if(res.data.length > 0 && currentPage == numberOfPage) {
-					setNumberOfPage(numberOfPage + 1);
+				if (searchPayload.criteria.length != 0) {
+					if (
+						res.data.length == numberOfUserPerPage &&
+						currentPage == numberOfPage
+					) {
+						setNumberOfPage(numberOfPage + 1);
+					}
 				}
+				res.data.forEach((user, index) => {
+					if (user.avatar) {
+						getAvatar(user, index);
+					} else {
+						const newAvartarFilePaths = [...avartarFilePaths];
+						newAvartarFilePaths[index] = "/images/user.png";
+						setAvartarFilePaths(newAvartarFilePaths);
+					}
+				});
 			} else {
 				setError(res.message);
 				console.error(res.message);
 			}
-			setIsLoading(false);
+		});
+	};
+
+	const getAvatar = (user: UserInformation, index: number) => {
+		const newUploadOperation = new UploadOperation();
+		newUploadOperation.search(user.avatar as any, getSid()).then((res) => {
+			if (res.success) {
+				const newAvartarFilePaths = [...avartarFilePaths];
+				newAvartarFilePaths[index] = res.data;
+				setAvartarFilePaths(newAvartarFilePaths);
+			} else {
+				const newAvartarFilePaths = [...avartarFilePaths];
+				newAvartarFilePaths[index] = "/images/user.png";
+				setAvartarFilePaths(newAvartarFilePaths);
+				setError(res.message);
+				console.error(res.message);
+			}
 		});
 	};
 
 	useEffect(() => {
 		search();
-	}, []);
+	}, [role]);
 
 	useEffect(() => {
-		changePage();
+		if (!isLoading) {
+			changePage();
+		}
 	}, [currentPage]);
 
 	const handleChangePage = (_: any, value: number) => {
@@ -206,7 +259,7 @@ export const UserManagementProvider = ({
 	const updateUserInformation = (newInfor: UpdateAccountPayload) => {
 		const newAccountOperation = new AccountOperation();
 		newAccountOperation
-			.update(currentUser.id as any, newInfor, sid)
+			.update(currentUser.id as any, newInfor, getSid())
 			.then((res) => {
 				if (res.success) {
 					const userId = res.data.id;
@@ -240,6 +293,7 @@ export const UserManagementProvider = ({
 				currentPage,
 				numberOfUser,
 				numberOfPage,
+				avartarFilePaths,
 
 				onChangeCurrentUser,
 				search,
@@ -249,6 +303,7 @@ export const UserManagementProvider = ({
 				onChangeIsOpenUserInfor,
 				onChangeIsOpenUpdateInfor,
 				updateUserInformation,
+				refresh,
 			}}>
 			{children}
 		</UserContext.Provider>

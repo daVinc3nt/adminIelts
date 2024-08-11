@@ -1,4 +1,5 @@
 "use client";
+import { getSid } from "@/app/interface/cookies/cookies";
 import { Tag } from "@/app/interface/tag/tag";
 import { TagOperation } from "@/app/lib/main";
 import { useAuth } from "@/app/provider/AuthProvider";
@@ -22,6 +23,7 @@ interface TagContextType {
 	isOpenUpdateTag: boolean;
 	currentSkill: string;
 	isLoading: boolean;
+	numberOfTag: number;
 
 	addTag: (tag: Tag) => Promise<boolean>;
 	updateTag: (tag: Tag, noNotificate?: boolean) => Promise<boolean>;
@@ -50,7 +52,6 @@ export default function TagManagementProvider({
 }: {
 	children: ReactNode;
 }) {
-	const { sid } = useAuth();
 	const { setError, setSuccess } = useUtility();
 
 	const [tagList, setTagList] = useState<Tag[]>([]);
@@ -62,6 +63,8 @@ export default function TagManagementProvider({
 	const [tagIndex, setTagIndex] = useState<number>(0);
 	const [currentSkill, setCurrentSkill] = useState<string>("");
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const [numberOfTag, setNumberOfTag] = useState<number>(0);
 
 	useEffect(() => {
 		const fetchTagList = () => {
@@ -77,7 +80,7 @@ export default function TagManagementProvider({
 							group: [],
 						},
 					},
-					sid
+					getSid()
 				)
 				.then((res) => {
 					if (res.success) {
@@ -88,6 +91,14 @@ export default function TagManagementProvider({
 					}
 					setIsLoading(false);
 				});
+			newTagOperation.count(getSid()).then((res) => {
+				if (res.success) {
+					setNumberOfTag(res.data);
+				} else {
+					setError(res.message);
+					console.error(res.message);
+				}
+			});
 		};
 
 		fetchTagList();
@@ -99,10 +110,11 @@ export default function TagManagementProvider({
 
 	const addTag = async (tag: Tag) => {
 		const newTagOperation = new TagOperation();
-		const res = await newTagOperation.create(tag as any, sid);
+		const res = await newTagOperation.create(tag as any, getSid());
 		if (res.success) {
 			setTagList([...tagList, res.data]);
 			setSuccess("Add tag successfully");
+			setNumberOfTag(numberOfTag + 1);
 			return true;
 		}
 		setError(res.message);
@@ -112,15 +124,13 @@ export default function TagManagementProvider({
 
 	const updateTag = async (tag: Tag, noNotificate?: boolean) => {
 		const newTagOperation = new TagOperation();
-		console.log(tag);
 		if (tag.id) {
 			const res = await newTagOperation.update(
 				tag.id as UUID,
 				tag as any,
-				sid
+				getSid()
 			);
 			if (res.success) {
-				console.log(res.data);
 				const newTagList = tagList.map((item) =>
 					item.id === tag.id ? res.data : item
 				);
@@ -138,11 +148,12 @@ export default function TagManagementProvider({
 
 	const deleteTag = (id: string) => {
 		const newTagOperation = new TagOperation();
-		newTagOperation.delete(id as UUID, sid).then((res) => {
+		newTagOperation.delete(id as UUID, getSid()).then((res) => {
 			if (res.success) {
 				const newTagList = tagList.filter((item) => item.id !== id);
 				setTagList(newTagList);
 				setSuccess("Delete tag successfully");
+				setNumberOfTag(numberOfTag - 1);
 			} else {
 				setError(res.message);
 				console.error(res.message);
@@ -186,6 +197,7 @@ export default function TagManagementProvider({
 				isOpenUpdateTag,
 				currentSkill,
 				isLoading,
+				numberOfTag,
 
 				addTag,
 				updateTag,

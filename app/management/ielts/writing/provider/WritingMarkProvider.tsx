@@ -1,4 +1,5 @@
 "use client";
+import { getSid } from "@/app/interface/cookies/cookies";
 import { RemarkWriting } from "@/app/lib/interfaces";
 import { RecordOperation } from "@/app/lib/main";
 import { useAuth } from "@/app/provider/AuthProvider";
@@ -11,7 +12,7 @@ interface WritingContextType {
 	isLoading: boolean;
 
 	getWritingAnswerById: (id: string) => void;
-	createRemark: (remmark: RemarkWriting) => void;
+	createRemark: (remmark: RemarkWriting) => Promise<boolean>;
 	onChangeWritingAnswer: (writingAnwser: WritingAnswer) => void;
 }
 
@@ -26,9 +27,6 @@ export const useWriting = () => {
 };
 
 export default function WritingProvider({ children }: { children: ReactNode }) {
-	const router = useRouter();
-
-	const { sid } = useAuth();
 	const { setError, setSuccess } = useUtility();
 
 	const [writingAnswer, setWritingAnswer] = useState<WritingAnswer>();
@@ -36,7 +34,7 @@ export default function WritingProvider({ children }: { children: ReactNode }) {
 
 	const getWritingAnswerById = (id: string) => {
 		const newRecordOperation = new RecordOperation();
-		newRecordOperation.getWritingAnswer(id as any, sid).then((res) => {
+		newRecordOperation.getWritingAnswer(id as any, getSid()).then((res) => {
 			if (res.success && res.data) {
 				const record = res.data as WritingAnswer;
 				record.remark = record.content;
@@ -58,19 +56,19 @@ export default function WritingProvider({ children }: { children: ReactNode }) {
 		});
 	};
 
-	const createRemark = (remmark: RemarkWriting) => {
+	const createRemark = async (remmark: RemarkWriting) => {
 		const newRecordOperation = new RecordOperation();
-		newRecordOperation
-			.createWritingRemark(writingAnswer.id as any, remmark, sid)
-			.then((res) => {
-				if (res.success) {
-					setSuccess("Create remark successfully");
-					router.push("/management/ielts/writing");
-				} else {
-					setError(res.message);
-					console.error(res.message);
-				}
-			});
+		const res = await newRecordOperation.createWritingRemark(
+			writingAnswer.id as any,
+			remmark,
+			getSid()
+		);
+		if (res.success) {
+			return true;
+		}
+		setError(res.message);
+		console.error(res.message);
+		return false;
 	};
 
 	const onChangeWritingAnswer = (writingAnwser: WritingAnswer) => {

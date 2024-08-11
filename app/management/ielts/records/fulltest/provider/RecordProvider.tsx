@@ -5,6 +5,7 @@ import { RecordOperation } from "@/app/lib/main";
 import { SearchPayload, Skill } from "@/app/lib/interfaces";
 import { useAuth } from "@/app/provider/AuthProvider";
 import { useUtility } from "@/app/provider/UtilityProvider";
+import { getSid } from "@/app/interface/cookies/cookies";
 
 interface RecordContextType {
 	record: RecordTest;
@@ -30,7 +31,6 @@ export default function RecordProvider({
 }: {
 	children: React.ReactNode;
 }) {
-	const { sid } = useAuth();
 	const { setError, setSuccess } = useUtility();
 
 	const [record, setRecord] = useState<RecordTest>({
@@ -46,7 +46,7 @@ export default function RecordProvider({
 
 	const fetchRecordById = (id: string) => {
 		const newRecordOperation = new RecordOperation();
-		newRecordOperation.findOne(id as any, sid).then((res) => {
+		newRecordOperation.findOne(id as any, getSid()).then((res) => {
 			if (res.success) {
 				if (!res.data) {
 					setError("Record not found");
@@ -57,8 +57,9 @@ export default function RecordProvider({
 					setCurrentSkill(Skill.READING);
 				} else if (res.data.listening.length > 0) {
 					setCurrentSkill(Skill.LISTENING);
+				} else if (res.data.writing.length > 0) {
+					setCurrentSkill(Skill.WRITING);
 				}
-				console.log(res.data);
 				setRecord(res.data);
 			} else {
 				setRecord(null);

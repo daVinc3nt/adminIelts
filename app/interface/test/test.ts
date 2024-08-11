@@ -98,6 +98,7 @@ export interface Test {
 	id?: string;
 	name?: string;
 	isPractice?: boolean;
+	hasPublished?: boolean;
 	reading?: Quiz[];
 	listening?: Quiz[];
 	writing?: Quiz[];
@@ -110,6 +111,7 @@ export interface ReciveTest {
 	id: string;
 	name: string;
 	isPractice: boolean;
+	hasPublished: boolean;
 	reading: ReceiveQuiz[];
 	listening: ReceiveQuiz[];
 	writing: ReceiveQuiz[];
@@ -229,6 +231,7 @@ export const QuizToUpdateQuiz = (quiz: Quiz): UpdateQuiz => {
 export const TestToUpdateTest = (test: Test): UpdateTest => {
 	const newTest: UpdateTest = {
 		name: test.name,
+		hasPublished: test.hasPublished,
 		reading: test.reading.map((quiz) => {
 			return QuizToUpdateQuiz(quiz);
 		}),
@@ -324,6 +327,7 @@ export const ReciveTestToTest = (test: ReciveTest): Test => {
 		id: test.id,
 		name: test.name,
 		isPractice: test.isPractice,
+		hasPublished: test.hasPublished,
 		reading: ReceiveQuizListToQuizList(test.reading),
 		listening: ReceiveQuizListToQuizList(test.listening),
 		writing: ReceiveQuizListToQuizList(test.writing),
@@ -513,4 +517,107 @@ export const getQuestionIndex = (
 		});
 	}
 	return count;
+};
+
+export const readyForPublish = (
+	test: Test
+): {
+	isReady: boolean;
+	message: string;
+	quizIndex: number;
+	skill: Skill;
+} => {
+	//check all quizzes have at least 1 group
+	//check all groups have at least 1 question
+	//check all question have answer
+
+	const checkQuiz = (quiz: Quiz, quizIndex: number, skill: Skill) => {
+		if (quiz.groups.length == 0) {
+			return {
+				isReady: false,
+				message: `${skill} part ${quizIndex + 1} does not have any group!`,
+				quizIndex,
+				skill,
+			};
+		}
+		for (let i = 0; i < quiz.groups.length; i++) {
+			const group = quiz.groups[i];
+			if (group.type == QuizType.FILLING) {
+				if (group.quizzes.length == 0) {
+					return {
+						isReady: false,
+						message: `${skill} part ${quizIndex + 1}, group ${i + 1} does not have any question!`,
+						quizIndex,
+						skill,
+					};
+				}
+				for (let j = 0; j < group.quizzes.length; j++) {
+					const question = group.quizzes[j];
+					if (question.answer.length == 0) {
+						return {
+							isReady: false,
+							message: `${skill} part ${quizIndex + 1}, group ${i + 1}, question ${j + 1} does not have answer!`,
+							quizIndex,
+							skill,
+						};
+					}
+					for (let k = 0; k < question.answer.length; k++) {
+						if (question.answer[k].trim() === "") {
+							return {
+								isReady: false,
+								message: `${skill} part ${quizIndex + 1}, group ${i + 1}, question ${j + 1} is empty!`,
+								quizIndex,
+								skill,
+							};
+						}
+					}
+				}
+			} else {
+				if (group.quizzes.length == 0) {
+					return {
+						isReady: false,
+						message: `${skill} part ${quizIndex + 1}, group ${i + 1} does not have any quiz!`,
+						quizIndex,
+						skill,
+					};
+				}
+				for (let j = 0; j < group.quizzes.length; j++) {
+					const question = group.quizzes[j];
+					if (question.answer.length == 0) {
+						return {
+							isReady: false,
+							message: `${skill} part ${quizIndex + 1}, group ${i + 1}, question ${j + 1} does not have answer!`,
+							quizIndex,
+							skill,
+						};
+					}
+				}
+			}
+		}
+		return {
+			isReady: true,
+			message: "",
+			quizIndex,
+			skill,
+		};
+	};
+
+	for (let i = 0; i < test.reading.length; i++) {
+		const result = checkQuiz(test.reading[i], i, Skill.READING);
+		if (!result.isReady) {
+			return result;
+		}
+	}
+	for (let i = 0; i < test.listening.length; i++) {
+		const result = checkQuiz(test.listening[i], i, Skill.LISTENING);
+		if (!result.isReady) {
+			return result;
+		}
+	}
+	return {
+		isReady: true,
+		message: "",
+		quizIndex: 0,
+		skill: Skill.READING,
+	};
 };

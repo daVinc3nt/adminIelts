@@ -5,6 +5,7 @@ interface ComfirmationProps {
 	type: "delete" | "update" | "create" | "confirm";
 	func: () => void;
 	onClose: () => void;
+	subMessage?: string;
 }
 
 export default function Comfirmation({
@@ -12,6 +13,7 @@ export default function Comfirmation({
 	type,
 	func,
 	onClose,
+	subMessage,
 }: ComfirmationProps) {
 	const handleConfirm = (e: any) => {
 		e.stopPropagation();
@@ -55,7 +57,9 @@ export default function Comfirmation({
 							{message}
 						</span>
 						<span className="text-base text-red-400 dark:text-red-600">
-							You can't undo this operation
+							{subMessage
+								? subMessage
+								: "You can't undo this operation"}
 						</span>
 					</div>
 				</div>

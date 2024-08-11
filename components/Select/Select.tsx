@@ -77,11 +77,7 @@ export default function Select({
 				<input
 					ref={inputRef}
 					type="text"
-					placeholder={
-						input === ""
-							? defaultPlaceholder
-							: option[currentOption].label
-					}
+					placeholder={option[currentOption].label}
 					value={searchValue}
 					onChange={(e) => setSearchValue(e.target.value)}
 					className={`w-full text-base border-none outline-none cursor-pointer mr-auto bg-white dark:bg-pot-black placeholder-black dark:placeholder-gray-200 text-black dark:text-gray-200`}

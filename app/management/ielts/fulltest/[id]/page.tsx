@@ -32,6 +32,7 @@ function Test({ id }: TestProps) {
 		currentQuizIndex,
 		currentSkill,
 		isOpenCreateQuizPractice,
+		hasPrivilege,
 		onChangeTest,
 		getTestById,
 	} = useTest();
@@ -65,20 +66,28 @@ function Test({ id }: TestProps) {
 			{isOpenCreateQuizPractice && <PopupCreatePractice />}
 			<div className="flex flex-col items-center w-11/12 min-h-screen gap-4 py-4">
 				<div className="flex flex-col w-full gap-1 h-fit">
-					<MenuBar />
-					<div className="w-8/12 pr-5">
+					{hasPrivilege && <MenuBar />}
+					<div className="w-full pr-5">
 						<hr className="w-full border-[0.5px] border-gray-200 dark:border-gray-400" />
 					</div>
 					<div className="flex flex-row items-center justify-between w-full">
 						<div className="flex flex-col gap-1 w-[70%]">
 							<QuizList />
-							<div className="flex flex-col w-full gap-2 pt-2 h-fit">
+							<div className="flex flex-row w-full gap-2 pt-2 h-fit items-center">
 								<input
 									value={test ? test.name : ""}
+									disabled={!hasPrivilege}
 									onChange={onChangeName}
 									className="w-full px-4 py-1 text-xl bg-white rounded-md shadow-md outline-none h-fit dark:bg-pot-black ring-0"
 									placeholder="Enter your test name"
 								/>
+								<input
+									disabled={!hasPrivilege}
+									className="w-40 px-4 py-1 text-xl bg-white rounded-md shadow-md outline-none h-fit dark:bg-pot-black ring-0"
+									type="number"
+									placeholder="Quiz duration"
+								/>
+								<span className="text-lg">sec</span>
 							</div>
 						</div>
 						<div className="w-[25%] h-fit">

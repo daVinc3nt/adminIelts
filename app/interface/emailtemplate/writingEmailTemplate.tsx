@@ -195,7 +195,7 @@ export const writingEmailTemplate = `<!DOCTYPE html>
 <table border="0" cellpadding="10" cellspacing="0" class="heading_block block-1" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
 <td class="pad">
-<h1 style="margin: 0; color: #000000; direction: ltr; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 21px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 25.2px;">Breakdown of Your Scores by Criteria: </h1>
+<h1 style="margin: 0; color: #000000; direction: ltr; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 21px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 25.2px;">Breakdown of Your Scores by Criteria: </h1>
 </td>
 </tr>
 </table>
@@ -219,7 +219,7 @@ export const writingEmailTemplate = `<!DOCTYPE html>
 <tr>
 <td class="pad">
 <div style="color:#101112;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;mso-line-height-alt:19.2px;">
-<p style="margin: 0;">{firstCriterion}}</p>
+<p style="margin: 0;">{{firstCriterion}}</p>
 </div>
 </td>
 </tr>
@@ -279,7 +279,7 @@ export const writingEmailTemplate = `<!DOCTYPE html>
 <td class="pad">
 <div style="color:#101112;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;mso-line-height-alt:19.2px;">
 <p style="margin: 0; margin-bottom: 16px;">We highly recommend that you review the feedback provided for each criterion and reflect on areas where improvement might be needed. Consistent practice and understanding the IELTS test format can significantly enhance your writing skills and scores.<br/><br/>If you have any questions or would like further clarification on your results, please feel free to reply to this email. We are here to support you in your journey to IELTS success.<br/><br/>Best regards,<br/><strong>IELTS Master - Engonow</strong></p>
-<p style="margin: 0;"> </p>
+<p style="margin: 0;"> </p>
 </div>
 </td>
 </tr>
@@ -288,7 +288,7 @@ export const writingEmailTemplate = `<!DOCTYPE html>
 <tr>
 <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
 <div align="left" class="alignment" style="line-height:10px">
-<div style="max-width: 175px;"><img height="auto" src="images/12.png" style="display: block; height: auto; border: 0; width: 100%;" width="175"/></div>
+<div style="max-width: 175px;"><img height="auto" src="https://0b147b9b9b.imgdist.com/pub/bfra/lpz70o87/e3s/4aw/ftp/LOGO%20ENGONOW%20-%2012.png" style="display: block; height: auto; border: 0; width: 100%;" width="175"/></div>
 </div>
 </td>
 </tr>
@@ -296,7 +296,7 @@ export const writingEmailTemplate = `<!DOCTYPE html>
 <table border="0" cellpadding="0" cellspacing="0" class="html_block block-4" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
 <tr>
 <td class="pad">
-<div align="center" style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:center;"><div class="our-class"> {{remark}}. </div></div>
+<div align="center" style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:center;"><div class="our-class"> {{{remark}}}. </div></div>
 </td>
 </tr>
 </table>

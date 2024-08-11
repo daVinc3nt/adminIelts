@@ -6,6 +6,7 @@ import WritingManagementProvider, {
 import WritingList from "./components/WritingList";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Select from "@/components/Select/Select";
+import { MdError } from "react-icons/md";
 
 export default function Page() {
 	return (
@@ -21,6 +22,10 @@ function WritingManagement() {
 	const {
 		currentPage,
 		searchCriteria,
+		numberOfPages,
+		numberOfWriting,
+		isLoading,
+		hasPrivilege,
 
 		search,
 		handleChangePage,
@@ -35,12 +40,27 @@ function WritingManagement() {
 		onChangeSearchCriteria({ ...searchCriteria, value: value });
 	};
 
+	if (!isLoading && !hasPrivilege) {
+		return (
+			<div className="w-full h-screen -mt-14 flex items-center justify-center flex-col gap-2">
+				<MdError className="size-40 text-red-500" />
+				<h1 className="text-3xl font-semibold">
+					You are not allowed to access this page.
+				</h1>
+				<div className="w-fit flex flew-row gap-2 items-center justify-center"></div>
+			</div>
+		);
+	}
+
 	return (
 		<main className="flex justify-center flex-1 main">
-			<div className="flex flex-col items-center w-9/12 h-full gap-6 py-4">
-				<div className="flex flex-row items-center w-full gap-4 h-fit">
+			<div className="flex flex-col items-center w-9/12 h-full gap-4 py-4">
+				<div className="flex flex-col w-full h-fit">
 					<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
-						Writing Records Management
+						Writing grading request management
+					</span>
+					<span className="text-xl text-zinc-500 dark:text-zinc-400">
+						{numberOfWriting} writing grading requests
 					</span>
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
@@ -63,7 +83,7 @@ function WritingManagement() {
 					<WritingList />
 				</div>
 				<Pagination
-					numberOfPages={10}
+					numberOfPages={numberOfPages}
 					page={currentPage}
 					handleChangePage={handleChangePage}
 				/>

@@ -24,6 +24,8 @@ function IELTSManagement() {
 		currentSkill,
 		searchCriteria,
 		numberOfPage,
+		numberOfTest,
+		numberOfPractice,
 		onChangeSearchCriteria,
 		handleChangePage,
 		onChangeFetchType,
@@ -48,11 +50,22 @@ function IELTSManagement() {
 
 	return (
 		<main className="flex justify-center flex-1 main">
-			<div className="flex flex-col items-center w-9/12 h-full gap-6 py-4">
+			<div className="flex flex-col items-center w-10/12 h-full gap-4 py-4">
 				<div className="flex flex-row items-center justify-between w-full h-fit">
-					<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
-						IELTS Management
-					</span>
+					<div className="w-fit h-fit flex flex-col">
+						<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
+							IELTS Management
+						</span>
+						{fetchType == "test" ? (
+							<span className="text-xl text-zinc-500 dark:text-zinc-400">
+								{numberOfTest - numberOfPractice} tests
+							</span>
+						) : (
+							<span className="text-xl text-zinc-500 dark:text-zinc-400">
+								{numberOfPractice} practices
+							</span>
+						)}
+					</div>
 					<AddButton />
 				</div>
 				<div className="flex flex-row w-full gap-2 pt-6 h-fit">
@@ -106,5 +119,4 @@ const skillOption = [
 	{ value: Skill.READING, label: "Reading" },
 	{ value: Skill.LISTENING, label: "Listening" },
 	{ value: Skill.WRITING, label: "Writing" },
-	{ value: Skill.SPEAKING, label: "Speaking" },
 ];

@@ -6,6 +6,7 @@ import { Skill } from "@/app/lib/interfaces";
 import RecordQuizList from "../components/RecordQuizList";
 import QuizRecordInfor from "../components/QuizRecordInfor";
 import NotFoundPage from "@/components/Page/NotFoundPage";
+import WritingQuizPreview from "../components/WritingQuizPreview";
 
 export default function Page({ params }: { params: { id: string } }) {
 	return (
@@ -20,7 +21,8 @@ interface RecordProps {
 }
 
 function Record({ id }: RecordProps) {
-	const { fetchRecordById, record } = useRecord();
+	const { fetchRecordById, record, currentSkill, currentQuizIndex } =
+		useRecord();
 
 	useEffect(() => {
 		fetchRecordById(id);
@@ -50,10 +52,17 @@ function Record({ id }: RecordProps) {
 						</span>
 					)}
 				</div>
-				{record.score != undefined ? <QuizRecordInfor /> : null}
 				<RecordQuizList />
+				{record.score != undefined && currentSkill != Skill.WRITING && (
+					<QuizRecordInfor />
+				)}
 				{record &&
 					record.reading.map((_, index) => {
+						if (
+							currentSkill != Skill.READING ||
+							currentQuizIndex != index
+						)
+							return null;
 						return (
 							<RecordPreview
 								key={index}
@@ -64,12 +73,28 @@ function Record({ id }: RecordProps) {
 					})}
 				{record &&
 					record.listening.map((_, index) => {
+						if (
+							currentSkill != Skill.LISTENING ||
+							currentQuizIndex != index
+						)
+							return null;
 						return (
 							<RecordPreview
 								key={index}
 								quizIndex={index}
 								quizskill={Skill.LISTENING}
 							/>
+						);
+					})}
+				{record &&
+					record.writing.map((_, index) => {
+						if (
+							currentSkill != Skill.WRITING ||
+							currentQuizIndex != index
+						)
+							return null;
+						return (
+							<WritingQuizPreview key={index} quizIndex={index} />
 						);
 					})}
 			</div>

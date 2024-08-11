@@ -6,17 +6,21 @@ import { createContext } from "react";
 import Nofitication from "@/components/Utility/Notification";
 import { AnimatePresence } from "framer-motion";
 import Comfirmation from "@/components/Utility/Comfirmation";
+import { Toaster, toast } from "sonner";
+import { useTheme } from "next-themes";
 
 interface UtilityContextType {
 	isOpenSidebar: boolean;
-	isOpenNotificate: boolean;
-	message: string;
-	errorMessage: string;
 
 	toggleSidebar: () => void;
 	setError: (message: string) => void;
 	setSuccess: (message: string) => void;
 	onSetConfirmation: (confirm: ComfirmationType) => void;
+	onSetPromise: (
+		promise: Promise<any>,
+		loadingMessage: string,
+		message: string
+	) => void;
 }
 
 const UtilityContext = createContext<UtilityContextType | null>(null);
@@ -36,7 +40,7 @@ interface ComfirmationType {
 	type: "delete" | "update" | "create" | "confirm";
 }
 
-const NotificateDuration = 2000;
+const NotificateDuration = 3000;
 
 export default function UtilityProvider({
 	children,
@@ -44,42 +48,45 @@ export default function UtilityProvider({
 	children: React.ReactNode;
 }) {
 	const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
-	const [message, setMessage] = useState<string>();
-	const [errorMessage, setErrorMessage] = useState<string>();
-	const [isOpenNotificate, setIsOpenNotificate] = useState<boolean>(false);
-	const [isOpenError, setIsOpenError] = useState<boolean>(false);
 	const [confirmation, setConfirmation] = useState<ComfirmationType | null>(
 		null
 	);
-
+	const [isDark, setIsDark] = useState<boolean>(false);
+	const { theme } = useTheme();
 	useEffect(() => {
-		if (isOpenNotificate) {
-			setTimeout(() => {
-				setIsOpenNotificate(false);
-			}, NotificateDuration);
-		}
-	}, [isOpenNotificate]);
-
-	useEffect(() => {
-		if (isOpenError) {
-			setTimeout(() => {
-				setIsOpenError(false);
-			}, NotificateDuration);
-		}
-	}, [isOpenError]);
+		setIsDark(theme === "dark");
+	}, [theme]);
 
 	const toggleSidebar = () => {
 		setIsOpenSidebar((prev) => !prev);
 	};
 
 	const setError = (message: string) => {
-		setErrorMessage(message);
-		setIsOpenError(true);
+		toast.error(message, {
+			duration: NotificateDuration,
+		});
 	};
 
 	const setSuccess = (message: string) => {
-		setMessage(message);
-		setIsOpenNotificate(true);
+		toast.success(message, {
+			duration: NotificateDuration,
+		});
+	};
+
+	const onSetPromise = (
+		promise: Promise<any>,
+		loadingMessage: string,
+		message: string
+	) => {
+		toast.promise(promise, {
+			loading: loadingMessage,
+			success: () => {
+				return message;
+			},
+			error: (error) => {
+				return error.message;
+			},
+		});
 	};
 
 	const onSetConfirmation = (confirm: ComfirmationType) => {
@@ -90,54 +97,34 @@ export default function UtilityProvider({
 		setConfirmation(null);
 	};
 
-	const onCloseMessage = () => {
-		setIsOpenNotificate(false);
-	};
-
-	const onCloseError = () => {
-		setIsOpenError(false);
-	};
-
 	return (
 		<UtilityContext.Provider
 			value={{
 				isOpenSidebar,
-				isOpenNotificate,
-				message,
-				errorMessage,
 
 				toggleSidebar,
 				setError,
 				setSuccess,
 				onSetConfirmation,
+				onSetPromise,
 			}}>
 			<SideBar />
 			<Navbar />
-
-			<AnimatePresence mode="wait">
-				{isOpenNotificate && (
-					<Nofitication
-						type="success"
-						message={message}
-						onClose={onCloseMessage}
-					/>
-				)}
-			</AnimatePresence>
-			<AnimatePresence mode="wait">
-				{isOpenError && (
-					<Nofitication
-						type="error"
-						message={errorMessage}
-						onClose={onCloseError}
-					/>
-				)}
-			</AnimatePresence>
+			<Toaster
+				richColors
+				position="top-center"
+				offset={8}
+				visibleToasts={3}
+				theme={isDark ? "dark" : "light"}
+				closeButton
+			/>
 			<AnimatePresence mode="wait">
 				{confirmation && (
 					<Comfirmation
 						func={confirmation.onConfirm}
 						onClose={closeConfirmation}
 						message={confirmation.message}
+						subMessage={confirmation.subMessage}
 						type={confirmation.type}
 					/>
 				)}

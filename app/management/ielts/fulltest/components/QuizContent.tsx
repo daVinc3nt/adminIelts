@@ -36,11 +36,12 @@ export default function QuizContent({
 
 	const {
 		test,
+		isLoading,
+		hasPrivilege,
 		onChangeQuiz,
 		onSelectPractice,
 		onChangePracticeType,
 		onChangeIsOpenCreateQuizPractice,
-		isLoading,
 	} = useTest();
 
 	const quizGroupSettingRef = useClickOutsideDetails();
@@ -115,43 +116,47 @@ export default function QuizContent({
 					<span className="text-2xl font-bold text-white mr-auto">
 						Part {quizIndex + 1} Paragraph
 					</span>
-					<details ref={quizGroupSettingRef} className="relative">
-						<summary className="list-none">
-							<BsThreeDots className="p-1 text-white size-8" />
-						</summary>
-						<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center text-xs">
-							<button
-								onClick={() => removeStyle()}
-								className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-								Clear style
-								<AiOutlineClear className="size-4" />
-							</button>
-							{test.isPractice && (
-								<AddTagButton
-									quizIndex={quizIndex}
-									quizSkill={quizSkill}
-								/>
-							)}
-							{!test.isPractice ? (
-								currentQuiz.linkToTest ? (
-									<Link
-										href={`/management/ielts/fulltest/${currentQuiz.linkToTest}`}
-										target="_blank"
-										className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-										Go to practice
-										<FaArrowRight className="size-4" />
-									</Link>
-								) : (
-									<button
-										onClick={() => onOpenCreatePractice()}
-										className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
-										Create practice
-										<FiFilePlus className="size-4" />{" "}
-									</button>
-								)
-							) : null}
-						</div>
-					</details>
+					{hasPrivilege && (
+						<details ref={quizGroupSettingRef} className="relative">
+							<summary className="list-none">
+								<BsThreeDots className="p-1 text-white size-8" />
+							</summary>
+							<div className="top-8 -left-28 absolute w-40 h-fit bg-white dark:bg-gray-22 rounded-md shadow-md z-[1001] flex flex-col p-2 justify-center items-center text-xs">
+								<button
+									onClick={() => removeStyle()}
+									className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+									Clear style
+									<AiOutlineClear className="size-4" />
+								</button>
+								{test.isPractice && (
+									<AddTagButton
+										quizIndex={quizIndex}
+										quizSkill={quizSkill}
+									/>
+								)}
+								{!test.isPractice ? (
+									currentQuiz.linkToTest ? (
+										<Link
+											href={`/management/ielts/fulltest/${currentQuiz.linkToTest}`}
+											target="_blank"
+											className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+											Go to practice
+											<FaArrowRight className="size-4" />
+										</Link>
+									) : (
+										<button
+											onClick={() =>
+												onOpenCreatePractice()
+											}
+											className="flex items-center justify-between w-full p-2 rounded-md h-fit hover:bg-mecury-gray dark:hover:bg-pot-black">
+											Create practice
+											<FiFilePlus className="size-4" />{" "}
+										</button>
+									)
+								) : null}
+							</div>
+						</details>
+					)}
 				</div>
 				<div className="w-full h-fit flex flex-row flex-wrap gap-2">
 					{currentQuiz.tags.map((tag, index) => (
@@ -171,6 +176,7 @@ export default function QuizContent({
 			<CK5Editor
 				content={currentQuiz.content}
 				onChangeContent={onChangeContent}
+				disable={!hasPrivilege}
 			/>
 		</div>
 	);

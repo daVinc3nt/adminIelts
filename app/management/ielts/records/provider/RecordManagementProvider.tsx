@@ -12,7 +12,11 @@ import { useAuth } from "@/app/provider/AuthProvider";
 import { SearchCriteria, SearchPayload } from "@/app/lib/interfaces";
 import { ReciveTestToTest, Test } from "@/app/interface/test/test";
 import { useUtility } from "@/app/provider/UtilityProvider";
-import { init } from "next/dist/compiled/webpack/webpack";
+import {
+	getRecordPrivilege,
+	getRoleFromRoleInfor,
+} from "@/app/interface/privilegeconfig/privilegeconfig";
+import { getSid } from "@/app/interface/cookies/cookies";
 
 const numberOfItemPerPage = 6;
 const initSearchCriteria: SearchCriteria = {
@@ -31,12 +35,15 @@ interface RecordContextType {
 	searchCriteria: SearchCriteria;
 	isLoading: boolean;
 	numberOfPage: number;
+	numberOfRecord: number;
+	hasPrivilege: boolean;
 
 	onChangeSearchCriteria: (criteria: SearchCriteria) => void;
 	getTestByTestId: (id: string) => void;
 	handleChangePage: (_: any, value: number) => void;
 	search: () => void;
 	deleteRecord: (id: string) => void;
+	refresh: () => void;
 }
 
 const RecordContext = createContext<RecordContextType | null>(null);
@@ -56,7 +63,7 @@ export default function RecordManagementProvider({
 }: {
 	children: ReactNode;
 }) {
-	const { sid } = useAuth();
+	const { userInformation, privilage } = useAuth();
 	const { setError, setSuccess } = useUtility();
 
 	const [test, setTest] = useState<Test>(initTest);
@@ -66,16 +73,32 @@ export default function RecordManagementProvider({
 		useState<SearchCriteria>(initSearchCriteria);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [numberOfPage, setNumberOfPage] = useState<number>(10);
+	const [numberOfRecord, setNumberOfRecord] = useState<number>(0);
+	const [hasPrivilege, setHasPrivilege] = useState<boolean>(false);
+
+	const refresh = () => {
+		setIsLoading(true);
+		setTimeout(() => {
+			changePage();
+			setIsLoading(false);
+		}, 100);
+	};
 
 	useEffect(() => {
-		if (test && test.id != "") {
-			search();
+		const userRoles = userInformation?.roles;
+		if (userRoles) {
+			const newPrivilege = getRecordPrivilege(
+				getRoleFromRoleInfor(userRoles),
+				"delete",
+				privilage
+			);
+			setHasPrivilege(newPrivilege);
 		}
-	}, [currentPage, test]);
+	}, [privilage, userInformation]);
 
 	const getTestByTestId = (id: string) => {
 		const newTestOperation = new TestOperation();
-		newTestOperation.findOne(id as any, sid).then((res) => {
+		newTestOperation.findOne(id as any, getSid()).then((res) => {
 			if (res.success) {
 				if (!res.data) {
 					setError("Test not found");
@@ -86,18 +109,33 @@ export default function RecordManagementProvider({
 			} else {
 				setError(res.message);
 				console.error(res.message);
-				throw new Error(res.message);
 			}
 		});
+		newTestOperation
+			.countRecordByTestId(id as any, getSid())
+			.then((res) => {
+				if (res.success) {
+					setNumberOfRecord(res.data);
+				} else {
+					setError(res.message);
+					console.error(res.message);
+				}
+			});
 	};
 
 	const onChangeSearchCriteria = (criteria: SearchCriteria) => {
 		setSearchCriteria(criteria);
 	};
 
+	useEffect(() => {
+		if (test && test.id != "") {
+			search();
+		}
+	}, [test]);
+
 	const search = () => {
 		const newRecordOperation = new RecordOperation();
-		const newSearchPayload: SearchPayload = {
+		const searchPayload: SearchPayload = {
 			criteria: [
 				{
 					field: "testId",
@@ -112,14 +150,24 @@ export default function RecordManagementProvider({
 				group: null,
 			},
 		};
-		if (searchCriteria.value != "" && searchCriteria.field != "") {
-			newSearchPayload.criteria.push(searchCriteria);
-		}
 
-		newRecordOperation.search(newSearchPayload, sid).then((res) => {
+		if (searchCriteria.value != "" && searchCriteria.field != "") {
+			searchPayload.criteria.push(searchCriteria);
+		}
+		newRecordOperation.search(searchPayload, getSid()).then((res) => {
 			if (res.success && res.data) {
-				console.log(res);
 				setRecordList(res.data);
+				if (searchPayload.criteria.length == 1) {
+					setNumberOfPage(
+						Math.ceil(numberOfRecord / numberOfItemPerPage)
+					);
+				} else {
+					if (res.data.length == numberOfItemPerPage) {
+						setNumberOfPage(2);
+					} else {
+						setNumberOfPage(1);
+					}
+				}
 			} else {
 				if (!res.data) {
 					setRecordList([]);
@@ -133,11 +181,63 @@ export default function RecordManagementProvider({
 		});
 	};
 
+	const changePage = () => {
+		const newRecordOperation = new RecordOperation();
+		const searchPayload: SearchPayload = {
+			criteria: [
+				{
+					field: "testId",
+					operator: "=",
+					value: test.id,
+				},
+			],
+			addition: {
+				sort: [],
+				page: currentPage,
+				size: numberOfItemPerPage,
+				group: null,
+			},
+		};
+		if (searchCriteria.value != "" && searchCriteria.field != "") {
+			searchPayload.criteria.push(searchCriteria);
+		}
+
+		newRecordOperation.search(searchPayload, getSid()).then((res) => {
+			if (res.success && res.data) {
+				setRecordList(res.data);
+				if (searchPayload.criteria.length > 0) {
+					if (
+						res.data.length == numberOfItemPerPage &&
+						currentPage == numberOfPage
+					) {
+						setNumberOfPage(numberOfPage + 1);
+					}
+				}
+			} else {
+				if (!res.data) {
+					setRecordList([]);
+				} else {
+					setError(res.message);
+					console.error(res.message);
+					throw new Error(res.message);
+				}
+			}
+			setIsLoading(false);
+		});
+	};
+
+	useEffect(() => {
+		if (!isLoading) {
+			changePage();
+		}
+	}, [currentPage]);
+
 	const deleteRecord = (id: string) => {
 		const newRecordOperation = new RecordOperation();
-		newRecordOperation.delete(id as any, sid).then((res) => {
+		newRecordOperation.delete(id as any, getSid()).then((res) => {
 			if (res.success) {
 				setSuccess("Delete record successfully");
+				setNumberOfRecord(numberOfRecord - 1);
 				search();
 			} else {
 				setError(res.message);
@@ -160,12 +260,15 @@ export default function RecordManagementProvider({
 				searchCriteria,
 				isLoading,
 				numberOfPage,
+				numberOfRecord,
+				hasPrivilege,
 
 				onChangeSearchCriteria,
 				getTestByTestId,
 				handleChangePage,
 				search,
 				deleteRecord,
+				refresh,
 			}}>
 			{children}
 		</RecordContext.Provider>

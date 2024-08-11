@@ -87,22 +87,42 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkL
 
 ###
 
-POST https://engo.tiendungcorp.com/v1/flashcards/search
+POST https://engo.tiendungcorp.com/v1/records/search
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
 
 {
     "criteria": [
         {
-            "field": "tag",
-            "operator": "~",
-            "value": "Shopping"
+            "field": "testId",
+            "operator": "=",
+            "value": "c2709675-e23d-4ea3-91fa-c97d188b1aa1"
         }
     ],
     "addition": {
         "sort": [],
         "page": 1,
-        "size": 40,
+        "size": 200,
         "group": null
     }
+}
+
+###
+
+GET https://engo.tiendungcorp.com/v1/accounts/search/b42e81dd-231a-41a6-b9ec-395677778717
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+    
+}
+
+###
+
+GET https://engo.tiendungcorp.com/v1/privilege_config
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI0MmU4MWRkLTIzMWEtNDFhNi1iOWVjLTM5NTY3Nzc3ODcxNyIsInJvbGVzIjpbXSwiaWF0IjoxNzIyMjMwNjk3LCJleHAiOjE3NTM3NjY2OTd9.Pib23DGZPrSfIXvjrReHLgW-TAs80RLtI4Y_7LIZjBI
+
+{
+    
 }

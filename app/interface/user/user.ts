@@ -10,18 +10,18 @@ export const roleLabel = [
 ];
 
 export interface UserInformation {
-	id: string;
-	username: string;
-	email: string;
-	firstName: string;
-	lastName: string;
-	avatar: File;
-	active: boolean;
-	dateOfBirth: string;
-	phoneNumber: string;
-	roles: RoleInfor[];
-	createdAt: Date;
-	updatedAt: Date;
+	id?: string;
+	username?: string;
+	email?: string;
+	firstName?: string;
+	lastName?: string;
+	avatar?: string;
+	active?: boolean;
+	dateOfBirth?: string;
+	phoneNumber?: string;
+	roles?: RoleInfor[];
+	createdAt?: Date;
+	updatedAt?: Date;
 }
 
 export interface RoleInfor {

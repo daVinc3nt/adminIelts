@@ -4,10 +4,18 @@ import { FaTag, FaUser } from "react-icons/fa";
 import { Link } from "@nextui-org/react";
 import { FaPenFancy } from "react-icons/fa";
 import { useUtility } from "@/app/provider/UtilityProvider";
+import { useAuth } from "@/app/provider/AuthProvider";
+import { CiLogin } from "react-icons/ci";
+import { MdDashboard } from "react-icons/md";
 
 const iconSize = 20;
 
 const path = [
+	{
+		name: "Dashboard",
+		icon: <MdDashboard size={iconSize} className="inline-block" />,
+		link: "/",
+	},
 	{
 		name: "IELTS Management",
 		icon: <RiFilePaper2Fill size={iconSize} className="inline-block" />,
@@ -36,6 +44,7 @@ const path = [
 ];
 
 export default function SideBar() {
+	const { isLogin } = useAuth();
 	const { isOpenSidebar } = useUtility();
 
 	return (
@@ -46,7 +55,7 @@ export default function SideBar() {
 				src={"/images/Logo_name.png"}
 				className="w-full px-3  bg-white rounded-md dark:bg-pot-black h-fit mb-4"
 			/>
-			{
+			{isLogin ? (
 				<div className="flex flex-col w-full gap-1 h-fit px-1">
 					{path.map((item, index) => {
 						return (
@@ -63,7 +72,18 @@ export default function SideBar() {
 						);
 					})}
 				</div>
-			}
+			) : (
+				<div className="flex flex-col w-full gap-1 h-fit px-1">
+					<div className="flex flex-col w-full gap-1 text-sm text-gray-600 dark:text-gray-200 h-fit">
+						<Link
+							href={"/login"}
+							className="flex items-center gap-2 p-3 duration-100 rounded-md cursor-pointer hover:bg-mecury-gray dark:hover:bg-gray-22">
+							<CiLogin className="inline-block" size={30} />
+							Login
+						</Link>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

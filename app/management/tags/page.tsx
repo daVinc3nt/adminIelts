@@ -25,6 +25,7 @@ function TagManagement() {
 		currentSkill,
 		fetchType,
 		searchValue,
+		numberOfTag,
 		onChangeCurrentSkill,
 		onChangeFetchType,
 		onChangeSearchValue,
@@ -36,9 +37,14 @@ function TagManagement() {
 			{isOpenUpdateTag && <PopupUpdateTag />}
 			<div className="flex flex-col items-center w-10/12 h-full gap-6 py-4">
 				<div className="flex flex-row items-center justify-between w-full h-fit">
-					<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
-						Tags Management
-					</span>
+					<div className="w-fit h-fit flex flex-col">
+						<span className="text-4xl font-bold text-pot-black dark:text-gray-200">
+							Tags Management
+						</span>
+						<span className="text-xl text-zinc-500 dark:text-zinc-400">
+							{numberOfTag} tags
+						</span>
+					</div>
 
 					<AddTagButton />
 				</div>

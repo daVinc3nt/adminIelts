@@ -1,15 +1,16 @@
 "use client";
-import { FaCircleUser } from "react-icons/fa6";
 import { useUserManagement } from "../provider/UserManagementProvider";
 import { roleLabel, UserInformation } from "@/app/interface/user/user";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { FiEdit, FiXCircle } from "react-icons/fi";
-import { IoMdInformationCircleOutline } from "react-icons/io";
+import { IoMdInformationCircleOutline, IoMdRefresh } from "react-icons/io";
 import { useClickOutsideDetails } from "@/hooks/useClickOutsideDetails";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 export default function UserList() {
+	const { refresh } = useUserManagement();
+
 	return (
 		<div className="flex flex-col items-center w-full px-4 py-2  bg-white border rounded-md shadow-sm drop-shadow-md dark:border-pot-black min-h-[434px] dark:bg-pot-black">
 			<div className="flex flex-row items-center w-full gap-2 py-2 font-medium text-gray-400 h-fit">
@@ -18,7 +19,12 @@ export default function UserList() {
 				<div className="w-[30%]">Role</div>
 				<div className="w-[25%]">Email</div>
 				<div className="w-[5%] text-center">Active</div>
-				<div className="w-[5%]"></div>
+				<div className="w-[5%]">
+					<IoMdRefresh
+						onClick={() => refresh()}
+						className="rounded-md size-6 hover:bg-gray-100 dark:hover:bg-gray-22"
+					/>
+				</div>
 			</div>
 			<hr className="w-full my-1 border border-gray-200 dark:border-gray-400" />
 			<List />
@@ -27,7 +33,7 @@ export default function UserList() {
 }
 
 function List() {
-	const { userInforList, isLoading } = useUserManagement();
+	const { userInforList, isLoading, avartarFilePaths } = useUserManagement();
 
 	if (isLoading) {
 		return (
@@ -42,12 +48,16 @@ function List() {
 	return (
 		<>
 			<div className="flex flex-col items-center w-full h-fit">
-				{userInforList.map((user) => (
+				{userInforList.map((user, index) => (
 					<div
 						key={user.id}
 						className="flex flex-row items-center w-full gap-2 py-2 text-sm text-gray-600 bg-white rounded-md cursor-default dark:text-gray-200 h-fit dark:bg-pot-black dark:hover:bg-black-night group hover:shadow-md hover:z-10">
 						<div className="w-[7%] flex justify-center items-center">
-							<FaCircleUser className="size-10" />
+							<img
+								src={avartarFilePaths[index]}
+								className="size-10 rounded-full"
+								alt="user-avatar"
+							/>
 						</div>
 						<div className="w-[23%] flex flex-col">
 							<span className="text-base font-semibold">

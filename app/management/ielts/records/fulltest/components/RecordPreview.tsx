@@ -13,17 +13,12 @@ interface RecordProps {
 }
 
 export default function RecordPreview({ quizIndex, quizskill }: RecordProps) {
-	const { record, currentQuizIndex, currentSkill } = useRecord();
-
-	if (currentSkill != quizskill || currentQuizIndex != quizIndex) return null;
+	const { record } = useRecord();
 
 	let currentQuiz: RecordQuiz;
 	switch (quizskill) {
 		case Skill.LISTENING:
 			currentQuiz = record.listening[quizIndex];
-			break;
-		case Skill.WRITING:
-			currentQuiz = record.writing[quizIndex];
 			break;
 		case Skill.SPEAKING:
 			currentQuiz = record.speaking[quizIndex];
@@ -93,9 +88,6 @@ function FillingGroup({ quizIndex, groupIndex, quizSkill }: FillingGroupprops) {
 	switch (quizSkill) {
 		case Skill.LISTENING:
 			currentGroup = record.listening[quizIndex].fillingQuiz[groupIndex];
-			break;
-		case Skill.WRITING:
-			currentGroup = record.writing[quizIndex].fillingQuiz[groupIndex];
 			break;
 		case Skill.SPEAKING:
 			currentGroup = record.speaking[quizIndex].fillingQuiz[groupIndex];
@@ -187,10 +179,6 @@ function MultipleChoiceGroup({
 		case Skill.LISTENING:
 			currentGroup =
 				record.listening[quizIndex].multipleChoiceQuiz[groupIndex];
-			break;
-		case Skill.WRITING:
-			currentGroup =
-				record.writing[quizIndex].multipleChoiceQuiz[groupIndex];
 			break;
 		case Skill.SPEAKING:
 			currentGroup =

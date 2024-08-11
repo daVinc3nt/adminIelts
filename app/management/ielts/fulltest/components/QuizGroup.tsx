@@ -12,7 +12,7 @@ interface QuizGroupProps {
 }
 
 export default function QuizGroup({ quizIndex, skill }: QuizGroupProps) {
-	const { test, onChangeQuiz } = useTest();
+	const { test, onChangeQuiz, hasPrivilege } = useTest();
 
 	let currentQuiz: Quiz;
 	switch (skill) {
@@ -75,7 +75,7 @@ export default function QuizGroup({ quizIndex, skill }: QuizGroupProps) {
 			})}
 
 			<div className="flex flex-row w-full gap-2 items-center justify-center">
-				{isForQuiz ? (
+				{isForQuiz && hasPrivilege ? (
 					<Fragment>
 						<button
 							onClick={() => addFillingGroup()}

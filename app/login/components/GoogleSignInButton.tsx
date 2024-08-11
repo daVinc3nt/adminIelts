@@ -3,7 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { signIn } from "next-auth/react";
 export function GoogleSignInButton() {
 	const handleClick = () => {
-		signIn("google").then((res) => console.log(res));
+		signIn("google");
 	};
 	return (
 		<button

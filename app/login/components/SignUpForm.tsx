@@ -1,4 +1,5 @@
 "use client";
+import { getId, setId } from "@/app/interface/cookies/cookies";
 import { SignUpPayload, VerifyOtpPayload } from "@/app/lib/interfaces";
 import { AuthOperation } from "@/app/lib/main";
 import { useUtility } from "@/app/provider/UtilityProvider";
@@ -47,7 +48,7 @@ function SignUp({ setIsSignUp, errorMessage, setErrorMessage }: SignUpProps) {
 		const Auth = new AuthOperation();
 		Auth.signup(info).then((res) => {
 			if (res.success) {
-				localStorage.setItem("userinfo", JSON.stringify(res.data));
+				setId(res.data.id);
 				setIsSignUp(false);
 				setSuccess("OTP sent to your mail");
 				setErrorMessage("");
@@ -199,7 +200,7 @@ function VerifyOtp({
 	const [otp, setOtp] = useState("");
 
 	const handleSubmitOtp = async () => {
-		const userId = JSON.parse(localStorage.getItem("userinfo"));
+		const userId = getId();
 		const verifyPayload: VerifyOtpPayload = {
 			id: userId.id,
 			otp: otp,

@@ -38,7 +38,7 @@ function Login({ setIsLogin }: LoginProps) {
 				rotateY: 90,
 				transition: { duration: duration, ease: "linear" },
 			}}
-			className="absolute flex h-[80%] z-40 w-128">
+			className="relative flex h-[80%] z-40 w-128">
 			<div className="w-full h-full z-30 bg-foreground-red absolute top-0 left-0 rounded-md rotate-6 shadow-md" />
 
 			<div className="w-full h-full z-20 bg-foreground-blue absolute top-0 left-0 rounded-md rotate-12 shadow-md rotate-in-12" />

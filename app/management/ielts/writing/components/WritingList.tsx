@@ -19,9 +19,9 @@ export default function WritingList() {
 				<div className="w-[3%]"></div>
 				<div className="w-[22%]">Username</div>
 				<div className="w-[35%]">Writing answer id</div>
-				<div className="w-[10%] text-center">Scored</div>
-				<div className="w-[10%] text-center">Date created</div>
-				<div className="w-[10%] text-center">Last update</div>
+				<div className="w-[10%] text-center">Graded</div>
+				<div className="w-[10%] text-center">Created at</div>
+				<div className="w-[10%] text-center">Updated at</div>
 				<div className="w-[5%]">
 					<IoMdRefresh
 						onClick={() => onRefresh()}
@@ -73,19 +73,40 @@ function List() {
 							<div className="w-[10%] flex items-center justify-center">
 								<FiXCircle className="text-center text-red-500 size-4" />
 							</div>
-							<div className="w-[10%] text-center font-semibold">
-								{new Date(
-									writingAnswer.createdAt
-								).toLocaleDateString()}
+							<div className="w-[10%] flex flex-col items-center">
+								<span className="text-base font-semibold">
+									{new Date(
+										writingAnswer.createdAt
+									).toLocaleDateString()}
+								</span>
+								<span className="text-xs">
+									{
+										new Date(writingAnswer.createdAt)
+											.toTimeString()
+											.split(" ")[0]
+									}
+								</span>
 							</div>
-							<div className="w-[10%] text-center font-semibold">
-								{new Date(
-									writingAnswer.updatedAt
-								).toLocaleDateString()}
+							<div className="w-[10%] flex flex-col items-center">
+								<span className="text-base font-semibold">
+									{new Date(
+										writingAnswer.updatedAt
+									).toLocaleDateString()}
+								</span>
+								<span className="text-xs ">
+									{
+										new Date(writingAnswer.updatedAt)
+											.toTimeString()
+											.split(" ")[0]
+									}
+								</span>
 							</div>
 							<div className="w-[5%]">
 								<OptionButton
-									id={writingAnswer.writingAnswerId}
+									id={writingAnswer.id}
+									writingAnswerId={
+										writingAnswer.writingAnswerId
+									}
 								/>
 							</div>
 						</div>
@@ -98,9 +119,10 @@ function List() {
 
 interface OptionButtonProps {
 	id: string;
+	writingAnswerId: string;
 }
 
-function OptionButton({ id }: OptionButtonProps) {
+function OptionButton({ id, writingAnswerId }: OptionButtonProps) {
 	const { onDelete } = useWritingManagement();
 	const { onSetConfirmation } = useUtility();
 
@@ -125,7 +147,7 @@ function OptionButton({ id }: OptionButtonProps) {
 			</summary>
 			<div className="absolute top-0 flex flex-col gap-1 p-2 bg-white rounded-md shadow-lg w-[130px] h-fit dark:bg-gray-22 left-8">
 				<Link
-					href={`/management/ielts/writing/${id}`}
+					href={`/management/ielts/writing/${writingAnswerId}`}
 					target="_blank"
 					className="flex flex-row items-center justify-between p-2 rounded-md hover:bg-gray-100 dark:hover:bg-pot-black">
 					<span className="text-xs text-black dark:text-gray-200">

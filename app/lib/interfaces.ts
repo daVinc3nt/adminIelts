@@ -228,31 +228,32 @@ export interface CreatePracticeFromTest {
 
 
 export interface CreateTest {
-    name: string;
-    reading: CreateQuiz[];
-    listening: CreateQuiz[];
-    writing: CreateQuiz[];
-    speaking: CreateQuiz[];
+	name: string;
+	reading: CreateQuiz[];
+	listening: CreateQuiz[];
+	writing: CreateQuiz[];
+	speaking: CreateQuiz[];
+	hasPublished: Boolean;
 }
 
 export interface CreateFullTest {
-    files: File[]; //listening file in order
-    data: CreateTest;  
+	files: File[]; //listening file in order
+	data: CreateTest;
 }
 
 export interface UpdateFullTest {
-    files: File[];
-    data: UpdateTest
+	files: File[];
+	data: UpdateTest;
 }
 
 export interface UpdateTest {
-    name?: string;
-    reading?: UpdateQuiz[];
-    listening?: UpdateQuiz[];
-    writing?: UpdateQuiz[];
-    speaking?: UpdateQuiz[];
+	name?: string;
+	reading?: UpdateQuiz[];
+	listening?: UpdateQuiz[];
+	writing?: UpdateQuiz[];
+	speaking?: UpdateQuiz[];
+	hasPublished?: Boolean;
 }
-
 
 // Record Interface
 
@@ -262,124 +263,124 @@ export interface UpdateTest {
  * duration là thời gian làm bài
  */
 export interface Reading {
-    id: string;
-    answer: string[];
-    duration: number;
+	id: string;
+	answer: string[];
+	duration: number;
 }
 
 export interface Listening {
-    id: string;
-    answer: string[];
-    duration: number;
+	id: string;
+	answer: string[];
+	duration: number;
 }
 
 export interface Writing {
-    id: string;
-    answer: string;
-    duration: number;
+	id: string;
+	answer: string;
+	duration: number;
 }
 
 export interface Speaking {
-    id: string;
-    answer: File;
-    duration: number;
+	id: string;
+	answer: File;
+	duration: number;
 }
 
 export interface MultipleChoiceAnswer {
-    id: UUID;
-    answer: string[][];
+	id: UUID;
+	answer: string[][];
 }
 
 export interface FillingAnswer {
-    id: UUID;
-    answer: string[];
+	id: UUID;
+	answer: string[];
 }
 
 export interface AnswerQuiz {
-    id: UUID;
-    answer: string[] | string;
+	id: UUID;
+	answer: string[] | string;
 }
 export interface AnswerGroup {
-    id: UUID;
-    quizzes: AnswerQuiz[];
+	id: UUID;
+	quizzes: AnswerQuiz[];
 }
 
 export interface CreateAnswer {
-    recordId: UUID;
-    score: number;
-    multipleChoiceQuizId: UUID;
-    fillingQuizId: UUID;
-    content: string[] | string;
+	recordId: UUID;
+	score: number;
+	multipleChoiceQuizId: UUID;
+	fillingQuizId: UUID;
+	content: string[] | string;
 }
 
 export interface WritingFiles {
-    files: File[]; // only .txt and msword
+	files: File[]; // only .txt and msword
 }
 
 export interface SpeakingFiles {
-    files: File[]; // havenot implemented yet
+	files: File[]; // havenot implemented yet
 }
 
 export interface UpdateWritingAnswer {
-    id: UUID;
-    content: string;
+	id: UUID;
+	content: string;
 }
 
 export interface CreateRemarkRequest {
-    writingAnswerId: UUID;
-    accountId: UUID;
+	writingAnswerId: UUID;
+	accountId: UUID;
 }
 
 export interface RemarkWriting {
-    remark: string;
-    firstCriterion: string;
-    secondCriterion: string;
-    thirdCriterion: string;
-    fourthCriterion: string;
-    score: number;
+	remark: string;
+	firstCriterion: string;
+	secondCriterion: string;
+	thirdCriterion: string;
+	fourthCriterion: string;
+	score: number;
 }
 
 export interface SearchRemarkRequest {
-    id: UUID;
-    writingAnswerId: UUID;
-    accountId: UUID;
+	id: UUID;
+	writingAnswerId: UUID;
+	accountId: UUID;
 }
 export interface CreateRecord {
-    testId: UUID;
+	testId: UUID;
 
-    readingDuration: number;
-    listeningDuration: number;
-    writingDuration: number;
-    speakingDuration: number;
-    completeReading: boolean;
-    completeListening: boolean;
-    completeWriting: boolean;
-    completeSpeaking: boolean;
-    reading: AnswerGroup[];
-    listening: AnswerGroup[];
-    writing: UpdateWritingAnswer;
-    speaking: AnswerGroup[];
+	readingDuration: number;
+	listeningDuration: number;
+	writingDuration: number;
+	speakingDuration: number;
+	completeReading: boolean;
+	completeListening: boolean;
+	completeWriting: boolean;
+	completeSpeaking: boolean;
+	reading: AnswerGroup[];
+	listening: AnswerGroup[];
+	writing: UpdateWritingAnswer[];
+	speaking: AnswerGroup[];
 }
 
 export interface GetRecord {
-    testId: string;
-    accountId: string;
+	testId: string;
+	accountId: string;
 }
 
 export interface UpdateRecord {
-    testId: UUID;
-    readingDuration?: number;
-    listeningDuration?: number;
-    writingDuration?: number;
-    speakingDuration?: number;
-    completeReading?: boolean;
-    completeListening?: boolean;
-    completeWriting?: boolean;
-    completeSpeaking?: boolean;
-    reading?: AnswerGroup[];
-    listening?: AnswerGroup[];
-    writing?: UpdateWritingAnswer;
-    speaking?: AnswerGroup[];
+	testId: UUID;
+	readingDuration?: number;
+	listeningDuration?: number;
+	writingDuration?: number;
+	speakingDuration?: number;
+	completeReading?: boolean;
+	completeListening?: boolean;
+	completeWriting?: boolean;
+	completeSpeaking?: boolean;
+	reading?: AnswerGroup[];
+	listening?: AnswerGroup[];
+	writing?: UpdateWritingAnswer[];
+	speaking?: AnswerGroup[];
 }
 
 export interface UpdateFullRecord {

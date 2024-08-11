@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 var handlebars = require("handlebars/dist/cjs/handlebars");
 import { writingEmailTemplate } from "../interface/emailtemplate/writingEmailTemplate";
+import { test } from "../interface/emailtemplate/test";
 
 export interface WritingEmailInput {
 	name: string;
@@ -43,10 +44,16 @@ export const sendWritingEmail = async (input: WritingEmailInput) => {
 				"Content-Type": "application/json",
 			},
 		});
-		return true;
+		return {
+			success: true,
+			message: "Email sent successfully",
+		};
 	} catch (error) {
 		console.error(error);
-		return false;
+		return {
+			success: false,
+			message: "Email failed to send",
+		};
 	}
 };
 

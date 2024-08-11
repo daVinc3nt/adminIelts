@@ -122,7 +122,7 @@ export interface RecordTest {
 	listeningUncompletedQuizzes?: number;
 	listeningWrongAnswers?: number;
 
-	writing?: RecordQuiz[];
+	writing?: WritingAnswer[];
 	writingAmount?: number;
 	writingCompletedQuizzes?: number;
 	writingCorrectAnswers?: number;

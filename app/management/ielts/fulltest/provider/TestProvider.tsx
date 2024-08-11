@@ -1,7 +1,13 @@
 "use client";
+import { getSid } from "@/app/interface/cookies/cookies";
+import {
+	getRoleFromRoleInfor,
+	getTestPrivilege,
+} from "@/app/interface/privilegeconfig/privilegeconfig";
 import { Tag } from "@/app/interface/tag/tag";
 import {
 	Quiz,
+	readyForPublish,
 	ReciveTestToTest,
 	setStartFrom,
 	Test,
@@ -40,6 +46,7 @@ interface TestContextType {
 	isLoading: boolean;
 	practiceType: "quiz" | "group";
 	tagList: Tag[];
+	hasPrivilege: boolean;
 
 	onChangeTest: (test: Test) => void;
 	onChangeQuiz: (quiz: Quiz, skill: Skill, quizIndex: number) => void;
@@ -56,6 +63,7 @@ interface TestContextType {
 	onChangeIsLoading: (value: boolean) => void;
 	onChangePracticeType: (type: "quiz" | "group") => void;
 	fetchTagList: () => void;
+	check: () => void;
 }
 
 const TestContext = createContext<TestContextType | null>(null);
@@ -69,8 +77,8 @@ export const useTest = () => {
 };
 
 export default function TestProvider({ children }: { children: ReactNode }) {
-	const { sid } = useAuth();
-	const { setSuccess, setError } = useUtility();
+	const { userInformation, privilage } = useAuth();
+	const { setSuccess, setError, onSetPromise } = useUtility();
 
 	const [test, setTest] = useState<Test>({
 		id: "",
@@ -85,6 +93,7 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 		useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [tagList, setTagList] = useState<Tag[]>([]);
+	const [hasPrivilege, setHasPrivilege] = useState<boolean>(false);
 
 	useEffect(() => {
 		fetchTagList();
@@ -97,6 +106,18 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 			}, 400);
 		}
 	}, [isLoading]);
+
+	useEffect(() => {
+		const userRoles = userInformation?.roles;
+		if (userRoles) {
+			const newPrivilege = getTestPrivilege(
+				getRoleFromRoleInfor(userRoles),
+				"create",
+				privilage
+			);
+			setHasPrivilege(newPrivilege);
+		}
+	}, [privilage, userInformation]);
 
 	const fetchTagList = () => {
 		const newTagOperation = new TagOperation();
@@ -111,7 +132,7 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 						group: [],
 					},
 				},
-				sid
+				getSid()
 			)
 			.then((res) => {
 				if (res.success) {
@@ -132,23 +153,22 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 
 	const createPratice = (test: CreateFullPracticeFromTest) => {
 		const newPracrticeOperation = new PracticeOperation();
-		newPracrticeOperation.create(test, sid).then((res) => {
-			if (res.success) {
-				const newTest = ReciveTestToTest(res.data);
-				getFileList(newTest);
-				setTest(newTest);
-				setSuccess("Practice created successfully");
-				setIsOpenCreateQuizPractice(false);
-			} else {
-				setError(res.message);
-				console.error(res.message);
-			}
-		});
+		const create = newPracrticeOperation
+			.create(test, getSid())
+			.then((res) => {
+				if (res.success) {
+					const newTest = ReciveTestToTest(res.data);
+					getFileList(newTest);
+					setTest(newTest);
+					setIsOpenCreateQuizPractice(false);
+				}
+			});
+		onSetPromise(create, "Creating...", "Practice created successfully");
 	};
 
 	const getTestById = (id: string) => {
 		const newTestOperation = new TestOperation();
-		newTestOperation.findOne(id as any, sid).then((res) => {
+		newTestOperation.findOne(id as any, getSid()).then((res) => {
 			if (res.success) {
 				if (res.data === null) {
 					setTest(null);
@@ -188,20 +208,30 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 			files: newFileList,
 			data: updateTest,
 		};
-		newTestOperation
-			.update(test.id as any, updateFullTest, sid)
+		const save = newTestOperation
+			.update(test.id as any, updateFullTest, getSid())
 			.then((res) => {
 				if (res.success) {
-					setSuccess("Test updated successfully");
 					const newtest = ReciveTestToTest(res.data);
-					console.log(newtest);
 					getFileList(newtest);
 					setTest(newtest);
-				} else {
-					setError(res.message);
-					console.error(res.message);
 				}
 			});
+		onSetPromise(save, "Saving...", "Test saved successfully");
+	};
+
+	const check = () => {
+		const isReady = readyForPublish(test);
+		if (isReady.isReady) {
+			setTest({
+				...test,
+				hasPublished: true,
+			});
+		} else {
+			setError(isReady.message);
+			setCurrentQuizIndex(isReady.quizIndex);
+			setCurrentSkill(isReady.skill);
+		}
 	};
 
 	const removeQuiz = (quizIndex: number, skill: Skill) => {
@@ -245,7 +275,7 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 				quizId = test.reading[quizIndex].id;
 		}
 		if (quizId) {
-			newQuizOperation.delete(quizId as any, sid).then((res) => {
+			newQuizOperation.delete(quizId as any, getSid()).then((res) => {
 				if (res) {
 					setSuccess("Quiz deleted successfully");
 					setCurrentQuizIndex(currentQuizIndex - 1);
@@ -303,13 +333,15 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 		const newUploadOperation = new UploadOperation();
 		test.listening.forEach((quiz, index) => {
 			if (quiz.filePath) {
-				newUploadOperation.search(quiz.filePath, sid).then((res) => {
-					if (res.success) {
-						newUrlList[index] = res.data;
-					} else {
-						newUrlList[index] = "";
-					}
-				});
+				newUploadOperation
+					.search(quiz.filePath, getSid())
+					.then((res) => {
+						if (res.success) {
+							newUrlList[index] = res.data;
+						} else {
+							newUrlList[index] = "";
+						}
+					});
 			} else {
 				newUrlList[index] = "";
 			}
@@ -343,6 +375,8 @@ export default function TestProvider({ children }: { children: ReactNode }) {
 				isLoading,
 				practiceType,
 				tagList,
+				hasPrivilege,
+				check,
 
 				onChangeTest,
 				onChangeQuiz,
